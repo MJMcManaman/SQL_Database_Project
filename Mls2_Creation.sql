@@ -49,20 +49,20 @@ Create type landlord_t under customer_t(
 Create type region_t as object(
   rid varchar2(10),
   regionName varchar(20),
+  province varchar2(20),
   city varchar2(10),
   Member function regionDisplay return varchar2)
 /
 
 Create type listing_t as object(
   lid char(4),
-  pid char(3),
   listingStartDate date,
   builtYear int,
   listedPrice double precision,
   washroomNum int,
   livingroomNum int,
   bedroomNum int,
-  balcony blob,
+  balcony int,
   kitchenNum int,
   parkingSpace int,
   elevator int,

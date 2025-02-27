@@ -3,20 +3,25 @@ insert into region values(region_t('r002', 'West', 'British Columbia', 'Vancouve
 insert into region values(region_t('r003', 'East', 'Quebec', 'Montreal'));
 insert into region values(region_t('r004', 'Prairie', 'Alberta', 'Calgary'));
 
-insert into property values(property_t(d01, 'detached', '2010', '1 york lane', 'M1K2G3', 40, 104));
-insert into property values(property_t(s02, 'semidetached', '2005', '94 cook rd', 'M2K3G4', 24, 107));
-insert into property values(property_t(c03, 'condo', '2021', '47 university rd', 'M3K4G5', 27, 28));
-insert into property values(property_t(s04, 'semidetached', '1950', '57 alberta ave', 'M4K5G6', 17, 133));
-insert into property values(property_t(s05, 'semidetached', '1950', '19 alberta ave', 'M4K5G3', 20, 127));
-insert into property values(property_t(d06, 'detached', '1978', '25 ascot ave', 'M6K7G8', 30, 107));
+insert into listing values(listing_t('d011', '10-Oct-2024', '2010', '2695000', 4, 2, 7, 1, 2, 6, 0, '10-Feb-2025'));
+insert into listing values(listing_t('d012', '5-Jan-2025', '2005', '1449000', 4, 2, 7, 1, 2, 1, 0, '10-Feb-2025'));
+insert into listing values(listing_t('d013', '19-Nov-2024', '2021', '1240000', 4, 2, 7, 1, 2, 1, 0, '10-Feb-2025'));
+insert into listing values(listing_t('d014', '3-Feb-2025', '1950', '798000', 4, 2, 7, 1, 2, 1, 0, '10-Feb-2025'));
+insert into listing values(listing_t('d015', '01-Oct-2024', '1950', '586000', 4, 2, 7, 1, 2, 1, 0, '10-Feb-2025'));
+insert into listing values(listing_t('d016', '08-Jan-2024', '1978', '1425000', 4, 2, 7, 1, 2, 1, 0, '10-Feb-2025'));
 
 
-insert into listing values(listing_t(d011, 'd01', '10-Oct-2024', '2010', 'l01', '2695000', 4, 2, 7, 1, 2, 1, 0, '10-Feb-2025'));
-insert into listing values(listing_t(d012, 'd02', '5-Jan-2025', '2005', 'l02', '1449000', 4, 2, 7, 1, 2, 1, 0, '10-Feb-2025'));
-insert into listing values(listing_t(d013, 'd03', '19-Nov-2024', '2021', 'l03', '1240000', 4, 2, 7, 1, 2, 1, 0, '10-Feb-2025'));
-insert into listing values(listing_t(d014, 'd04', '3-Feb-2025', '1950', 's04', '798000', 4, 2, 7, 1, 2, 1, 0, '10-Feb-2025'));
-insert into listing values(listing_t(d015, 'd05', '01-Oct-2024', '1950', 's04', '586000', 4, 2, 7, 1, 2, 1, 0, '10-Feb-2025'));
-insert into listing values(listing_t(d016, 'd06', '08-Jan-2024', '1978', 's06', '1425000', 4, 2, 7, 1, 2, 1, 0, '10-Feb-2025'));
+INSERT INTO property VALUES (property_t('d01', REF (SELECT r FROM region r WHERE rid = 'r001'), 'detached', 2010, '1 york lane', 'M1K2G3', 40, 104));   
+
+insert into property values(property_t('d01', 'r001',listing_t('d012', '5-Jan-2025', '2005', '1449000', 4, 2, 7, 1, 2, 1, 0, '10-Feb-2025'), '2010', '1 york lane', 'M1K2G3', 40, 104));
+insert into property values(property_t('d01', 'r001', listing_t((select l from listing l where lid = 'd011')), '2010', '1 york lane', 'M1K2G3', 40, 104));
+
+insert into property values(property_t('s02', 'r001', 'semidetached', '2005', '94 cook rd', 'M2K3G4', 24, 107));
+insert into property values(property_t('c03', 'r001','condo', '2021', '47 university rd', 'M3K4G5', 27, 28));
+insert into property values(property_t('s04', 'r004', 'semidetached', '1950', '57 alberta ave', 'M4K5G6', 17, 133));
+insert into property values(property_t('s05', 'r004','semidetached', '1950', '19 alberta ave', 'M4K5G3', 20, 127));
+insert into property values(property_t('d06', 'r002','detached', '1978', '25 ascot ave', 'M6K7G8', 30, 107));
+
 
 insert into agent values(agent_t('a01', 'Eve Adams', '9876543210', 'eve@email.com', 2015, 'RealtyX', 'B1234567'));
 insert into agent values(agent_t('a02', 'Frank Miller', '8765432109', 'frank@email.com', 2010, 'HomeFinders', 'B7654321'));
