@@ -10,11 +10,11 @@ insert into listing values(listing_t('d014', '3-Feb-2025', '1950', '798000', 4, 
 insert into listing values(listing_t('d015', '01-Oct-2024', '1950', '586000', 4, 2, 7, 1, 2, 1, 0, '10-Feb-2025'));
 insert into listing values(listing_t('d016', '08-Jan-2024', '1978', '1425000', 4, 2, 7, 1, 2, 1, 0, '10-Feb-2025'));
 
-
-INSERT INTO property VALUES (property_t('d01', REF (SELECT r FROM region r WHERE rid = 'r001'), 'detached', 2010, '1 york lane', 'M1K2G3', 40, 104));   
-
-insert into property values(property_t('d01', 'r001',listing_t('d012', '5-Jan-2025', '2005', '1449000', 4, 2, 7, 1, 2, 1, 0, '10-Feb-2025'), '2010', '1 york lane', 'M1K2G3', 40, 104));
-insert into property values(property_t('d01', 'r001', listing_t((select l from listing l where lid = 'd011')), '2010', '1 york lane', 'M1K2G3', 40, 104));
+--solution fit current schema
+insert into property values(property_t('d01', 
+(select ref(r) from region r where r.rid = 'r001'), 
+listing_t('d012', '5-Jan-2025', 2005, 1449000, 4, 2, 7, 1, 2, 1, 0, '10-Feb-2025'), 
+'detached', 2010, '1 york lane', 'M1K2G3', 40, 104));
 
 insert into property values(property_t('s02', 'r001', 'semidetached', '2005', '94 cook rd', 'M2K3G4', 24, 107));
 insert into property values(property_t('c03', 'r001','condo', '2021', '47 university rd', 'M3K4G5', 27, 28));
@@ -47,4 +47,5 @@ insert into tenant values(tenant_t('c13'), customer_t('Lucas White', '1234509876
 insert into tenant values(tenant_t('c14'), customer_t('Amelia Clark', '2345610987', 'amelia@email.com', '2021-09-05'));
 insert into tenant values(tenant_t('c15'), customer_t('Benjamin Harris', '3456789012', 'benjamin@email.com', '2020-01-10'));
 insert into tenant values(tenant_t('c19'), customer_t('Emma Lewis', '4567890123', 'emma@email.com', '2019-04-20'));
+
 
