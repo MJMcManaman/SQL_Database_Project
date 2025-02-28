@@ -142,6 +142,7 @@ Create table region of region_t(rid primary key);
 Create table listing of listing_t (lid primary key);
 Create table property of property_t(pid primary key, foreign key (roid) references region);
 Create table agent of agent_t(aid primary key);
+Create table customer of customer_t(cid primary key);
 Create table buyer of buyer_t(cid primary key);
 Create table seller of seller_t(cid primary key);
 Create table landlord of landlord_t(cid primary key);
