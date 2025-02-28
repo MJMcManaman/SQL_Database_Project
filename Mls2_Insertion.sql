@@ -25,23 +25,23 @@ insert into agent values(agent_t('a04', 'Harry King', '6543210987', 'harry@email
 --------------------------------------------------------------------------------------
 
 insert into seller values(seller_t('c01', 'Alice Smith', '1234567890', 'alice@email.com', DATE '2020-06-15', 1, DATE '2001-04-15'));
-insert into seller values(seller_t('c02', 'Bob Johnson', '2345678901', 'bob@email.com', DATE '2021-08-21', 1, DATE '2021-08-21'));
-insert into seller values(seller_t('c03', 'Alice Smith', '1234567890', 'alice@email.com', DATE '2020-06-15', 0, DATE '2016-09-12'));
-insert into seller values(seller_t('c04', 'Alice Smith', '1234567890', 'alice@email.com', DATE '2020-06-15', 0, DATE '2017-12-03'));
+insert into seller values(seller_t('c02', 'Bob Johnson', '2345678901', 'bob@email.com', DATE '2021-08-21', 1, DATE '2014-02-12'));
+insert into seller values(seller_t('c03', 'John Doe', '3456789012', 'john@email.com', DATE '2019-03-22', 1, DATE '2018-07-19'));
+insert into seller values(seller_t('c04', 'David Brown', '4567890123', 'david@email.com', DATE '2022-01-10', 0, DATE '2018-05-14'));
 
 --------------------------------------------------------------------------------------
 
 insert into buyer values(buyer_t('c05', 'Charlie Brown', '3456789012', 'charlie@email.com', DATE '2019-05-30', 250000.00, 0.11));
 insert into buyer values(buyer_t('c06', 'Diana White', '4567890123', 'diana@email.com', DATE '2018-11-10', 340000.00, 0.09));
-insert into buyer values(buyer_t('c07', 'Lucas White', '1234509876', 'lucas@email.com', '2022-03-15', 700000.00, 0.08));
-insert into buyer values(buyer_t('c08', 'Amelia Clark', '2345610987', 'amelia@email.com', 225000.00, 0.11));
+insert into buyer values(buyer_t('c07', 'Lucas White', '1234509876', 'lucas@email.com', DATE '2022-03-15', 700000.00, 0.08));
+insert into buyer values(buyer_t('c08', 'Amelia Clark', '2345610987', 'amelia@email.com', DATE '2025-01-28', 225000.00, 0.11));
 
 --------------------------------------------------------------------------------------
 
 insert into landlord values(landlord_t('c09', 'Sophia Martin', '9012345678', 'sophia@email.com', DATE '2015-06-18', 1, DATE '2005-01-22'));
 insert into landlord values(landlord_t('c10', 'James Anderson', '0123456789', 'james@email.com', DATE '2014-11-30', 0, DATE '2010-10-28'));
 insert into landlord values(landlord_t('c11', 'Emily Davis', '3456723456', 'emily@email.com', DATE '2013-05-25', 1, DATE '2002-11-02'));
-insert into landlord values(landlord_t('c12', 'Michael Scott', '5678923456', 'michael@email.com', '2016-02-14', 0, DATE '2014-06-20'));
+insert into landlord values(landlord_t('c12', 'Michael Scott', '5678923456', 'michael@email.com', DATE '2016-02-14', 0, DATE '2014-06-20'));
 
 --------------------------------------------------------------------------------------
 
@@ -50,4 +50,22 @@ insert into tenant values(tenant_t('c14', 'Amelia Clark', '2345610987', 'amelia@
 insert into tenant values(tenant_t('c15', 'Benjamin Harris', '3456789012', 'benjamin@email.com', DATE '2020-01-10', 4100.00, 0.07));
 insert into tenant values(tenant_t('c19', 'Emma Lewis', '4567890123', 'emma@email.com', DATE '2019-04-20', 1500.00, 0.15));
 
+--------------------------------------------------------------------------------------
 
+insert into rentContract values(rentContract_t('r01', (SELECT REF(l) FROM landlord l WHERE l.cid = 'c09'), (SELECT REF(a) FROM agent a WHERE a.aid = 'a01'), (SELECT REF(t) FROM tenant t WHERE t.cid = 'c13'), 3000, DATE '2022-03-15', 12));
+insert into rentContract values(rentContract_t('r02', (SELECT REF(l) FROM landlord l WHERE l.cid = 'c10'), (SELECT REF(a) FROM agent a WHERE a.aid = 'a02'), (SELECT REF(t) FROM tenant t WHERE t.cid = 'c14'), 1985, DATE '2021-09-05', 6));
+insert into rentContract values(rentContract_t('r03', (SELECT REF(l) FROM landlord l WHERE l.cid = 'c11'), (SELECT REF(a) FROM agent a WHERE a.aid = 'a03'), (SELECT REF(t) FROM tenant t WHERE t.cid = 'c15'), 850, DATE '2020-01-10', 24));
+
+--------------------------------------------------------------------------------------
+
+insert into saleContract values(saleContract_t('s01', (SELECT REF(s) FROM seller s WHERE s.cid = 'c01'), (SELECT REF(a) FROM agent a WHERE a.aid = 'a02'), (SELECT REF(p) FROM property p WHERE p.pid = 'd01'), (SELECT REF(b) FROM buyer b WHERE b.cid = 'c05'), 850000,DATE '2024-10-10'));
+insert into saleContract values (saleContract_t('s02', (SELECT REF(s) FROM seller s WHERE s.cid = 'c02'), (SELECT REF(a) FROM agent a WHERE a.aid = 'a03'), (SELECT REF(p) FROM property p WHERE p.pid = 's02'), (SELECT REF(b) FROM buyer b WHERE b.cid = 'c06'), 450000, DATE '2025-01-05'));
+insert into saleContract values(saleContract_t('s03', (SELECT REF(s) FROM seller s WHERE s.cid = 'c03'), (SELECT REF(a) FROM agent a WHERE a.aid = 'a04'), (SELECT REF(p) FROM property p WHERE p.pid = 'c03'), (SELECT REF(b) FROM buyer b WHERE b.cid = 'c07'), 300000, DATE '2024-11-19'));
+
+select *
+from saleContract s
+join seller sel on deref(s.sellerid).cid = sel.cid;
+
+--------------------------------------------------------------------------------------
+
+insert into agentContract values(agentContract_t('a01'(SELECT REF(a) FROM agent a WHERE a.aid = 'a01'), (SELECT REF(c)) FROM customer c WHERE c.cid,'r01'));

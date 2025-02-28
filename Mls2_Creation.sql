@@ -116,6 +116,7 @@ Create type saleContract_t as object(
   aoid ref agent_t,
   poid ref property_t,
   buyerid ref buyer_t,
+  salePrice double precision,
   signedTime Date)
 /
 
@@ -124,6 +125,7 @@ Create type rentContract_t as object(
   landlordid ref landlord_t,
   aoid ref agent_t,
   tenantid ref tenant_t,
+  rentPrice double precision,
   signedTime Date,
   rentLength int)
 /
