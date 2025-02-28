@@ -98,7 +98,7 @@ Create type agent_t as object(
 
 Create type saleContract_t as object(
   scid char(3),
-  ownerid ref seller_t,
+  sellerid ref seller_t,
   aoid ref agent_t,
   poid ref property_t,
   buyerid ref buyer_t,
@@ -126,12 +126,12 @@ Create type agentContract_t as object(
 --Creat table 
 Create table region of region_t(rid primary key);
 Create table listing of listing_t (lid primary key);
-Create table property of property_t(pid primary key);
+Create table property of property_t(pid primary key, foreign key (roid) references region);
 Create table agent of agent_t(aid primary key);
 Create table buyer of buyer_t(cid primary key);
 Create table seller of seller_t(cid primary key);
 Create table landlord of landlord_t(cid primary key);
 Create table tenant of tenant_t(cid primary key);
-Create table saleContract of saleContract_t(scid primary key);
-Create table rentContract of rentContract_t(rcid primary key);
-Create table agentContract of agentContract_t(acid primary key);
+Create table saleContract of saleContract_t(scid primary key, foreign key (aoid) references agent, foreign key (buyerid) references buyer, foreign key (sellerid) references seller);
+Create table rentContract of rentContract_t(rcid primary key, foreign key (aoid) references agent, foreign key (landlordid) references landlord, foreign key (tenantid) references tenant);
+Create table agentContract of agentContract_t(acid primary key, foreign key (aoid) reference agent, foreign key (coid) references customer);
