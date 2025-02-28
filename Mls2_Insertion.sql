@@ -39,15 +39,24 @@ insert into seller values(seller_t('c02'), customer_t('Bob Johnson', '2345678901
 insert into seller values(seller_t('c03'), customer_t('Emma Green', '5678901234', 'emma@email.com', '2016-09-12'), true);
 insert into seller values(seller_t('c04'), customer_t('Daniel Lee', '6789012345', 'daniel@email.com', '2017-12-03'), false);
 
+-- insertion format for buyer
+insert into buyer values(buyer_t('c05', 'Charlie Brown', '3456789012', 'charlie@email.com', DATE '2019-05-30', 250000.00));
+
 insert into buyer values(buyer_t('c05'), customer_t('Charlie Brown', '3456789012', 'charlie@email.com', '2019-05-30'));
 insert into buyer values(buyer_t('c06'), customer_t('Diana White', '4567890123', 'diana@email.com', '2018-11-10'));
 insert into buyer values(buyer_t('c07'), customer_t('Lucas White', '1234509876', 'lucas@email.com', '2022-03-15'));
 insert into buyer values(buyer_t('c08'), customer_t('Amelia Clark', '2345610987', 'amelia@email.com', '2021-09-05'));
 
+-- insertion format for landlord
+insert into landlord values(landlord_t('c09', 'Sophia Martin', '9012345678', 'sophia@email.com', DATE '2015-06-18', empty_blob(), DATE '2005-01-22'));
+
 insert into landlord values(landlord_t('c09'), customer_t('Sophia Martin', '9012345678', 'sophia@email.com', '2015-06-18'), true);
 insert into landlord values(landlord_t('c10'), customer_t('James Anderson', '0123456789', 'james@email.com', '2014-11-30'), false);
 insert into landlord values(landlord_t('c11'), customer_t('Emily Davis', '3456723456', 'emily@email.com', '2013-05-25'), true);
 insert into landlord values(landlord_t('c12'), customer_t('Michael Scott', '5678923456', 'michael@email.com', '2016-02-14'), false);
+
+--  insertion format for tenant
+insert into tenant values(tenant_t('c13', 'Lucas White', '1234509876', 'lucas@email.com', DATE '2022-03-15', 2200.00));
 
 insert into tenant values(tenant_t('c13'), customer_t('Lucas White', '1234509876', 'lucas@email.com', '2022-03-15'));
 insert into tenant values(tenant_t('c14'), customer_t('Amelia Clark', '2345610987', 'amelia@email.com', '2021-09-05'));
