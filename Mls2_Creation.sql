@@ -1,16 +1,29 @@
 --Drop type (if needed)
-drop type agentContract_t  ;
-drop type rentContract_t  ;
-drop type saleContract_t  ;
-drop type agent_t ;
-drop type property_t  ;
-drop type listing_t  ;
-drop type region_t  ;
-drop type landlord_t  ;
-drop type tenant_t  ;
-drop type seller_t  ;
-drop type buyer_t  ;
+drop table agentContract;
+drop table rentContract;
+drop table saleContract;
+drop table tenant;
+drop table landlord;
+drop table seller;
+drop table buyer;
+drop table agent;
+drop table property;
+drop table listing;
+drop table region;
+
+drop type agentContract_t;
+drop type rentContract_t;
+drop type saleContract_t;
+drop type agent_t;
+drop type property_t;
+drop type listing_t;
+drop type region_t;
+drop type landlord_t;
+drop type tenant_t;
+drop type seller_t;
+drop type buyer_t;
 drop type customer_t;
+
 
 
 --Creat type 
