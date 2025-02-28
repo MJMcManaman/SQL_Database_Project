@@ -19,3 +19,5 @@ FROM property p;
 select p.propertyDetail.attributeRequire from property p;
 -- example:
 select p.propertyDetail.openHouse from property p;
+-- more specifically:
+select p.propertyDetail.openHouse from property p  where p.pid = 's02';
