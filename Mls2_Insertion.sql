@@ -33,7 +33,7 @@ insert into seller values(seller_t('c04', 'Daniel Lee', '6789012345', 'daniel@em
 
 insert into buyer values(buyer_t('c05', 'Charlie Brown', '3456789012', 'charlie@email.com', DATE '2019-05-30', 250000.00, 0.11));
 insert into buyer values(buyer_t('c06', 'Diana White', '4567890123', 'diana@email.com', DATE '2018-11-10', 340000.00, 0.09));
-insert into buyer values(buyer_t('c07', 'Lucas White', '1234509876', 'lucas@email.com', '2022-03-15', 700000.00, 0.08));
+insert into buyer values(buyer_t('c07', 'Lucas White', '1234509876', 'lucas@email.com', DATE '2022-03-15', 700000.00, 0.08));
 insert into buyer values(buyer_t('c08', 'Amelia Clark', '2345610987', 'amelia@email.com', DATE '2021-09-05', 225000.00, 0.11));
 
 --------------------------------------------------------------------------------------
