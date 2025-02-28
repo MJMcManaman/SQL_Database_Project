@@ -39,22 +39,24 @@ Create type customer_t as object(
 
 Create type buyer_t under customer_t(
   pricePreference double precision,
+  priceFluctuation double precision,
   member function sort (propertyRequirement double precision) return integer);
 /
 
 Create type seller_t under customer_t(
-  propertyRegister blob,
+  propertyRegister int,
   dataOwned Date,
   Overriding member function timeOwned return int)
 /
 
 Create type tenant_t under customer_t(
   pricePreference double precision,
+  priceFluctuation double precision,
   member function sort (propertyRequirement double precision) return integer);
 /
 
 Create type landlord_t under customer_t(
-  propertyRegister blob,
+  propertyRegister int,
   dateOwned Date,
   Overriding member function timeOwned return int)
 /
