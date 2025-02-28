@@ -16,7 +16,7 @@ insert into property values(property_t('d01',
 listing_t('d012', '5-Jan-2025', 2005, 1449000, 4, 2, 7, 1, 2, 1, 0, '10-Feb-2025'), 
 'detached', 2010, '1 york lane', 'M1K2G3', 40, 104));
 
--- insertion format that worked for me (mj):
+-- insertion format for property:
 insert into property values(property_t('d02', (SELECT REF(r) FROM region r WHERE r.rid = 'r001'), listing_t('l012', DATE '2024-10-10', 2010, 2695000.00, 4, 2, 7, 1, 2, 1, 0, DATE '2025-10-02'), 'detached', 2010, '1 york lane', 'M1K2G3', 40.2, 104.1));
 
 insert into property values(property_t('s02', 'r001', 'semidetached', '2005', '94 cook rd', 'M2K3G4', 24, 107));
@@ -30,6 +30,9 @@ insert into agent values(agent_t('a01', 'Eve Adams', '9876543210', 'eve@email.co
 insert into agent values(agent_t('a02', 'Frank Miller', '8765432109', 'frank@email.com', 2010, 'HomeFinders', 'B7654321'));
 insert into agent values(agent_t('a03', 'Grace Hall', '7654321098', 'grace@email.com', 2018, 'SafeHomes', 'B2345678'));
 insert into agent values(agent_t('a04', 'Harry King', '6543210987', 'harry@email.com', 2012, 'TopRealty', 'B8765432'));
+
+-- insertion format for seller
+insert into seller values(seller_t('c01', 'Alice Smith', '1234567890', 'alice@email.com', DATE '2020-06-15', empty_blob(), DATE '2001-04-15'));
 
 insert into seller values(seller_t('c01'), customer_t('Alice Smith', '1234567890', 'alice@email.com', '2020-06-15'), true);
 insert into seller values(seller_t('c02'), customer_t('Bob Johnson', '2345678901', 'bob@email.com', '2021-08-21'), false);
