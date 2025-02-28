@@ -26,8 +26,8 @@ insert into agent values(agent_t('a04', 'Harry King', '6543210987', 'harry@email
 
 insert into seller values(seller_t('c01', 'Alice Smith', '1234567890', 'alice@email.com', DATE '2020-06-15', 1, DATE '2001-04-15'));
 insert into seller values(seller_t('c02', 'Bob Johnson', '2345678901', 'bob@email.com', DATE '2021-08-21', 1, DATE '2021-08-21'));
-insert into seller values(seller_t('c01', 'Alice Smith', '1234567890', 'alice@email.com', DATE '2020-06-15', 0, DATE '2016-09-12'));
-insert into seller values(seller_t('c01', 'Alice Smith', '1234567890', 'alice@email.com', DATE '2020-06-15', 0, DATE '2017-12-03'));
+insert into seller values(seller_t('c03', 'Alice Smith', '1234567890', 'alice@email.com', DATE '2020-06-15', 0, DATE '2016-09-12'));
+insert into seller values(seller_t('c04', 'Alice Smith', '1234567890', 'alice@email.com', DATE '2020-06-15', 0, DATE '2017-12-03'));
 
 --------------------------------------------------------------------------------------
 
