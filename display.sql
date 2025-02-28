@@ -13,3 +13,9 @@ SELECT
     p.propertyDetail.elevator, 
     p.propertyDetail.openHouse
 FROM property p;
+
+---------------------------------------------------
+-- if you wanna display listing of a property:
+select p.propertyDetail.attributeRequire from property p;
+-- example:
+select p.propertyDetail.openHouse from property p;
