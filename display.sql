@@ -1,4 +1,4 @@
--- for displaying properties
+-- for displaying everything in properties
 SELECT 
     p.propertyDetail.lid AS listing_id, 
     p.propertyDetail.pid AS property_id, 
