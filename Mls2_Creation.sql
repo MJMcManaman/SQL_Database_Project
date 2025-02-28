@@ -134,4 +134,4 @@ Create table landlord of landlord_t(cid primary key);
 Create table tenant of tenant_t(cid primary key);
 Create table saleContract of saleContract_t(scid primary key, foreign key (aoid) references agent, foreign key (buyerid) references buyer, foreign key (sellerid) references seller);
 Create table rentContract of rentContract_t(rcid primary key, foreign key (aoid) references agent, foreign key (landlordid) references landlord, foreign key (tenantid) references tenant);
-Create table agentContract of agentContract_t(acid primary key, foreign key (aoid) reference agent, foreign key (coid) references customer);
+Create table agentContract of agentContract_t(acid primary key, foreign key (aoid) references agent, foreign key (coid) references customer);
