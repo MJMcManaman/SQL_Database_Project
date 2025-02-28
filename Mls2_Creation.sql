@@ -57,7 +57,6 @@ Create type region_t as object(
 Create type listing_t as object(
   lid char(4),
   listingStartDate date,
-  builtYear int,
   listedPrice double precision,
   washroomNum int,
   livingroomNum int,
