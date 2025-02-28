@@ -41,7 +41,7 @@ insert into buyer values(buyer_t('c08', 'Amelia Clark', '2345610987', 'amelia@em
 insert into landlord values(landlord_t('c09', 'Sophia Martin', '9012345678', 'sophia@email.com', DATE '2015-06-18', 1, DATE '2005-01-22'));
 insert into landlord values(landlord_t('c10', 'James Anderson', '0123456789', 'james@email.com', DATE '2014-11-30', 0, DATE '2010-10-28'));
 insert into landlord values(landlord_t('c11', 'Emily Davis', '3456723456', 'emily@email.com', DATE '2013-05-25', 1, DATE '2002-11-02'));
-insert into landlord values(landlord_t('c12', 'Michael Scott', '5678923456', 'michael@email.com', '2016-02-14', 0, DATE '2014-06-20'));
+insert into landlord values(landlord_t('c12', 'Michael Scott', '5678923456', 'michael@email.com', DATE '2016-02-14', 0, DATE '2014-06-20'));
 
 --------------------------------------------------------------------------------------
 
