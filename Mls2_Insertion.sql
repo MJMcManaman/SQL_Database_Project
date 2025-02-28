@@ -25,16 +25,26 @@ insert into agent values(agent_t('a04', 'Harry King', '6543210987', 'harry@email
 --------------------------------------------------------------------------------------
 
 insert into seller values(seller_t('c01', 'Alice Smith', '1234567890', 'alice@email.com', DATE '2020-06-15', 1, DATE '2001-04-15'));
+<<<<<<< HEAD
 insert into seller values(seller_t('c02', 'Bob Johnson', '2345678901', 'bob@email.com', DATE '2021-08-21', 1, DATE '2014-02-12'));
 insert into seller values(seller_t('c03', 'John Doe', '3456789012', 'john@email.com', DATE '2019-03-22', 1, DATE '2018-07-19'));
 insert into seller values(seller_t('c04', 'David Brown', '4567890123', 'david@email.com', DATE '2022-01-10', 0, DATE '2018-05-14'));
+=======
+insert into seller values(seller_t('c02', 'Bob Johnson', '2345678901', 'bob@email.com', DATE '2021-08-21', 1, DATE '2021-08-21'));
+insert into seller values(seller_t('c03', 'Emma Green', '5678901234', 'emma@email.com', DATE '2016-09-12', 0, DATE '2016-09-12'));
+insert into seller values(seller_t('c04', 'Daniel Lee', '6789012345', 'daniel@email.com', DATE '2017-12-03', 0, DATE '2017-12-03'));
+>>>>>>> d51798e74653737bc25ed52c6c8d020e04dd95d7
 
 --------------------------------------------------------------------------------------
 
 insert into buyer values(buyer_t('c05', 'Charlie Brown', '3456789012', 'charlie@email.com', DATE '2019-05-30', 250000.00, 0.11));
 insert into buyer values(buyer_t('c06', 'Diana White', '4567890123', 'diana@email.com', DATE '2018-11-10', 340000.00, 0.09));
 insert into buyer values(buyer_t('c07', 'Lucas White', '1234509876', 'lucas@email.com', DATE '2022-03-15', 700000.00, 0.08));
+<<<<<<< HEAD
 insert into buyer values(buyer_t('c08', 'Amelia Clark', '2345610987', 'amelia@email.com', DATE '2025-01-28', 225000.00, 0.11));
+=======
+insert into buyer values(buyer_t('c08', 'Amelia Clark', '2345610987', 'amelia@email.com', DATE '2021-09-05', 225000.00, 0.11));
+>>>>>>> d51798e74653737bc25ed52c6c8d020e04dd95d7
 
 --------------------------------------------------------------------------------------
 
