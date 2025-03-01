@@ -62,4 +62,4 @@ insert into saleContract values(saleContract_t('sc03', (SELECT REF(s) FROM selle
 
 --------------------------------------------------------------------------------------
 
-insert into agentContract values(agentContract_t('a01'(SELECT REF(a) FROM agent a WHERE a.aid = 'a01'), (SELECT REF(c)) FROM customer c WHERE c.cid,'rc01'));
+insert into agentContract values(agentContract_t('ac01', (SELECT REF(a) FROM agent a WHERE a.aid = 'a01'), (SELECT REF(c) FROM customer c WHERE c.cid = 'c01'), DATE '2023-05-04', 0.12));
