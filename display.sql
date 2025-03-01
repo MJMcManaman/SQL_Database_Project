@@ -21,3 +21,8 @@ select p.propertyDetail.attributeRequire from property p;
 select p.propertyDetail.openHouse from property p;
 -- more specifically:
 select p.propertyDetail.openHouse from property p  where p.pid = 's02';
+
+---------------------------------------------------
+
+-- selecting region id from property
+select p.roid.rid from property p where p.pid = 's02'
