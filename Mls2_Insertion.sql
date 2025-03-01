@@ -1,20 +1,17 @@
-insert into region values(region_t('r001', 'Central', 'Ontario', 'Toronto'));
-insert into region values(region_t('r002', 'West', 'British Columbia', 'Vancouver'));
-insert into region values(region_t('r003', 'East', 'Quebec', 'Montreal'));
-insert into region values(region_t('r004', 'Prairie', 'Alberta', 'Calgary'));
-insert into region values(region_t('r005', 'Atlantic', 'Nova Scotia', 'Halifax'));
+insert into region values(region_t('r01', 'Central', 'Ontario', 'Toronto'));
+insert into region values(region_t('r02', 'West', 'British Columbia', 'Vancouver'));
+insert into region values(region_t('r03', 'East', 'Quebec', 'Montreal'));
+insert into region values(region_t('r04', 'Prairie', 'Alberta', 'Calgary'));
+insert into region values(region_t('r05', 'Atlantic', 'Nova Scotia', 'Halifax'));
 
 --------------------------------------------------------------------------------------
 
 --- insertion format for property:
-insert into property values(property_t('d01', 
-(SELECT REF(r) FROM region r WHERE r.rid = 'r001'), 
-listing_t('l001', DATE '2024-10-10', 2695000.00, 4, 2, 7, 1, 2, 1, 0, DATE '2025-01-02'), 
-'detached', 2010, '1 york lane', 'M1K2G3', 40.2, 104.1));
-insert into property values(property_t('s02', (SELECT REF(r) FROM region r WHERE r.rid = 'r001'), listing_t('l002', DATE '2025-01-05', 1449000.00, 1, 1, 2, 1, 2, 2, 0, DATE '2025-02-01'), 'semidetached', 2005, '94 cook rd', 'M2K3G4', 24.5, 107.0));
-insert into property values(property_t('c03', (SELECT REF(r) FROM region r WHERE r.rid = 'r004'), listing_t('l003', DATE '2024-11-19', 1240000.00, 3, 1, 5, 3, 1, 4, 0, DATE '2025-02-21'), 'condo', 2021, '47 university rd', 'M3K4G5', 27.2, 28.5));
-insert into property values(property_t('s04', (SELECT REF(r) FROM region r WHERE r.rid = 'r003'), listing_t('l004', DATE '2024-10-01', 798000.00, 2, 2, 3, 0, 1, 2, 1, DATE '2025-03-02'), 'semidetached', 1960, '57 alberta ave', 'M4K5G6', 17.4, 133.6));
-insert into property values(property_t('s05', (SELECT REF(r) FROM region r WHERE r.rid = 'r005'), listing_t('l005', DATE '2024-10-05', 1425000.00, 4, 2, 6, 4, 2, 3, 0, DATE '2025-02-12'), 'detached', 1978, '25 ascot ave', 'M6K7G8', 30.0, 107.0));
+insert into property values(property_t('d01', (SELECT REF(r) FROM region r WHERE r.rid = 'r01'), listing_t('l01', DATE '2024-10-10', 2695000.00, 4, 2, 7, 1, 2, 1, 0, DATE '2025-01-02'), 'detached', 2010, '1 york lane', 'M1K2G3', 40.2, 104.1));
+insert into property values(property_t('p02', (SELECT REF(r) FROM region r WHERE r.rid = 'r01'), listing_t('l02', DATE '2025-01-05', 1449000.00, 1, 1, 2, 1, 2, 2, 0, DATE '2025-02-01'), 'semidetached', 2005, '94 cook rd', 'M2K3G4', 24.5, 107.0));
+insert into property values(property_t('p03', (SELECT REF(r) FROM region r WHERE r.rid = 'r04'), listing_t('l03', DATE '2024-11-19', 1240000.00, 3, 1, 5, 3, 1, 4, 0, DATE '2025-02-21'), 'condo', 2021, '47 university rd', 'M3K4G5', 27.2, 28.5));
+insert into property values(property_t('p04', (SELECT REF(r) FROM region r WHERE r.rid = 'r03'), listing_t('l04', DATE '2024-10-01', 798000.00, 2, 2, 3, 0, 1, 2, 1, DATE '2025-03-02'), 'semidetached', 1960, '57 alberta ave', 'M4K5G6', 17.4, 133.6));
+insert into property values(property_t('p05', (SELECT REF(r) FROM region r WHERE r.rid = 'r05'), listing_t('l05', DATE '2024-10-05', 1425000.00, 4, 2, 6, 4, 2, 3, 0, DATE '2025-02-12'), 'detached', 1978, '25 ascot ave', 'M6K7G8', 30.0, 107.0));
 
 --------------------------------------------------------------------------------------
 
@@ -53,20 +50,16 @@ insert into tenant values(tenant_t('c19', 'Emma Lewis', '4567890123', 'emma@emai
 
 --------------------------------------------------------------------------------------
 
-insert into rentContract values(rentContract_t('r01', (SELECT REF(l) FROM landlord l WHERE l.cid = 'c09'), (SELECT REF(a) FROM agent a WHERE a.aid = 'a01'), (SELECT REF(t) FROM tenant t WHERE t.cid = 'c13'), 3000, DATE '2022-03-15', 12));
-insert into rentContract values(rentContract_t('r02', (SELECT REF(l) FROM landlord l WHERE l.cid = 'c10'), (SELECT REF(a) FROM agent a WHERE a.aid = 'a02'), (SELECT REF(t) FROM tenant t WHERE t.cid = 'c14'), 1985, DATE '2021-09-05', 6));
-insert into rentContract values(rentContract_t('r03', (SELECT REF(l) FROM landlord l WHERE l.cid = 'c11'), (SELECT REF(a) FROM agent a WHERE a.aid = 'a03'), (SELECT REF(t) FROM tenant t WHERE t.cid = 'c15'), 850, DATE '2020-01-10', 24));
+insert into rentContract values(rentContract_t('rc01', (SELECT REF(l) FROM landlord l WHERE l.cid = 'c09'), (SELECT REF(a) FROM agent a WHERE a.aid = 'a01'), (SELECT REF(t) FROM tenant t WHERE t.cid = 'c13'), 3000, DATE '2022-03-15', 12));
+insert into rentContract values(rentContract_t('rc02', (SELECT REF(l) FROM landlord l WHERE l.cid = 'c10'), (SELECT REF(a) FROM agent a WHERE a.aid = 'a02'), (SELECT REF(t) FROM tenant t WHERE t.cid = 'c14'), 1985, DATE '2021-09-05', 6));
+insert into rentContract values(rentContract_t('rc03', (SELECT REF(l) FROM landlord l WHERE l.cid = 'c11'), (SELECT REF(a) FROM agent a WHERE a.aid = 'a03'), (SELECT REF(t) FROM tenant t WHERE t.cid = 'c15'), 850, DATE '2020-01-10', 24));
 
 --------------------------------------------------------------------------------------
 
-insert into saleContract values(saleContract_t('s01', (SELECT REF(s) FROM seller s WHERE s.cid = 'c01'), (SELECT REF(a) FROM agent a WHERE a.aid = 'a02'), (SELECT REF(p) FROM property p WHERE p.pid = 'd01'), (SELECT REF(b) FROM buyer b WHERE b.cid = 'c05'), 850000,DATE '2024-10-10'));
-insert into saleContract values (saleContract_t('s02', (SELECT REF(s) FROM seller s WHERE s.cid = 'c02'), (SELECT REF(a) FROM agent a WHERE a.aid = 'a03'), (SELECT REF(p) FROM property p WHERE p.pid = 's02'), (SELECT REF(b) FROM buyer b WHERE b.cid = 'c06'), 450000, DATE '2025-01-05'));
-insert into saleContract values(saleContract_t('s03', (SELECT REF(s) FROM seller s WHERE s.cid = 'c03'), (SELECT REF(a) FROM agent a WHERE a.aid = 'a04'), (SELECT REF(p) FROM property p WHERE p.pid = 'c03'), (SELECT REF(b) FROM buyer b WHERE b.cid = 'c07'), 300000, DATE '2024-11-19'));
-
-select *
-from saleContract s
-join seller sel on deref(s.sellerid).cid = sel.cid;
+insert into saleContract values(saleContract_t('sc01', (SELECT REF(s) FROM seller s WHERE s.cid = 'c01'), (SELECT REF(a) FROM agent a WHERE a.aid = 'a02'), (SELECT REF(p) FROM property p WHERE p.pid = 'd01'), (SELECT REF(b) FROM buyer b WHERE b.cid = 'c05'), 850000,DATE '2024-10-10'));
+insert into saleContract values (saleContract_t('sc02', (SELECT REF(s) FROM seller s WHERE s.cid = 'c02'), (SELECT REF(a) FROM agent a WHERE a.aid = 'a03'), (SELECT REF(p) FROM property p WHERE p.pid = 's02'), (SELECT REF(b) FROM buyer b WHERE b.cid = 'c06'), 450000, DATE '2025-01-05'));
+insert into saleContract values(saleContract_t('sc03', (SELECT REF(s) FROM seller s WHERE s.cid = 'c03'), (SELECT REF(a) FROM agent a WHERE a.aid = 'a04'), (SELECT REF(p) FROM property p WHERE p.pid = 'c03'), (SELECT REF(b) FROM buyer b WHERE b.cid = 'c07'), 300000, DATE '2024-11-19'));
 
 --------------------------------------------------------------------------------------
 
-insert into agentContract values(agentContract_t('a01'(SELECT REF(a) FROM agent a WHERE a.aid = 'a01'), (SELECT REF(c)) FROM customer c WHERE c.cid,'r01'));
+insert into agentContract values(agentContract_t('a01'(SELECT REF(a) FROM agent a WHERE a.aid = 'a01'), (SELECT REF(c)) FROM customer c WHERE c.cid,'rc01'));
