@@ -28,7 +28,7 @@ drop type customer_t;
 
 --Creat type 
 Create type customer_t as object(
-  cid char(3),
+  cid char(4),
   cname varchar2(20),
   phoneNum char(10),
   emailAddress varchar2(20),
@@ -111,7 +111,7 @@ Create type agent_t as object(
 /
 
 Create type saleContract_t as object(
-  scid char(3),
+  scid char(4),
   sellerid ref seller_t,
   aoid ref agent_t,
   poid ref property_t,
@@ -121,7 +121,7 @@ Create type saleContract_t as object(
 /
 
 Create type rentContract_t as object(
-  rcid char(3),
+  rcid char(4),
   landlordid ref landlord_t,
   aoid ref agent_t,
   tenantid ref tenant_t,
@@ -131,7 +131,7 @@ Create type rentContract_t as object(
 /
 
 Create type agentContract_t as object(
-  acid char(3),
+  acid char(4),
   aoid ref agent_t,
   coid ref customer_t,
   signature_time Date,
