@@ -7,7 +7,7 @@ insert into region values(region_t('r05', 'Atlantic', 'Nova Scotia', 'Halifax'))
 --------------------------------------------------------------------------------------
 
 --- insertion format for property:
-insert into property values(property_t('d01', (SELECT REF(r) FROM region r WHERE r.rid = 'r01'), listing_t('l01', DATE '2024-10-10', 2695000.00, 4, 2, 7, 1, 2, 1, 0, DATE '2025-01-02'), 'detached', 2010, '1 york lane', 'M1K2G3', 40.2, 104.1));
+insert into property values(property_t('p01', (SELECT REF(r) FROM region r WHERE r.rid = 'r01'), listing_t('l01', DATE '2024-10-10', 2695000.00, 4, 2, 7, 1, 2, 1, 0, DATE '2025-01-02'), 'detached', 2010, '1 york lane', 'M1K2G3', 40.2, 104.1));
 insert into property values(property_t('p02', (SELECT REF(r) FROM region r WHERE r.rid = 'r01'), listing_t('l02', DATE '2025-01-05', 1449000.00, 1, 1, 2, 1, 2, 2, 0, DATE '2025-02-01'), 'semidetached', 2005, '94 cook rd', 'M2K3G4', 24.5, 107.0));
 insert into property values(property_t('p03', (SELECT REF(r) FROM region r WHERE r.rid = 'r04'), listing_t('l03', DATE '2024-11-19', 1240000.00, 3, 1, 5, 3, 1, 4, 0, DATE '2025-02-21'), 'condo', 2021, '47 university rd', 'M3K4G5', 27.2, 28.5));
 insert into property values(property_t('p04', (SELECT REF(r) FROM region r WHERE r.rid = 'r03'), listing_t('l04', DATE '2024-10-01', 798000.00, 2, 2, 3, 0, 1, 2, 1, DATE '2025-03-02'), 'semidetached', 1960, '57 alberta ave', 'M4K5G6', 17.4, 133.6));
