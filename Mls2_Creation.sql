@@ -34,7 +34,8 @@ Create type customer_t as object(
   emailAddress varchar2(20),
   dataStarted Date,
   map member function timeSpentLooking return int,
-  member function timeOwned return int) NOT FINAL;
+  member function timeOwned return int
+  member function propertyRequirement return int) NOT FINAL;
 /
 
 Create type buyer_t under customer_t(
