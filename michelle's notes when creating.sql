@@ -94,7 +94,7 @@ Create type agent_t as object(
   agency varchar2(10),
   brokerLicense varchar2(10),
   map member function yearOfExperience return int,
-  member function browseProperty return char)
+  member function browseProperty return sys_refcursor)
 /
 
 Create type saleContract_t as object(
@@ -155,3 +155,26 @@ CREATE OR REPLACE TYPE BODY region_t AS
   END;
 END;
 /
+
+-- function for agent
+CREATE OR REPLACE TYPE BODY agent_t AS
+
+  -- Define the MAP function
+  MAP MEMBER FUNCTION yearOfExperience RETURN NUMBER IS
+  BEGIN
+    RETURN EXTRACT(YEAR FROM SYSDATE) - yearStarted;
+  END yearOfExperience;
+
+  -- Define the MEMBER function
+  MEMBER FUNCTION browseProperty RETURN SYS_REFCURSOR IS
+    c SYS_REFCURSOR;
+  BEGIN
+    OPEN c FOR SELECT * FROM property;  -- Adjust table name as needed
+    RETURN c;
+  END browseProperty;
+
+END;
+/
+
+SELECT a.aid, a.aname, a.yearOfExperience() AS experience
+FROM agent a;
