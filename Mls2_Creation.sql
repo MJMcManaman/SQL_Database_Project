@@ -25,7 +25,7 @@ drop type buyer_t;
 drop type customer_t;
 
 
-
+-- add: 'overriding map member function timeSpentLooking return int' to all subtypes of customer?
 --Creat type 
 Create type customer_t as object(
   cid char(4),
