@@ -19,14 +19,14 @@ Create type customer_t as object(
   dataStarted Date,
   map member function timeSpentLooking return int,
   member function timeOwned return int,
-  MEMBER FUNCTION priceFluctuation RETURN DOUBLE PRECISION) NOT FINAL;
+  MEMBER FUNCTION selections RETURN varchar2) NOT FINAL;
 /
 
 Create type buyer_t under customer_t(
   pricePreference double precision,
   priceFluctuation double precision,
   overriding map member function timeSpentLooking return int,
-  overriding member function sort (propertyRequirement double precision) return integer);
+  overriding MEMBER FUNCTION selections RETURN varchar2);
 /
 
 Create type seller_t under customer_t(
@@ -39,7 +39,7 @@ Create type tenant_t under customer_t(
   pricePreference double precision,
   priceFluctuation double precision,
   overriding map member function timeSpentLooking return int,
-  overriding member function sort (propertyRequirement double precision) return integer);
+  overriding MEMBER FUNCTION selections RETURN varchar2);
 /
 
 Create type landlord_t under customer_t(
@@ -48,12 +48,12 @@ Create type landlord_t under customer_t(
   Overriding member function timeOwned return int)
 /
 
-Create type region_t as object(
-  rid varchar2(10),
-  regionName varchar(20),
-  province varchar2(20),
-  city varchar2(10),
-  Member function regionDisplay return varchar2)
+CREATE OR REPLACE TYPE region_t AS OBJECT (
+  rid VARCHAR2(10),
+  regionName VARCHAR2(20),
+  province VARCHAR2(20),
+  city VARCHAR2(10),
+  ORDER MEMBER FUNCTION sort (r region_t) RETURN INTEGER);
 /
 
 Create type listing_t as object(
@@ -139,3 +139,19 @@ Create table tenant of tenant_t(cid primary key);
 Create table saleContract of saleContract_t(scid primary key, foreign key (aoid) references agent, foreign key (buyerid) references buyer, foreign key (sellerid) references seller);
 Create table rentContract of rentContract_t(rcid primary key, foreign key (aoid) references agent, foreign key (landlordid) references landlord, foreign key (tenantid) references tenant);
 Create table agentContract of agentContract_t(acid primary key, foreign key (aoid) references agent, foreign key (coid) references customer);
+
+-- function for region
+CREATE OR REPLACE TYPE BODY region_t AS 
+  ORDER MEMBER FUNCTION sort (r region_t) RETURN INTEGER IS 
+  BEGIN
+    -- Compare by regionName lexicographically
+    IF SELF.regionName < r.regionName THEN
+      RETURN -1;
+    ELSIF SELF.regionName > r.regionName THEN
+      RETURN 1;
+    ELSE
+      RETURN 0;
+    END IF;
+  END;
+END;
+/
