@@ -26,7 +26,7 @@ Create type buyer_t under customer_t(
   pricePreference double precision,
   priceFluctuation double precision,
   overriding map member function timeSpentLooking return int,
-  member function sort (propertyRequirement double precision) return integer);
+  overriding member function sort (propertyRequirement double precision) return integer);
 /
 
 Create type seller_t under customer_t(
@@ -39,7 +39,7 @@ Create type tenant_t under customer_t(
   pricePreference double precision,
   priceFluctuation double precision,
   overriding map member function timeSpentLooking return int,
-  member function sort (propertyRequirement double precision) return integer);
+  overriding member function sort (propertyRequirement double precision) return integer);
 /
 
 Create type landlord_t under customer_t(
