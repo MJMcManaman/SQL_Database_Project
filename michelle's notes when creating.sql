@@ -5,7 +5,8 @@ Create type customer_t as object(
   emailAddress varchar2(20),
   dataStarted Date,
   map member function timeSpentLooking return int,
-  member function timeOwned return int) NOT FINAL;
+  member function timeOwned return int,
+  MEMBER FUNCTION priceFluctuation RETURN DOUBLE PRECISION) NOT FINAL;
 /
 
 Create type buyer_t under customer_t(
