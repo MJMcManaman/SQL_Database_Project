@@ -4,12 +4,12 @@ drop table tenant;
 drop table landlord;
 drop table seller;
 drop table buyer;
-drop table agent;
 drop table property;
 drop table listing;
 drop table region;
 drop table agentContract;
 drop table customer;
+drop table agent;
 
 Create type customer_t as object(
   cid char(4),
