@@ -145,7 +145,6 @@ Create table agentContract of agentContract_t(acid primary key, foreign key (aoi
 CREATE OR REPLACE TYPE BODY region_t AS 
   ORDER MEMBER FUNCTION sort (r region_t) RETURN INTEGER IS 
   BEGIN
-    -- Compare by regionName lexicographically
     IF SELF.regionName < r.regionName THEN
       RETURN -1;
     ELSIF SELF.regionName > r.regionName THEN
@@ -159,18 +158,16 @@ END;
 
 -- function for agent
 CREATE OR REPLACE TYPE BODY agent_t AS
-
   -- Define the MAP function
   MAP MEMBER FUNCTION yearOfExperience RETURN NUMBER IS
   BEGIN
     RETURN EXTRACT(YEAR FROM SYSDATE) - yearStarted;
   END yearOfExperience;
 
-  -- Define the MEMBER function
   MEMBER FUNCTION browseProperty RETURN SYS_REFCURSOR IS
     c SYS_REFCURSOR;
   BEGIN
-    OPEN c FOR SELECT * FROM property;  -- Adjust table name as needed
+    OPEN c FOR SELECT * FROM property;
     RETURN c;
   END browseProperty;
 
@@ -179,3 +176,16 @@ END;
 
 SELECT a.aid, a.aname, a.yearOfExperience() AS experience
 FROM agent a;
+
+-- function for agentContract
+CREATE OR REPLACE TYPE BODY agentContract_t AS
+  MEMBER FUNCTION commission RETURN DOUBLE PRECISION IS
+    sc saleContract_t;
+  BEGIN
+    SELECT DEREF(SELF.saleContract) INTO sc FROM DUAL;
+    RETURN SELF.commissionPercentage * sc.salePrice;
+  END commission;
+END;
+/
+
+
