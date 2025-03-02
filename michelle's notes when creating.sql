@@ -122,6 +122,7 @@ Create type agentContract_t as object(
   aoid ref agent_t,
   coid ref customer_t,
   signature_time Date,
+  saleContract REF saleContract_t,
   commissionPercentage double precision,
   Member function commission return double precision)
 /
