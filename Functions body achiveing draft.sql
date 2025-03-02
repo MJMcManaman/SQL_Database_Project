@@ -15,6 +15,23 @@ create or replace type body customer_t as
   end priceFluction;
 end;
 
+-- MODIFIED (Michelle): didn't add "priceFluctuation" in the superclass, since it's not technically overriding it
+CREATE OR REPLACE TYPE BODY customer_t AS 
+  MAP MEMBER FUNCTION timeSpentLooking RETURN INT IS 
+  BEGIN 
+    RETURN CASE 
+             WHEN dataStarted IS NOT NULL THEN TRUNC(SYSDATE)
+             ELSE 0
+           END;
+  END timeSpentLooking;
+  
+  MEMBER FUNCTION timeOwned RETURN INT IS
+  BEGIN
+    RETURN 0;
+  END timeOwned;
+END;
+/
+----------------------------------------------------------------------------------------------------------------
 create or replace type body buyer_t as
   member function propertyRequirement return integer 
 	is pricePreference, priceFluctuation
@@ -24,6 +41,31 @@ create or replace type body buyer_t as
     where (ABS(pricePreference - salePrice) <= priceFluctuation) order by ASC;
 	end propertyRequirement;
   end;
+
+-- MODIFIED:
+CREATE OR REPLACE TYPE BODY buyer_t AS
+  MEMBER FUNCTION propertyRequirement RETURN INTEGER IS
+    v_propertyID SaleContract_t.propertyID%TYPE;
+  BEGIN
+    -- Fetch a single propertyID based on the condition
+    SELECT propertyID
+    INTO v_propertyID
+    FROM SaleContract_t
+    WHERE ABS(pricePreference - salePrice) <= priceFluctuation
+    ORDER BY salePrice ASC
+    FETCH FIRST 1 ROW ONLY;
+    
+    RETURN v_propertyID;
+  EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+      RETURN NULL; 
+    WHEN TOO_MANY_ROWS THEN
+      RETURN NULL;
+  END propertyRequirement;
+END;
+/
+
+----------------------------------------------------------------------------------------------------------------
 
 create or replace type body seller_t as
   member function timeOwned return int
