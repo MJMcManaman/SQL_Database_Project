@@ -32,7 +32,8 @@ Create type customer_t as object(
   cname varchar2(20),
   phoneNum char(10),
   emailAddress varchar2(20),
-  dataStarted Date,
+  dateStarted Date,
+  dateOwned Date,
   map member function timeSpentLooking return int,
   member function timeOwned return int) NOT FINAL;
 /
@@ -45,7 +46,7 @@ Create type buyer_t under customer_t(
 
 Create type seller_t under customer_t(
   propertyRegister int,
-  dataOwned Date,
+  dateOwned Date,
   Overriding member function timeOwned return int)
 /
 
