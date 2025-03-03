@@ -16,17 +16,18 @@ Create type customer_t as object(
   cname varchar2(20),
   phoneNum char(10),
   emailAddress varchar2(20),
-  dataStarted Date,
+  dateStarted Date,
+  dateOwned Date,
   map member function timeSpentLooking return int,
   member function timeOwned return int,
-  MEMBER FUNCTION selections RETURN varchar2) NOT FINAL;
+  MEMBER FUNCTION selections RETURN SYS_REFCURSOR) NOT FINAL;
 /
 
 Create type buyer_t under customer_t(
   pricePreference NUMBER,
-  priceFluctuation double precision,
+  priceFluctuation NUMBER,
   overriding map member function timeSpentLooking return int,
-  overriding MEMBER FUNCTION selections RETURN varchar2);
+  overriding MEMBER FUNCTION selections RETURN SYS_REFCURSOR);
 /
 
 Create type seller_t under customer_t(
@@ -36,10 +37,10 @@ Create type seller_t under customer_t(
 /
 
 Create type tenant_t under customer_t(
-  pricePreference double precision,
-  priceFluctuation double precision,
+  pricePreference NUMBER,
+  priceFluctuation NUMBER,
   overriding map member function timeSpentLooking return int,
-  overriding MEMBER FUNCTION selections RETURN varchar2);
+  overriding MEMBER FUNCTION selections RETURN SYS_REFCURSOR);
 /
 
 Create type landlord_t under customer_t(
@@ -59,7 +60,7 @@ CREATE OR REPLACE TYPE region_t AS OBJECT (
 Create type listing_t as object(
   lid char(4),
   listingStartDate date,
-  listedPrice double precision,
+  listedPrice NUMBER,
   washroomNum int,
   livingroomNum int,
   bedroomNum int,
@@ -79,10 +80,10 @@ Create type property_t as object(
   builtYear int,
   address varchar2(30),
   postalCode varchar2(6),
-  propertyWidth double precision,
-  propertyLength double precision,
+  propertyWidth NUMBER,
+  propertyLength NUMBER,
   map member function age return int,
-  member function propertySize return double precision)
+  member function propertySize return NUMBER)
 /
 
 Create type agent_t as object(
@@ -103,7 +104,7 @@ Create type saleContract_t as object(
   aoid ref agent_t,
   poid ref property_t,
   buyerid ref buyer_t,
-  salePrice double precision,
+  salePrice NUMBER,
   signedTime Date)
 /
 
@@ -112,7 +113,7 @@ Create type rentContract_t as object(
   landlordid ref landlord_t,
   aoid ref agent_t,
   tenantid ref tenant_t,
-  rentPrice double precision,
+  rentPrice NUMBER,
   signedTime Date,
   rentLength int)
 /
@@ -124,8 +125,8 @@ Create type agentContract_t as object(
   poid ref property_t,
   signature_time Date,
   saleContract REF saleContract_t,
-  commissionPercentage double precision,
-  Member function commission return double precision)
+  commissionPercentage NUMBER,
+  Member function commission return NUMBER)
 /
 
 --Creat table 
@@ -161,29 +162,35 @@ END;
 CREATE OR REPLACE TYPE BODY customer_t AS 
   MAP MEMBER FUNCTION timeSpentLooking RETURN INT IS 
   BEGIN 
-    RETURN CASE 
-             WHEN dataStarted IS NOT NULL THEN TRUNC(SYSDATE) - TRUNC(dataStarted) -- Return the difference in days
-             ELSE 0
-           END;
+    RETURN TRUNC(SYSDATE) - dateStarted;
   END timeSpentLooking;
   
   MEMBER FUNCTION timeOwned RETURN INT IS
   BEGIN
-    RETURN 0;
+    RETURN TRUNC(SYSDATE) - dateOwned;
   END timeOwned;
 
   MEMBER FUNCTION selections RETURN SYS_REFCURSOR IS
     c SYS_REFCURSOR;
   BEGIN
     OPEN c FOR 
-      SELECT * FROM buyer b 
-      JOIN saleContract sc WHERE sc.ownerid = b.cid
-      JOIN agentContract ac WHERE ac.aoid = sc.aoid
-      JOIN property p WHERE p.pid = ac.poid
+      SELECT * 
+      FROM buyer b
+      JOIN saleContract sc ON sc.buyerid = b.cid
+      JOIN agentContract ac ON ac.aoid = sc.aoid
+      JOIN property p ON p.pid = ac.poid;
     RETURN c;
   END selections;
 END;
 /
+
+-- function for buyer
+CREATE OR REPLACE TYPE BODY buyer_t AS 
+  MEMBER FUNCTION timeOwned RETURN INT IS
+  BEGIN
+    RETURN EXTRACT(YEAR FROM SYSDATE) - SELF.dataOwned;
+  END timeOwned;
+END;
 
 -- function for agent
 CREATE OR REPLACE TYPE BODY agent_t AS
