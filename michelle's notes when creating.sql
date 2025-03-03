@@ -23,7 +23,7 @@ Create type customer_t as object(
 /
 
 Create type buyer_t under customer_t(
-  pricePreference double precision,
+  pricePreference NUMBER,
   priceFluctuation double precision,
   overriding map member function timeSpentLooking return int,
   overriding MEMBER FUNCTION selections RETURN varchar2);
@@ -31,7 +31,7 @@ Create type buyer_t under customer_t(
 
 Create type seller_t under customer_t(
   propertyRegister int,
-  dataOwned Date,
+  dateOwned Date,
   Overriding member function timeOwned return int)
 /
 
@@ -154,6 +154,34 @@ CREATE OR REPLACE TYPE BODY region_t AS
       RETURN 0;
     END IF;
   END;
+END;
+/
+
+-- function for customer
+CREATE OR REPLACE TYPE BODY customer_t AS 
+  MAP MEMBER FUNCTION timeSpentLooking RETURN INT IS 
+  BEGIN 
+    RETURN CASE 
+             WHEN dataStarted IS NOT NULL THEN TRUNC(SYSDATE) - TRUNC(dataStarted) -- Return the difference in days
+             ELSE 0
+           END;
+  END timeSpentLooking;
+  
+  MEMBER FUNCTION timeOwned RETURN INT IS
+  BEGIN
+    RETURN 0;
+  END timeOwned;
+
+  MEMBER FUNCTION selections RETURN SYS_REFCURSOR IS
+    c SYS_REFCURSOR;
+  BEGIN
+    OPEN c FOR 
+      SELECT * FROM buyer b 
+      JOIN saleContract sc WHERE sc.ownerid = b.cid
+      JOIN agentContract ac WHERE ac.aoid = sc.aoid
+      JOIN property p WHERE p.pid = ac.poid
+    RETURN c;
+  END selections;
 END;
 /
 
