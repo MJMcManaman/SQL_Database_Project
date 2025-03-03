@@ -47,12 +47,12 @@ insert into buyer values(buyer_t('c23', 'James Anderson', '0123456789', 'james@e
 
 --------------------------------------------------------------------------------------
 
-insert into landlord values(landlord_t('c09', 'Sophia Martin', '9012345678', 'sophia@email.com', DATE '2015-06-18', 1, DATE '2005-01-22'));
-insert into landlord values(landlord_t('c10', 'James Anderson', '0123456789', 'james@email.com', DATE '2014-11-30', 0, DATE '2010-10-28'));
-insert into landlord values(landlord_t('c11', 'Emily Davis', '3456723456', 'emily@email.com', DATE '2013-05-25', 1, DATE '2002-11-02'));
-insert into landlord values(landlord_t('c12', 'Michael Scott', '5678923456', 'michael@email.com', DATE '2016-02-14', 0, DATE '2014-06-20'));
-insert into landlord values(landlord_t('c24', 'Lucas White', '1234509876', 'lucas@email.com', DATE '2022-03-15', 1, DATE '2018-03-15'));
-insert into landlord values(landlord_t('c25', 'Amelia Clark', '2345610987', 'amelia@email.com', DATE '2021-09-05', 0, DATE '2016-09-05'));
+insert into landlord values(landlord_t('c09', 'Sophia Martin', '9012345678', 'sophia@email.com', DATE '2015-06-18', DATE '2005-01-22', 1));
+insert into landlord values(landlord_t('c10', 'James Anderson', '0123456789', 'james@email.com', DATE '2014-11-30', DATE '2010-10-28', 0));
+insert into landlord values(landlord_t('c11', 'Emily Davis', '3456723456', 'emily@email.com', DATE '2013-05-25', DATE '2002-11-02', 1));
+insert into landlord values(landlord_t('c12', 'Michael Scott', '5678923456', 'michael@email.com', DATE '2016-02-14', DATE '2014-06-20', 0));
+insert into landlord values(landlord_t('c24', 'Lucas White', '1234509876', 'lucas@email.com', DATE '2022-03-15', DATE '2018-03-15', 1));
+insert into landlord values(landlord_t('c25', 'Amelia Clark', '2345610987', 'amelia@email.com', DATE '2021-09-05', DATE '2016-09-05', 0));
 --------------------------------------------------------------------------------------
 
 insert into tenant values(tenant_t('c13', 'Lucas White', '1234509876', 'lucas@email.com', DATE '2022-03-15', NULL, 2200.00, 0.15));
