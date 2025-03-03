@@ -29,12 +29,12 @@ insert into agent values(agent_t('a04', 'Harry King', '6543210987', 'harry@email
 
 --------------------------------------------------------------------------------------
 
-insert into seller values(seller_t('c01', 'Alice Smith', '1234567890', 'alice@email.com', DATE '2020-06-15', 1, DATE '2001-04-15'));
-insert into seller values(seller_t('c02', 'Bob Johnson', '2345678901', 'bob@email.com', DATE '2021-08-21', 1, DATE '2014-02-12'));
-insert into seller values(seller_t('c03', 'John Doe', '3456789012', 'john@email.com', DATE '2019-03-22', 1, DATE '2018-07-19'));
-insert into seller values(seller_t('c04', 'David Brown', '4567890123', 'david@email.com', DATE '2022-01-10', 0, DATE '2018-05-14'));
-insert into seller values(seller_t('c20', 'Karen Taylor', '5678901234', 'karen@email.com', DATE '2023-07-12', 1, DATE '2016-09-23'));
-insert into seller values(seller_t('c21', 'Paul Walker', '6789012345', 'paul@email.com', DATE '2022-11-05', 0, DATE '2019-03-30'));
+insert into seller values(seller_t('c01', 'Alice Smith', '1234567890', 'alice@email.com', DATE '2020-06-15', DATE '2001-04-15', 1));
+insert into seller values(seller_t('c02', 'Bob Johnson', '2345678901', 'bob@email.com', DATE '2021-08-21', DATE '2014-02-12', 1));
+insert into seller values(seller_t('c03', 'John Doe', '3456789012', 'john@email.com', DATE '2019-03-22', DATE '2018-07-19', 0));
+insert into seller values(seller_t('c04', 'David Brown', '4567890123', 'david@email.com', DATE '2022-01-10', DATE '2018-05-14', 0));
+insert into seller values(seller_t('c20', 'Karen Taylor', '5678901234', 'karen@email.com', DATE '2023-07-12', DATE '2016-09-23', 1));
+insert into seller values(seller_t('c21', 'Paul Walker', '6789012345', 'paul@email.com', DATE '2022-11-05', DATE '2019-03-30', 0));
 
 --------------------------------------------------------------------------------------
 
