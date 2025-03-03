@@ -32,7 +32,6 @@ Create type buyer_t under customer_t(
 
 Create type seller_t under customer_t(
   propertyRegister int,
-  dateOwned Date,
   Overriding member function timeOwned return int)
 /
 
@@ -45,7 +44,6 @@ Create type tenant_t under customer_t(
 
 Create type landlord_t under customer_t(
   propertyRegister int,
-  dateOwned Date,
   Overriding member function timeOwned return int)
 /
 
@@ -73,7 +71,7 @@ Create type listing_t as object(
 /
 
 Create type property_t as object(
-  pid char(3),
+  pid char(4),
   roid ref region_t,
   propertyDetail listing_t,
   propertyType varchar2(15),
@@ -87,7 +85,7 @@ Create type property_t as object(
 /
 
 Create type agent_t as object(
-  aid char(3),
+  aid char(4),
   aname varchar2(20),
   phoneNumber char(10),
   emailAddress varchar2(20),
@@ -164,7 +162,7 @@ CREATE OR REPLACE TYPE BODY customer_t AS
   BEGIN 
     RETURN TRUNC(SYSDATE) - dateStarted;
   END timeSpentLooking;
-  
+    
   MEMBER FUNCTION timeOwned RETURN INT IS
   BEGIN
     RETURN TRUNC(SYSDATE) - dateOwned;
@@ -176,21 +174,71 @@ CREATE OR REPLACE TYPE BODY customer_t AS
     OPEN c FOR 
       SELECT * 
       FROM buyer b
-      JOIN saleContract sc ON sc.buyerid = b.cid
+      JOIN saleContract sc ON DEREF(sc.buyerid).cid = b.cid
       JOIN agentContract ac ON ac.aoid = sc.aoid
-      JOIN property p ON p.pid = ac.poid;
+      JOIN property p ON DEREF(sc.poid).pid = p.pid;
     RETURN c;
   END selections;
 END;
 /
 
+  
 -- function for buyer
 CREATE OR REPLACE TYPE BODY buyer_t AS 
-  MEMBER FUNCTION timeOwned RETURN INT IS
+  OVERRIDING MAP MEMBER FUNCTION timeSpentLooking RETURN INT IS 
+  BEGIN 
+    RETURN TRUNC(SYSDATE) - dateStarted;
+  END timeSpentLooking;
+
+  OVERRIDING MEMBER FUNCTION selections RETURN SYS_REFCURSOR IS
+    c SYS_REFCURSOR;
   BEGIN
-    RETURN EXTRACT(YEAR FROM SYSDATE) - SELF.dataOwned;
+    OPEN c FOR 
+      SELECT * 
+      FROM buyer b
+      JOIN saleContract sc ON DEREF(sc.buyerid).cid = b.cid
+      JOIN agentContract ac ON ac.aoid = sc.aoid
+      JOIN property p ON DEREF(sc.poid).pid = p.pid;
+    RETURN c;
+  END selections;
+END;
+
+-- function for seller
+CREATE OR REPLACE TYPE BODY seller_t AS 
+  OVERRIDING MEMBER FUNCTION timeOwned RETURN INT IS
+  BEGIN
+    RETURN TRUNC(SYSDATE) - dateOwned;
   END timeOwned;
 END;
+
+-- function for tenant
+CREATE OR REPLACE TYPE BODY tenant_t AS 
+  OVERRIDING MAP MEMBER FUNCTION timeSpentLooking RETURN INT IS 
+  BEGIN 
+    RETURN TRUNC(SYSDATE) - dateStarted;
+  END timeSpentLooking;
+
+  OVERRIDING MEMBER FUNCTION selections RETURN SYS_REFCURSOR IS
+    c SYS_REFCURSOR;
+  BEGIN
+    OPEN c FOR 
+      SELECT * 
+      FROM buyer b
+      JOIN saleContract sc ON DEREF(sc.buyerid).cid = b.cid
+      JOIN agentContract ac ON ac.aoid = sc.aoid
+      JOIN property p ON DEREF(sc.poid).pid = p.pid;
+    RETURN c;
+  END selections;
+END;
+
+-- function for landlord
+CREATE OR REPLACE TYPE BODY landlord_t AS 
+  OVERRIDING MEMBER FUNCTION timeOwned RETURN INT IS
+  BEGIN
+    RETURN TRUNC(SYSDATE) - dateOwned;
+  END timeOwned;
+END;
+
 
 -- function for agent
 CREATE OR REPLACE TYPE BODY agent_t AS
