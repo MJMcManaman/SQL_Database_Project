@@ -121,6 +121,7 @@ Create type agentContract_t as object(
   acid char(4),
   aoid ref agent_t,
   coid ref customer_t,
+  poid ref property_t,
   signature_time Date,
   saleContract REF saleContract_t,
   commissionPercentage double precision,
@@ -174,6 +175,52 @@ CREATE OR REPLACE TYPE BODY agent_t AS
 END;
 /
 
+
+CREATE OR REPLACE TYPE BODY agent_t AS
+  MAP MEMBER FUNCTION yearOfExperience RETURN INT IS
+  BEGIN
+    RETURN EXTRACT(YEAR FROM SYSDATE) - SELF.yearStarted;
+  END yearOfExperience;
+
+  -- Define the MEMBER function
+  MEMBER FUNCTION browseProperty RETURN SYS_REFCURSOR IS
+    c SYS_REFCURSOR;
+  BEGIN
+    OPEN c FOR SELECT * FROM property;  -- Ensure "property" table exists
+    RETURN c;
+  END browseProperty;
+
+END;
+/
+
+
+CREATE OR REPLACE TYPE BODY agent_t AS
+
+  -- Define the MAP function
+  MAP MEMBER FUNCTION yearOfExperience RETURN INT IS
+  BEGIN
+    RETURN EXTRACT(YEAR FROM SYSDATE) - SELF.yearStarted;
+  END yearOfExperience;
+
+  -- Define the MEMBER function
+  MEMBER FUNCTION browseProperty RETURN SYS_REFCURSOR IS
+    c SYS_REFCURSOR;
+  BEGIN
+    OPEN c FOR 
+      SELECT p.*  -- Return all columns from property
+      FROM property p
+      JOIN agentContract ac ON ac.poid = p.pid
+      WHERE ac.aoid = SELF.aid; -- Filter by agent
+
+    RETURN c;
+  END browseProperty;
+
+END;
+/
+
+
+
+
 SELECT a.aid, a.aname, a.yearOfExperience() AS experience
 FROM agent a;
 
@@ -185,6 +232,20 @@ CREATE OR REPLACE TYPE BODY agentContract_t AS
     SELECT DEREF(SELF.saleContract) INTO sc FROM DUAL;
     RETURN SELF.commissionPercentage * sc.salePrice;
   END commission;
+END;
+/
+
+-- function for property
+CREATE OR REPLACE TYPE BODY property_t AS
+  MEMBER FUNCTION age RETURN INT IS
+  BEGIN
+    RETURN EXTRACT(YEAR FROM SYSDATE) - SELF.builtYear;
+  END age;
+
+  MEMBER FUNCTION propertySize RETURN DOUBLE PRECISION IS
+  BEGIN
+    RETURN SELF.propertyWidth * SELF.propertyLength;
+  END propertySize;
 END;
 /
 
