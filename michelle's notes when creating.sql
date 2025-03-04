@@ -143,16 +143,17 @@ Create table agentContract of agentContract_t(acid primary key, foreign key (aoi
 
 -- function for region
 CREATE OR REPLACE TYPE BODY region_t AS 
-  ORDER MEMBER FUNCTION sort (r region_t) RETURN INTEGER IS 
+ORDER MEMBER FUNCTION sort (r region_t) RETURN INTEGER IS 
   BEGIN
     IF SELF.regionName < r.regionName THEN
       RETURN -1;
     ELSIF SELF.regionName > r.regionName THEN
       RETURN 1;
+    ELSEIF SELF.regionName IS NULL OR r.regionName IS NULL THEN
+      RETURN 0;
     ELSE
       RETURN 0;
-    END IF;
-  END;
+  END IF;
 END;
 /
 
