@@ -135,7 +135,7 @@ Create table landlord of landlord_t(cid primary key);
 Create table tenant of tenant_t(cid primary key);
 Create table saleContract of saleContract_t(scid primary key, foreign key (aoid) references agent, foreign key (buyerid) references buyer, foreign key (sellerid) references seller, foreign key (poid) references property);
 Create table rentContract of rentContract_t(rcid primary key, foreign key (aoid) references agent, foreign key (landlordid) references landlord, foreign key (tenantid) references tenant, foreign key (poid) references property);
-Create table agentContract of agentContract_t(acid primary key, foreign key (aoid) references agent, foreign key (coid) references customer, foreign key (poid) references property);
+Create table agentContract of agentContract_t(acid primary key, foreign key (aoid) references agent, foreign key (toid) references customer, foreign key (foid) references customer, foreign key (poid) references property);
 
 -- function for region
 CREATE OR REPLACE TYPE BODY region_t AS 
@@ -224,6 +224,7 @@ CREATE OR REPLACE TYPE BODY tenant_t AS
 END;
 /
 
+-- or????????
 CREATE OR REPLACE TYPE BODY tenant_t AS
   OVERRIDING MEMBER FUNCTION propertyPreferred RETURN SYS_REFCURSOR IS c SYS_REFCURSOR;
   BEGIN
