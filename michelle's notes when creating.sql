@@ -180,12 +180,7 @@ END;
 /
 
 -- function for buyer
-CREATE OR REPLACE TYPE BODY buyer_t AS 
-  OVERRIDING MEMBER FUNCTION timeSpentLooking RETURN INT IS 
-  BEGIN 
-    RETURN TRUNC(SYSDATE) - dateStarted;
-  END timeSpentLooking;
-
+CREATE OR REPLACE TYPE BODY buyer_t AS
   OVERRIDING MEMBER FUNCTION propertyPreferred RETURN SYS_REFCURSOR IS c SYS_REFCURSOR;
   BEGIN
     OPEN c FOR
@@ -210,37 +205,6 @@ END;
 
 -- function for tenant
 CREATE OR REPLACE TYPE BODY tenant_t AS
-  OVERRIDING MEMBER FUNCTION propertyPreferred RETURN SYS_REFCURSOR IS c SYS_REFCURSOR;
-  BEGIN
-    OPEN c FOR
-      SELECT p.pid, p.propertyDetail.listedPrice
-      FROM rentContract rc
-      JOIN agentContract ac ON DEREF(ac.poid).pid = DEREF(rc.poid).pid
-      JOIN property p ON p.pid = DEREF(rc.poid).pid
-      JOIN landlord ld ON ld.cid = DEREF(ac.foid).cid
-      WHERE ld.pricePreferred <= self.pricePreferred * 1.1;
-    RETURN c;
-  END propertyPreferred;
-END;
-/
-
--- or????????
-CREATE OR REPLACE TYPE BODY tenant_t AS
-  OVERRIDING MEMBER FUNCTION propertyPreferred RETURN SYS_REFCURSOR IS c SYS_REFCURSOR;
-  BEGIN
-    OPEN c FOR
-      SELECT ld.pricePreferred
-      FROM landlord ld
-      JOIN rentContract rc ON DEREF(rc.landlordid).cid = ld.cid
-      JOIN agentContract ac ON DEREF(ac.poid).pid = DEREF(rc.poid).pid
-      JOIN property p ON p.pid = DEREF(ac.poid).pid
-      WHERE ld.pricePreferred <= self.pricePreferred * 1.1;
-    RETURN c;
-  END propertyPreferred;
-END;
-/
-
-CREATE OR REPLACE TYPE BODY tenant_t AS
   OVERRIDING MEMBER FUNCTION propertyPreferred RETURN SYS_REFCURSOR IS
     c SYS_REFCURSOR;
     v_pricePref NUMBER;
@@ -258,8 +222,7 @@ CREATE OR REPLACE TYPE BODY tenant_t AS
   END propertyPreferred;
 END;
 /
-
-
+  
 -- function for landlord
 CREATE OR REPLACE TYPE BODY landlord_t AS 
   OVERRIDING MEMBER FUNCTION timeOwned RETURN INT IS
@@ -267,7 +230,7 @@ CREATE OR REPLACE TYPE BODY landlord_t AS
     RETURN TRUNC(SYSDATE) - dateOwned;
   END timeOwned;
 END;
-
+/
 
 -- function for agent
 CREATE OR REPLACE TYPE BODY agent_t AS
