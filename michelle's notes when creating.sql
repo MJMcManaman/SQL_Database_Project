@@ -211,11 +211,10 @@ CREATE OR REPLACE TYPE BODY tenant_t AS
   BEGIN
     v_pricePref := self.pricePreferred;
     OPEN c FOR
-      SELECT p.propertyDetail.listedPrice, p.address, p.propertyType
-      FROM rentContract rc
-      JOIN agentContract ac ON DEREF(ac.poid).pid = DEREF(rc.poid).pid
-      JOIN property p ON p.pid = DEREF(rc.poid).pid
-      JOIN landlord ld ON DEREF(rc.landlordid).cid = ld.cid
+      SELECT p.pid, p.propertyType, p.address
+      FROM property p 
+      JOIN agentContrat ac ON DEREF(ac.poid).pid = p.pid
+      JOIN rentContrac rc ON DEREF(rc.aoid).aid = DEREF(ac.aoid).aid
       WHERE p.propertyDetail.listedPrice <= v_pricePref * 1.1
         AND DEREF(rc.tenantid).cid = SELF.cid;
     RETURN c;
