@@ -18,7 +18,7 @@ Create type customer_t as object(
   emailAddress varchar2(20),
   dateStarted Date,
   dateOwned Date,
-  map member function timeSpentLooking return int,
+  member function timeSpentLooking return int,
   member function timeOwned return int,
   MEMBER FUNCTION selections RETURN SYS_REFCURSOR) NOT FINAL;
 /
@@ -26,7 +26,7 @@ Create type customer_t as object(
 Create type buyer_t under customer_t(
   pricePreference NUMBER,
   priceFluctuation NUMBER,
-  overriding map member function timeSpentLooking return int,
+  overriding member function timeSpentLooking return int,
   overriding MEMBER FUNCTION selections RETURN SYS_REFCURSOR);
 /
 
@@ -38,7 +38,7 @@ Create type seller_t under customer_t(
 Create type tenant_t under customer_t(
   pricePreference NUMBER,
   priceFluctuation NUMBER,
-  overriding map member function timeSpentLooking return int,
+  overriding member function timeSpentLooking return int,
   overriding MEMBER FUNCTION selections RETURN SYS_REFCURSOR);
 /
 
@@ -67,7 +67,7 @@ Create type listing_t as object(
   parkingSpace int,
   elevator int,
   openHouse date,
-  map member function daysListed return int)
+  member function daysListed return int)
 /
 
 Create type property_t as object(
@@ -80,7 +80,7 @@ Create type property_t as object(
   postalCode varchar2(6),
   propertyWidth NUMBER,
   propertyLength NUMBER,
-  map member function age return int,
+  member function age return int,
   member function propertySize return NUMBER)
 /
 
@@ -158,7 +158,7 @@ END;
 
 -- function for customer
 CREATE OR REPLACE TYPE BODY customer_t AS 
-  MAP MEMBER FUNCTION timeSpentLooking RETURN INT IS 
+  MEMBER FUNCTION timeSpentLooking RETURN INT IS 
   BEGIN 
     RETURN TRUNC(SYSDATE) - dateStarted;
   END timeSpentLooking;
@@ -244,7 +244,7 @@ END;
 CREATE OR REPLACE TYPE BODY agent_t AS
   MAP MEMBER FUNCTION yearOfExperience RETURN INT IS
   BEGIN
-    RETURN EXTRACT(YEAR FROM SYSDATE) - SELF.yearStarted;
+    RETURN EXTRACT(YEAR FROM SYSDATE) - SELF.yearStarted DESC;
   END yearOfExperience;
   
   MEMBER FUNCTION browseProperty RETURN SYS_REFCURSOR IS
@@ -277,7 +277,7 @@ END;
 
 -- function for listing
 CREATE OR REPLACE TYPE BODY listing_t AS
-  MAP MEMBER FUNCTION daysListed RETURN INT IS
+  MEMBER FUNCTION daysListed RETURN INT IS
   BEGIN
     RETURN TRUNC(SYSDATE) - listingStartDate;
   END daysListed;
@@ -286,7 +286,7 @@ END;
 
 -- function for property
 CREATE OR REPLACE TYPE BODY property_t AS
-  MAP MEMBER FUNCTION age RETURN INT IS
+  MEMBER FUNCTION age RETURN INT IS
   BEGIN
     RETURN EXTRACT(YEAR FROM SYSDATE) - builtYear;
   END age;
