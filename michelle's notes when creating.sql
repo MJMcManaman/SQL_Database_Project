@@ -242,74 +242,30 @@ END;
 
 -- function for agent
 CREATE OR REPLACE TYPE BODY agent_t AS
-  -- Define the MAP function
-  MAP MEMBER FUNCTION yearOfExperience RETURN NUMBER IS
-  BEGIN
-    RETURN EXTRACT(YEAR FROM SYSDATE) - yearStarted;
-  END yearOfExperience;
-
-  MEMBER FUNCTION browseProperty RETURN SYS_REFCURSOR IS
-    c SYS_REFCURSOR;
-  BEGIN
-    OPEN c FOR SELECT * FROM property;
-    RETURN c;
-  END browseProperty;
-
-END;
-/
-
-
-CREATE OR REPLACE TYPE BODY agent_t AS
   MAP MEMBER FUNCTION yearOfExperience RETURN INT IS
   BEGIN
     RETURN EXTRACT(YEAR FROM SYSDATE) - SELF.yearStarted;
   END yearOfExperience;
-
-  -- Define the MEMBER function
-  MEMBER FUNCTION browseProperty RETURN SYS_REFCURSOR IS
-    c SYS_REFCURSOR;
-  BEGIN
-    OPEN c FOR SELECT * FROM property;  -- Ensure "property" table exists
-    RETURN c;
-  END browseProperty;
-
-END;
-/
-
-
-CREATE OR REPLACE TYPE BODY agent_t AS
-
-  -- Define the MAP function
-  MAP MEMBER FUNCTION yearOfExperience RETURN INT IS
-  BEGIN
-    RETURN EXTRACT(YEAR FROM SYSDATE) - SELF.yearStarted;
-  END yearOfExperience;
-
-  -- Define the MEMBER function
+  
   MEMBER FUNCTION browseProperty RETURN SYS_REFCURSOR IS
     c SYS_REFCURSOR;
   BEGIN
     OPEN c FOR 
-      SELECT p.*  -- Return all columns from property
-      FROM property p
-      JOIN agentContract ac ON ac.poid = p.pid
-      WHERE ac.aoid = SELF.aid; -- Filter by agent
-
+      SELECT a.*
+      FROM agent a
+      JOIN agentContract ac ON DEREF(ac.aoid).aid = a.aid
+      JOIN property p ON p.pid = DEREF(ac.poid).pid;
     RETURN c;
   END browseProperty;
-
 END;
 /
 
-
-
-
-SELECT a.aid, a.aname, a.yearOfExperience() AS experience
-FROM agent a;
+  
+SELECT a.aid, a.aname, a.yearOfExperience() AS experience FROM agent a;
 
 -- function for agentContract
 CREATE OR REPLACE TYPE BODY agentContract_t AS
-  MEMBER FUNCTION commission RETURN DOUBLE PRECISION IS
+  MEMBER FUNCTION commission RETURN NUMBER IS
     sc saleContract_t;
   BEGIN
     SELECT DEREF(SELF.saleContract) INTO sc FROM DUAL;
@@ -318,16 +274,26 @@ CREATE OR REPLACE TYPE BODY agentContract_t AS
 END;
 /
 
+
+-- function for listing
+CREATE OR REPLACE TYPE BODY listing_t AS
+  MAP MEMBER FUNCTION daysListed RETURN INT IS
+  BEGIN
+    RETURN TRUNC(SYSDATE) - listingStartDate;
+  END daysListed;
+END;
+/
+
 -- function for property
 CREATE OR REPLACE TYPE BODY property_t AS
-  MEMBER FUNCTION age RETURN INT IS
+  MAP MEMBER FUNCTION age RETURN INT IS
   BEGIN
-    RETURN EXTRACT(YEAR FROM SYSDATE) - SELF.builtYear;
+    RETURN EXTRACT(YEAR FROM SYSDATE) - builtYear;
   END age;
 
-  MEMBER FUNCTION propertySize RETURN DOUBLE PRECISION IS
+  MEMBER FUNCTION propertySize RETURN NUMBER IS
   BEGIN
-    RETURN SELF.propertyWidth * SELF.propertyLength;
+    RETURN propertyWidth * propertyLength;
   END propertySize;
 END;
 /
