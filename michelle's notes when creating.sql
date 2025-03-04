@@ -18,32 +18,25 @@ Create type customer_t as object(
   emailAddress varchar2(20),
   dateStarted Date,
   dateOwned Date,
+  pricePreferred NUMBER,
   member function timeSpentLooking return int,
   member function timeOwned return int,
-  MEMBER FUNCTION selections RETURN SYS_REFCURSOR) NOT FINAL;
+  MEMBER FUNCTION propertyPreferred RETURN SYS_REFCURSOR) NOT FINAL;
 /
 
 Create type buyer_t under customer_t(
-  pricePreference NUMBER,
-  priceFluctuation NUMBER,
-  overriding member function timeSpentLooking return int,
-  overriding MEMBER FUNCTION selections RETURN SYS_REFCURSOR);
+  overriding MEMBER FUNCTION propertyPreferred RETURN SYS_REFCURSOR);
 /
 
 Create type seller_t under customer_t(
-  propertyRegister int,
   Overriding member function timeOwned return int)
 /
 
 Create type tenant_t under customer_t(
-  pricePreference NUMBER,
-  priceFluctuation NUMBER,
-  overriding member function timeSpentLooking return int,
-  overriding MEMBER FUNCTION selections RETURN SYS_REFCURSOR);
+  overriding MEMBER FUNCTION propertyPreferred RETURN SYS_REFCURSOR);
 /
 
 Create type landlord_t under customer_t(
-  propertyRegister int,
   Overriding member function timeOwned return int)
 /
 
@@ -111,6 +104,7 @@ Create type rentContract_t as object(
   landlordid ref landlord_t,
   aoid ref agent_t,
   tenantid ref tenant_t,
+  poid ref property_t,
   rentPrice NUMBER,
   signedTime Date,
   rentLength int)
@@ -119,10 +113,12 @@ Create type rentContract_t as object(
 Create type agentContract_t as object(
   acid char(4),
   aoid ref agent_t,
-  coid ref customer_t,
+  foid ref customer_t,
+  toid ref customer_t,
   poid ref property_t,
   signature_time Date,
   saleContract REF saleContract_t,
+  rentContract REF rentContract_t,
   commissionPercentage NUMBER,
   Member function commission return NUMBER)
 /
@@ -137,9 +133,9 @@ Create table buyer of buyer_t(cid primary key);
 Create table seller of seller_t(cid primary key);
 Create table landlord of landlord_t(cid primary key);
 Create table tenant of tenant_t(cid primary key);
-Create table saleContract of saleContract_t(scid primary key, foreign key (aoid) references agent, foreign key (buyerid) references buyer, foreign key (sellerid) references seller);
-Create table rentContract of rentContract_t(rcid primary key, foreign key (aoid) references agent, foreign key (landlordid) references landlord, foreign key (tenantid) references tenant);
-Create table agentContract of agentContract_t(acid primary key, foreign key (aoid) references agent, foreign key (coid) references customer);
+Create table saleContract of saleContract_t(scid primary key, foreign key (aoid) references agent, foreign key (buyerid) references buyer, foreign key (sellerid) references seller, foreign key (poid) references property);
+Create table rentContract of rentContract_t(rcid primary key, foreign key (aoid) references agent, foreign key (landlordid) references landlord, foreign key (tenantid) references tenant, foreign key (poid) references property);
+Create table agentContract of agentContract_t(acid primary key, foreign key (aoid) references agent, foreign key (coid) references customer, foreign key (poid) references property);
 
 -- function for region
 CREATE OR REPLACE TYPE BODY region_t AS 
@@ -149,11 +145,12 @@ ORDER MEMBER FUNCTION sort (r region_t) RETURN INTEGER IS
       RETURN -1;
     ELSIF SELF.regionName > r.regionName THEN
       RETURN 1;
-    ELSEIF SELF.regionName IS NULL OR r.regionName IS NULL THEN
+    ELSIF SELF.regionName IS NULL OR r.regionName IS NULL THEN
       RETURN 0;
     ELSE
       RETURN 0;
-  END IF;
+    END IF;
+  END SORT;
 END;
 /
 
@@ -169,68 +166,98 @@ CREATE OR REPLACE TYPE BODY customer_t AS
     RETURN TRUNC(SYSDATE) - dateOwned;
   END timeOwned;
 
-  MEMBER FUNCTION selections RETURN SYS_REFCURSOR IS
-    c SYS_REFCURSOR;
+  MEMBER FUNCTION propertyPreferred RETURN SYS_REFCURSOR IS c SYS_REFCURSOR;
   BEGIN
-    OPEN c FOR 
-      SELECT * 
-      FROM buyer b
-      JOIN saleContract sc ON DEREF(sc.buyerid).cid = b.cid
-      JOIN agentContract ac ON ac.aoid = sc.aoid
-      JOIN property p ON DEREF(sc.poid).pid = p.pid;
+    OPEN c FOR
+      SELECT *
+      FROM saleContract sc
+      JOIN agentContract ac ON DEREF(ac.poid).pid = DEREF(sc.poid).pid
+      JOIN property p ON p.pid = DEREF(sc.poid).pid
+      WHERE p.propertyDetail.listedPrice > self.pricePreferred * 1.2;
     RETURN c;
-  END selections;
+  END propertyPreferred;
 END;
 /
 
-  
 -- function for buyer
 CREATE OR REPLACE TYPE BODY buyer_t AS 
-  OVERRIDING MAP MEMBER FUNCTION timeSpentLooking RETURN INT IS 
+  OVERRIDING MEMBER FUNCTION timeSpentLooking RETURN INT IS 
   BEGIN 
     RETURN TRUNC(SYSDATE) - dateStarted;
   END timeSpentLooking;
 
-  OVERRIDING MEMBER FUNCTION selections RETURN SYS_REFCURSOR IS
-    c SYS_REFCURSOR;
+  OVERRIDING MEMBER FUNCTION propertyPreferred RETURN SYS_REFCURSOR IS c SYS_REFCURSOR;
   BEGIN
-    OPEN c FOR 
-      SELECT * 
-      FROM buyer b
-      JOIN saleContract sc ON DEREF(sc.buyerid).cid = b.cid
-      JOIN agentContract ac ON ac.aoid = sc.aoid
-      JOIN property p ON DEREF(sc.poid).pid = p.pid;
+    OPEN c FOR
+      SELECT *
+      FROM saleContract sc
+      JOIN agentContract ac ON DEREF(ac.poid).pid = DEREF(sc.poid).pid
+      JOIN property p ON p.pid = DEREF(sc.poid).pid
+      WHERE p.propertyDetail.listedPrice > self.pricePreferred * 1.2;
     RETURN c;
-  END selections;
+  END propertyPreferred;
 END;
+/
 
 -- function for seller
 CREATE OR REPLACE TYPE BODY seller_t AS 
   OVERRIDING MEMBER FUNCTION timeOwned RETURN INT IS
   BEGIN
-    RETURN TRUNC(SYSDATE) - dateOwned;
+    RETURN ROUND((TRUNC(SYSDATE) - dateOwned) / 365);
   END timeOwned;
 END;
+/
 
 -- function for tenant
-CREATE OR REPLACE TYPE BODY tenant_t AS 
-  OVERRIDING MAP MEMBER FUNCTION timeSpentLooking RETURN INT IS 
-  BEGIN 
-    RETURN TRUNC(SYSDATE) - dateStarted;
-  END timeSpentLooking;
-
-  OVERRIDING MEMBER FUNCTION selections RETURN SYS_REFCURSOR IS
-    c SYS_REFCURSOR;
+CREATE OR REPLACE TYPE BODY tenant_t AS
+  OVERRIDING MEMBER FUNCTION propertyPreferred RETURN SYS_REFCURSOR IS c SYS_REFCURSOR;
   BEGIN
-    OPEN c FOR 
-      SELECT * 
-      FROM buyer b
-      JOIN saleContract sc ON DEREF(sc.buyerid).cid = b.cid
-      JOIN agentContract ac ON ac.aoid = sc.aoid
-      JOIN property p ON DEREF(sc.poid).pid = p.pid;
+    OPEN c FOR
+      SELECT p.pid, p.propertyDetail.listedPrice
+      FROM rentContract rc
+      JOIN agentContract ac ON DEREF(ac.poid).pid = DEREF(rc.poid).pid
+      JOIN property p ON p.pid = DEREF(rc.poid).pid
+      JOIN landlord ld ON ld.cid = DEREF(ac.foid).cid
+      WHERE ld.pricePreferred <= self.pricePreferred * 1.1;
     RETURN c;
-  END selections;
+  END propertyPreferred;
 END;
+/
+
+CREATE OR REPLACE TYPE BODY tenant_t AS
+  OVERRIDING MEMBER FUNCTION propertyPreferred RETURN SYS_REFCURSOR IS c SYS_REFCURSOR;
+  BEGIN
+    OPEN c FOR
+      SELECT ld.pricePreferred
+      FROM landlord ld
+      JOIN rentContract rc ON DEREF(rc.landlordid).cid = ld.cid
+      JOIN agentContract ac ON DEREF(ac.poid).pid = DEREF(rc.poid).pid
+      JOIN property p ON p.pid = DEREF(ac.poid).pid
+      WHERE ld.pricePreferred <= self.pricePreferred * 1.1;
+    RETURN c;
+  END propertyPreferred;
+END;
+/
+
+CREATE OR REPLACE TYPE BODY tenant_t AS
+  OVERRIDING MEMBER FUNCTION propertyPreferred RETURN SYS_REFCURSOR IS
+    c SYS_REFCURSOR;
+    v_pricePref NUMBER;
+  BEGIN
+    v_pricePref := self.pricePreferred;
+    OPEN c FOR
+      SELECT p.propertyDetail.listedPrice, p.address, p.propertyType
+      FROM rentContract rc
+      JOIN agentContract ac ON DEREF(ac.poid).pid = DEREF(rc.poid).pid
+      JOIN property p ON p.pid = DEREF(rc.poid).pid
+      JOIN landlord ld ON DEREF(rc.landlordid).cid = ld.cid
+      WHERE p.propertyDetail.listedPrice <= v_pricePref * 1.1
+        AND DEREF(rc.tenantid).cid = SELF.cid;
+    RETURN c;
+  END propertyPreferred;
+END;
+/
+
 
 -- function for landlord
 CREATE OR REPLACE TYPE BODY landlord_t AS 
@@ -245,7 +272,7 @@ END;
 CREATE OR REPLACE TYPE BODY agent_t AS
   MAP MEMBER FUNCTION yearOfExperience RETURN INT IS
   BEGIN
-    RETURN EXTRACT(YEAR FROM SYSDATE) - SELF.yearStarted DESC;
+    RETURN EXTRACT(YEAR FROM SYSDATE) - SELF.yearStarted;
   END yearOfExperience;
   
   MEMBER FUNCTION browseProperty RETURN SYS_REFCURSOR IS
@@ -261,9 +288,6 @@ CREATE OR REPLACE TYPE BODY agent_t AS
 END;
 /
 
-  
-SELECT a.aid, a.aname, a.yearOfExperience() AS experience FROM agent a;
-
 -- function for agentContract
 CREATE OR REPLACE TYPE BODY agentContract_t AS
   MEMBER FUNCTION commission RETURN NUMBER IS
@@ -274,7 +298,6 @@ CREATE OR REPLACE TYPE BODY agentContract_t AS
   END commission;
 END;
 /
-
 
 -- function for listing
 CREATE OR REPLACE TYPE BODY listing_t AS
