@@ -351,6 +351,7 @@ insert into agentContract values(agentContract_t('ac01', (SELECT REF(a) FROM age
 insert into agentContract values(agentContract_t('ac02', (SELECT REF(a) FROM agent a WHERE a.aid = 'a02'), (SELECT REF(p) FROM property p WHERE p.pid = 'p05'), (SELECT REF(c) FROM customer c WHERE c.cid = 'c07'), DATE '2023-05-04', (SELECT REF (sc) FROM saleContract sc WHERE sc.scid = 'sc03'), NULL, 0.03));
 insert into agentContract values(agentContract_t('ac03', (SELECT REF(a) FROM agent a WHERE a.aid = 'a04'), (SELECT REF(p) FROM property p WHERE p.pid = 'p08'), (SELECT REF(c) FROM customer c WHERE c.cid = 'c11'), DATE '2025-02-20', NULL, (SELECT REF (rc) FROM rentContract rc WHERE rc.rcid = 'rc02'), 0.09));
 insert into agentContract values(agentContract_t('ac04', (SELECT REF(a) FROM agent a WHERE a.aid = 'a03'), (SELECT REF(p) FROM property p WHERE p.pid = 'p06'), (SELECT REF(c) FROM customer c WHERE c.cid = 'c13'), DATE '2025-02-24', (SELECT REF (sc) FROM saleContract sc WHERE sc.scid = 'sc02'), NULL, 0.09));
+insert into agentContract values(agentContract_t('ac05', (SELECT REF(a) FROM agent a WHERE a.aid = 'a01'), (SELECT REF(p) FROM property p WHERE p.pid = 'p04'), (SELECT REF(c) FROM customer c WHERE c.cid = 'c10'), DATE '2025-02-24', NULL, (SELECT REF (rc) FROM rentContract rc WHERE rc.rcid = 'rc05'), 0.09));
 
 --------------------------------------------------------------------------------------
 
