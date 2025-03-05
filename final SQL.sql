@@ -1,15 +1,17 @@
-drop table rentContract;
-drop table saleContract;
+drop table agentContract;
 drop table tenant;
 drop table landlord;
 drop table seller;
 drop table buyer;
+drop table rentContract;
+drop table saleContract;
 drop table listing;
-drop table agentContract;
 drop table property;
+drop table region;
 drop table customer;
 drop table agent;
-drop table region;
+
+
 
 Create type customer_t as object(
   cid char(4),
@@ -40,7 +42,7 @@ Create type landlord_t under customer_t(
   Overriding member function timeOwned return int)
 /
 
-CREATE OR REPLACE TYPE region_t AS OBJECT (
+CREATE TYPE region_t AS OBJECT (
   rid VARCHAR2(10),
   regionName VARCHAR2(20),
   province VARCHAR2(20),
@@ -74,7 +76,7 @@ Create type property_t as object(
   propertyWidth NUMBER,
   propertyLength NUMBER,
   member function age return int,
-  member function propertySize return NUMBER)
+  map member function propertySize return NUMBER)
 /
 
 Create type agent_t as object(
@@ -270,7 +272,7 @@ CREATE OR REPLACE TYPE BODY property_t AS
     RETURN EXTRACT(YEAR FROM SYSDATE) - builtYear;
   END age;
 
-  MEMBER FUNCTION propertySize RETURN NUMBER IS
+  MAP MEMBER FUNCTION propertySize RETURN NUMBER IS
   BEGIN
     RETURN propertyWidth * propertyLength;
   END propertySize;
