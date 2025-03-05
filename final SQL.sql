@@ -183,11 +183,12 @@ CREATE OR REPLACE TYPE BODY buyer_t AS
   OVERRIDING MEMBER FUNCTION propertyPreferred RETURN SYS_REFCURSOR IS c SYS_REFCURSOR;
   BEGIN
     OPEN c FOR
-      SELECT p.pid, p.propertyType
+      SELECT p.pid, p.propertyType, s.pricePreferred AS sellerOffer
       FROM property p
       JOIN agentContract ac ON DEREF(ac.poid).pid = p.pid
       JOIN saleContract sc ON sc.scid = DEREF(ac.scoid).scid
-      WHERE p.propertyDetail.listedPrice < self.pricePreferred * 1.2;
+      JOIN seller s ON s.cid = DEREF(sc.sellerid).cid
+      WHERE  s.pricePreferred < self.pricePreferred * 1.2;
     RETURN c;
   END propertyPreferred;
 END;
@@ -207,11 +208,12 @@ CREATE OR REPLACE TYPE BODY tenant_t AS
   OVERRIDING MEMBER FUNCTION propertyPreferred RETURN SYS_REFCURSOR IS c SYS_REFCURSOR;
   BEGIN
     OPEN c FOR
-      SELECT p.pid, p.propertyType
+      SELECT p.pid, p.propertyType, p.address, ld.pricePreferred AS landlordOffer
       FROM property p
       JOIN agentContract ac ON DEREF(ac.poid).pid = p.pid
       JOIN rentContract rc ON rc.rcid = DEREF(ac.rcoid).rcid
-      WHERE p.propertyDetail.listedPrice < self.pricePreferred * 1.3;
+      JOIN landlord ld ON ld.cid = DEREF(rc.landlordid).cid
+      WHERE ld.pricePreferred < self.pricePreferred * 1.25;
     RETURN c;
   END propertyPreferred;
 END;
