@@ -1,4 +1,6 @@
 drop table agentContract;
+drop table saleContract;
+drop table rentContract;
 drop table tenant;
 drop table landlord;
 drop table seller;
@@ -133,6 +135,7 @@ Create table rentContract of rentContract_t(rcid primary key, foreign key (landl
 Create table agentContract of agentContract_t(acid primary key, foreign key (aoid) references agent, foreign key (poid) references property, foreign key (coid) references customer, foreign key (scoid) references saleContract, foreign key (rcoid) references rentContract);
 
 
+
 -- function for region
 CREATE OR REPLACE TYPE BODY region_t AS 
 ORDER MEMBER FUNCTION sort (r region_t) RETURN INTEGER IS 
@@ -229,19 +232,20 @@ CREATE OR REPLACE TYPE BODY agent_t AS
   BEGIN
     RETURN EXTRACT(YEAR FROM SYSDATE) - SELF.yearStarted;
   END yearOfExperience;
-  
+
   MEMBER FUNCTION browseProperty RETURN SYS_REFCURSOR IS
     c SYS_REFCURSOR;
   BEGIN
-    OPEN c FOR 
-      SELECT p.*
+    OPEN c FOR
+      SELECT p.pid, p.propertyType, p.builtYear, p.address
       FROM property p
       JOIN agentContract ac ON DEREF(ac.poid).pid = p.pid
-      JOIN agent a ON a.aid = DEREF(ac.aoid).aid;
+      WHERE DEREF(ac.aoid).aid = SELF.aid;
     RETURN c;
   END browseProperty;
 END;
 /
+
 
 -- function for agentContract
 CREATE OR REPLACE TYPE BODY agentContract_t AS
@@ -281,6 +285,7 @@ insert into region values(region_t('r02', 'West', 'British Columbia', 'Vancouver
 insert into region values(region_t('r03', 'East', 'Quebec', 'Montreal'));
 insert into region values(region_t('r04', 'Prairie', 'Alberta', 'Calgary'));
 insert into region values(region_t('r05', 'Atlantic', 'Nova Scotia', 'Halifax'));
+
 
 --------------------------------------------------------------------------------------
 
@@ -341,10 +346,11 @@ insert into tenant values(tenant_t('c26', 'Oliver Brown', '5678901234', 'oliver@
 insert into tenant values(tenant_t('c27', 'Mia Johnson', '6789012345', 'mia@email.com', DATE '2022-12-01', NULL, 3200.00));
 --------------------------------------------------------------------------------------
 
+
 insert into agentContract values(agentContract_t('ac01', (SELECT REF(a) FROM agent a WHERE a.aid = 'a01'), (SELECT REF(p) FROM property p WHERE p.pid = 'p04'), (SELECT REF(c) FROM customer c WHERE c.cid = 'c09'), DATE '2025-02-24', NULL, (SELECT REF (rc) FROM rentContract rc WHERE rc.rcid = 'rc01'), 0.09));
 insert into agentContract values(agentContract_t('ac02', (SELECT REF(a) FROM agent a WHERE a.aid = 'a02'), (SELECT REF(p) FROM property p WHERE p.pid = 'p05'), (SELECT REF(c) FROM customer c WHERE c.cid = 'c07'), DATE '2023-05-04', (SELECT REF (sc) FROM saleContract sc WHERE sc.scid = 'sc03'), NULL, 0.03));
 insert into agentContract values(agentContract_t('ac03', (SELECT REF(a) FROM agent a WHERE a.aid = 'a04'), (SELECT REF(p) FROM property p WHERE p.pid = 'p08'), (SELECT REF(c) FROM customer c WHERE c.cid = 'c11'), DATE '2025-02-20', NULL, (SELECT REF (rc) FROM rentContract rc WHERE rc.rcid = 'rc02'), 0.09));
-insert into agentContract values(agentContract_t('ac04', (SELECT REF(a) FROM agent a WHERE a.aid = 'a01'), (SELECT REF(p) FROM property p WHERE p.pid = 'p04'), (SELECT REF(c) FROM customer c WHERE c.cid = 'c13'), DATE '2025-02-24', NULL, (SELECT REF (rc) FROM rentContract rc WHERE rc.rcid = 'rc05'), 0.09));
+insert into agentContract values(agentContract_t('ac04', (SELECT REF(a) FROM agent a WHERE a.aid = 'a03'), (SELECT REF(p) FROM property p WHERE p.pid = 'p06'), (SELECT REF(c) FROM customer c WHERE c.cid = 'c13'), DATE '2025-02-24', (SELECT REF (sc) FROM saleContract sc WHERE sc.scid = 'sc02'), NULL, 0.09));
 
 --------------------------------------------------------------------------------------
 
@@ -357,7 +363,7 @@ insert into rentContract values(rentContract_t('rc05', (SELECT REF(l) FROM landl
 
 --------------------------------------------------------------------------------------
 
-insert into saleContract values(saleContract_t('sc01', (SELECT REF(s) FROM seller s WHERE s.cid = 'c01'), (SELECT REF(b) FROM buyer b WHERE b.cid = 'c05'), 850000,DATE '2024-10-10'));
+insert into saleContract values(saleContract_t('sc01', (SELECT REF(s) FROM seller s WHERE s.cid = 'c01'), (SELECT REF(b) FROM buyer b WHERE b.cid = 'c05'), 850000, DATE '2024-10-10'));
 insert into saleContract values(saleContract_t('sc02', (SELECT REF(s) FROM seller s WHERE s.cid = 'c02'), (SELECT REF(b) FROM buyer b WHERE b.cid = 'c06'), 450000, DATE '2025-01-05'));
 insert into saleContract values(saleContract_t('sc03', (SELECT REF(s) FROM seller s WHERE s.cid = 'c03'), (SELECT REF(b) FROM buyer b WHERE b.cid = 'c07'), 300000, DATE '2024-11-19'));
 
