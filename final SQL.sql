@@ -3,8 +3,6 @@ drop table tenant;
 drop table landlord;
 drop table seller;
 drop table buyer;
-drop table rentContract;
-drop table saleContract;
 drop table listing;
 drop table property;
 drop table region;
@@ -346,12 +344,16 @@ insert into tenant values(tenant_t('c27', 'Mia Johnson', '6789012345', 'mia@emai
 insert into agentContract values(agentContract_t('ac01', (SELECT REF(a) FROM agent a WHERE a.aid = 'a01'), (SELECT REF(p) FROM property p WHERE p.pid = 'p04'), (SELECT REF(c) FROM customer c WHERE c.cid = 'c09'), DATE '2025-02-24', NULL, (SELECT REF (rc) FROM rentContract rc WHERE rc.rcid = 'rc01'), 0.09));
 insert into agentContract values(agentContract_t('ac02', (SELECT REF(a) FROM agent a WHERE a.aid = 'a02'), (SELECT REF(p) FROM property p WHERE p.pid = 'p05'), (SELECT REF(c) FROM customer c WHERE c.cid = 'c07'), DATE '2023-05-04', (SELECT REF (sc) FROM saleContract sc WHERE sc.scid = 'sc03'), NULL, 0.03));
 insert into agentContract values(agentContract_t('ac03', (SELECT REF(a) FROM agent a WHERE a.aid = 'a04'), (SELECT REF(p) FROM property p WHERE p.pid = 'p08'), (SELECT REF(c) FROM customer c WHERE c.cid = 'c11'), DATE '2025-02-20', NULL, (SELECT REF (rc) FROM rentContract rc WHERE rc.rcid = 'rc02'), 0.09));
+insert into agentContract values(agentContract_t('ac04', (SELECT REF(a) FROM agent a WHERE a.aid = 'a01'), (SELECT REF(p) FROM property p WHERE p.pid = 'p04'), (SELECT REF(c) FROM customer c WHERE c.cid = 'c13'), DATE '2025-02-24', NULL, (SELECT REF (rc) FROM rentContract rc WHERE rc.rcid = 'rc05'), 0.09));
 
 --------------------------------------------------------------------------------------
 
 insert into rentContract values(rentContract_t('rc01', (SELECT REF(l) FROM landlord l WHERE l.cid = 'c10'), (SELECT REF(t) FROM tenant t WHERE t.cid = 'c14'), 3000, DATE '2022-03-15', 12));
 insert into rentContract values(rentContract_t('rc02', (SELECT REF(l) FROM landlord l WHERE l.cid = 'c09'), (SELECT REF(t) FROM tenant t WHERE t.cid = 'c13'), 1985, DATE '2021-09-05', 6));
 insert into rentContract values(rentContract_t('rc03', (SELECT REF(l) FROM landlord l WHERE l.cid = 'c25'), (SELECT REF(t) FROM tenant t WHERE t.cid = 'c15'), 850, DATE '2020-01-10', 24));
+insert into rentContract values(rentContract_t('rc04', (SELECT REF(l) FROM landlord l WHERE l.cid = 'c10'), (SELECT REF(t) FROM tenant t WHERE t.cid = 'c26'), 3000, DATE '2022-03-15', 12));
+insert into rentContract values(rentContract_t('rc05', (SELECT REF(l) FROM landlord l WHERE l.cid = 'c10'), (SELECT REF(t) FROM tenant t WHERE t.cid = 'c27'), 3000, DATE '2022-03-15', 12));
+
 
 --------------------------------------------------------------------------------------
 
