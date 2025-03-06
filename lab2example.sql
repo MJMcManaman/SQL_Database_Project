@@ -148,7 +148,25 @@ member function fullname return varchar2
  end;
  /
 
+select s.fullname() as name,round(s.comps()/365,0) as age
+from ugstudents;
+
 select t.soid.sid, t.soid.sname.lastn, t.coid.cid, t.lg 
 from transcript t;
 
+select t.soid.sid,t.soid.fullname(),round(t.soid.comps()/365,0),t.coid.cid, t.lg 
+from transcript t;
+
+select t.soid.sid, t.soid.sname.lastn,t.coid.ctitle,t.coid.foid.ftitle,t.lg 
+from transcript t;
+
+select t.soid.sid, t.soid.sname.lastn,
+treat(deref(t.soid) as ugstudent_t).major 
+from transcript t 
+where t.coid.pcode = 'ITEC';
+
+select t.soid.sid, t.soid.sname.lastn,
+treat(t.soid as ref gstudent_t).degree 
+from transcript t 
+where t.coid.pcode = 'ITEC';
 
