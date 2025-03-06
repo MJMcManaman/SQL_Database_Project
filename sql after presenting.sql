@@ -178,6 +178,12 @@ CREATE OR REPLACE TYPE BODY customer_t AS
 END;
 /
 
+--fixing!!! need to be tested
+      SELECT ac.poid.pid, ac.poid.propertyType
+      FROM agentContract ac
+      WHERE ac.poid.propertyDetail.listedPrice < ac.scoid.buyerid.pricePreferred * 1.2
+      AND ac.cid=SELF.cid;
+
 -- function for buyer
 CREATE OR REPLACE TYPE BODY buyer_t AS
   OVERRIDING MEMBER FUNCTION propertyPreferred RETURN SYS_REFCURSOR IS c SYS_REFCURSOR;
@@ -193,6 +199,11 @@ CREATE OR REPLACE TYPE BODY buyer_t AS
   END propertyPreferred;
 END;
 /
+--fixing!!! need to be tested
+      SELECT ac.poid.pid, ac.poid.propertyType, ac.sc.sellerid.pricePreferred
+      FROM agentContract ac
+      WHERE ac.poid.propertyDetail.listedPrice < ac.scoid.buyerid.pricePreferred * 1.2
+      AND ac.scoid.buyerid.cid=SELF.cid;  ;
 
 -- function for seller
 CREATE OR REPLACE TYPE BODY seller_t AS 
@@ -218,7 +229,13 @@ CREATE OR REPLACE TYPE BODY tenant_t AS
   END propertyPreferred;
 END;
 /
-  
+
+--fixing!!! need to be tested
+      SELECT ac.poid.pid, ac.poid.propertyType
+      FROM agentContract ac
+      WHERE ac.poid.propertyDetail.listedPrice < ac.rcoid.tenantid.pricePreferred * 1.2 
+      AND ac.rcoid.tenantid.cid=SELF.cid;  
+
 -- function for landlord
 CREATE OR REPLACE TYPE BODY landlord_t AS 
   OVERRIDING MEMBER FUNCTION timeOwned RETURN INT IS
@@ -248,6 +265,10 @@ CREATE OR REPLACE TYPE BODY agent_t AS
 END;
 /
 
+--fixing!!! need to be tested
+ SELECT ac.poid.pid, ac.poid.propertyType, ac.poid.builtYear, ac.poid.address
+      FROM agentContract ac
+      WHERE ac.aoid.aid = SELF.aid;
 
 -- function for agentContract
 CREATE OR REPLACE TYPE BODY agentContract_t AS
