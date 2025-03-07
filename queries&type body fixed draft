@@ -33,5 +33,20 @@ CREATE OR REPLACE TYPE BODY buyer_t AS
   END propertyPreferred;
 END;
 /
-
 --modify for query2 & propertyPreferred
+
+create or replace type body tenant_t as
+  OVERRIDING MEMBER FUNCTION propertyPreferred RETURN SYS_REFCURSOR IS c SYS_REFCURSOR;
+  BEGIN
+    OPEN c FOR
+      SELECT ac.poid.pid, ac.poid.propertyType
+      FROM agentContract ac
+      WHERE ac.poid.propertyDetail.listedPrice < ac.rcoid.tenantid.pricePreferred * 1.2 
+      AND ac.rcoid.tenantid.cid = SELF.cid;
+    RETURN c;
+  END propertyPreferred;
+END;
+/
+-- testing tenant type body:
+SELECT t.cid, t.cname, t.propertyPreferred() AS preferred_properties
+FROM tenant t WHERE t.cname = 'Oliver Brown';
