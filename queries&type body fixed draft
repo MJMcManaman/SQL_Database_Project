@@ -112,4 +112,27 @@ END;
 --recreate region type body b4 query9
 
 
+CREATE OR REPLACE TYPE BODY agent_t AS
+  MAP MEMBER FUNCTION yearOfExperience RETURN INT IS
+  BEGIN
+    RETURN EXTRACT(YEAR FROM SYSDATE) - SELF.yearStarted;
+  END yearOfExperience;
+
+  MEMBER FUNCTION browseProperty RETURN SYS_REFCURSOR IS
+    c SYS_REFCURSOR;
+  BEGIN
+    OPEN c FOR
+      SELECT ac.poid.pid, ac.poid.propertyType, ac.poid.builtYear, ac.poid.address
+      FROM agentContract ac
+      WHERE ac.aoid.aid = SELF.aid;
+    RETURN c;
+  END browseProperty;
+END;
+/
+--modify agent type body & b4 query13
+--testing agent type body:
+SELECT a.aid, a.aname, a.browseProperty() AS properties_browsed
+FROM agent a WHERE a.aid = 'a03';
+
+
 
