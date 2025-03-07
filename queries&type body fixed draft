@@ -64,3 +64,16 @@ CREATE OR REPLACE TYPE BODY property_t AS
 END;
 /
 --recreate property type body b4 query4
+
+CREATE OR REPLACE TYPE BODY agentContract_t AS
+  MEMBER FUNCTION commission RETURN NUMBER IS
+    sc saleContract_t;
+  BEGIN
+    SELECT DEREF(SELF.scoid) INTO sc FROM DUAL;
+    RETURN SELF.commissionPercentage * sc.salePrice;
+  END commission;
+END;
+/
+--recreate agentContract type body b4 query6
+
+
