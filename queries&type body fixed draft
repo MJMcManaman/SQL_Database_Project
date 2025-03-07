@@ -34,6 +34,16 @@ CREATE OR REPLACE TYPE BODY buyer_t AS
 END;
 /
 --modify for query2 & propertyPreferred
+--testing propetyPreferred
+
+SELECT b.propertyPreferred() AS preferred_properties
+FROM buyer b
+WHERE b.cname = 'Lucas White';
+
+POID POID.PROPERTYTY DEREF(AC.SCOID).SELLERID.PRICEPREFERRED
+---- --------------- ---------------------------------------
+p05  detached                                         250000
+
 
 create or replace type body tenant_t as
   OVERRIDING MEMBER FUNCTION propertyPreferred RETURN SYS_REFCURSOR IS c SYS_REFCURSOR;
