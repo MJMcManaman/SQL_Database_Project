@@ -76,4 +76,13 @@ END;
 /
 --recreate agentContract type body b4 query6
 
+CREATE OR REPLACE TYPE BODY seller_t AS 
+  OVERRIDING MEMBER FUNCTION timeOwned RETURN INT IS
+  BEGIN
+    RETURN ROUND((TRUNC(SYSDATE) - dateOwned) / 365);
+  END timeOwned;
+END;
+/
+--recreate seller type body b4 query7
+
 
