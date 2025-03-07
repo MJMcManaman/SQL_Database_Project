@@ -85,4 +85,14 @@ END;
 /
 --recreate seller type body b4 query7
 
+CREATE OR REPLACE TYPE BODY listing_t AS
+  MEMBER FUNCTION daysListed RETURN INT IS
+  BEGIN
+    RETURN TRUNC(SYSDATE) - listingStartDate;
+  END daysListed;
+END;
+/
+--recreate listing type body b4 query8
+
+
 
