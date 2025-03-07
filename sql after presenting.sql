@@ -337,35 +337,36 @@ insert into agent values(agent_t('a04', 'Harry King', '6543210987', 'harry@email
 insert into seller values(seller_t('c01', 'Alice Smith', '1234567890', 'alice@email.com', DATE '2020-06-15', DATE '2001-04-15', 300000.00));
 insert into seller values(seller_t('c02', 'Bob Johnson', '2345678901', 'bob@email.com', DATE '2021-08-21', DATE '2014-02-12', 400000.00));
 insert into seller values(seller_t('c03', 'John Doe', '3456789012', 'john@email.com', DATE '2019-03-22', DATE '2018-07-19', 250000.00));
-insert into seller values(seller_t('c04', 'David Brown', '4567890123', 'david@email.com', DATE '2022-01-10', DATE '2018-05-14',1550000.00));
-insert into seller values(seller_t('c20', 'Karen Taylor', '5678901234', 'karen@email.com', DATE '2023-07-12', DATE '2016-09-23', 450000.00));
-insert into seller values(seller_t('c21', 'Paul Walker', '6789012345', 'paul@email.com', DATE '2022-11-05', DATE '2019-03-30',900000.00));
+insert into seller values(seller_t('c04', 'David Brown', '4567890123', 'david@email.com', DATE '2022-01-10', DATE '2018-05-14', 1550000.00));
+insert into seller values(seller_t('c05', 'Karen Taylor', '5678901234', 'karen@email.com', DATE '2023-07-12', DATE '2016-09-23', 450000.00));
+insert into seller values(seller_t('c06', 'Paul Walker', '6789012345', 'paul@email.com', DATE '2022-11-05', DATE '2019-03-30', 900000.00));
 
 --------------------------------------------------------------------------------------
 
-insert into buyer values(buyer_t('c05', 'Charlie Brown', '3456789012', 'charlie@email.com', DATE '2019-05-30', NULL, 250000.00));
-insert into buyer values(buyer_t('c06', 'Diana White', '4567890123', 'diana@email.com', DATE '2018-11-10', NULL, 340000.00));
-insert into buyer values(buyer_t('c07', 'Lucas White', '1234509876', 'lucas@email.com', DATE '2022-03-15', NULL, 700000.00));
-insert into buyer values(buyer_t('c08', 'Amelia Clark', '2345610987', 'amelia@email.com', DATE '2021-09-05', NULL, 225000.00));
-insert into buyer values(buyer_t('c22', 'Sophia Martin', '9012345678', 'sophia@email.com', DATE '2015-06-18', NULL, 500000.00));
-insert into buyer values(buyer_t('c23', 'James Anderson', '0123456789', 'james@email.com', DATE '2014-11-30', NULL, 600000.00));
+insert into buyer values(buyer_t('c10', 'Charlie Brown', '3456789012', 'charlie@email.com', DATE '2019-05-30', NULL, 250000.00));
+insert into buyer values(buyer_t('c11', 'Diana White', '4567890123', 'diana@email.com', DATE '2018-11-10', NULL, 340000.00));
+insert into buyer values(buyer_t('c12', 'Lucas White', '1234509876', 'lucas@email.com', DATE '2022-03-15', NULL, 700000.00));
+insert into buyer values(buyer_t('c13', 'Amelia Clark', '2345610987', 'amelia@email.com', DATE '2021-09-05', NULL, 225000.00));
+insert into buyer values(buyer_t('c14', 'Sophia Martin', '9012345678', 'sophia@email.com', DATE '2015-06-18', NULL, 500000.00));
+insert into buyer values(buyer_t('c15', 'James Anderson', '0123456789', 'james@email.com', DATE '2014-11-30', NULL, 600000.00));
 
 --------------------------------------------------------------------------------------
 
-insert into landlord values(landlord_t('c09', 'Sophia Martin', '9012345678', 'sophia@email.com', DATE '2015-06-18', DATE '2005-01-22', 2400.00));
-insert into landlord values(landlord_t('c10', 'James Bond', '0123456789', 'james@email.com', DATE '2014-11-30', DATE '2010-10-28', 3500.00));
-insert into landlord values(landlord_t('c11', 'Emily Davis', '3456723456', 'emily@email.com', DATE '2013-05-25', DATE '2002-11-02', 2150.00));
-insert into landlord values(landlord_t('c12', 'Michael Scott', '5678923456', 'michael@email.com', DATE '2016-02-14', DATE '2014-06-20', 3000.00));
+insert into landlord values(landlord_t('c20', 'Sophia Martin', '9012345678', 'sophia@email.com', DATE '2015-06-18', DATE '2005-01-22', 2400.00));
+insert into landlord values(landlord_t('c21', 'James Bond', '0123456789', 'james@email.com', DATE '2014-11-30', DATE '2010-10-28', 3500.00));
+insert into landlord values(landlord_t('c22', 'Emily Davis', '3456723456', 'emily@email.com', DATE '2013-05-25', DATE '2002-11-02', 2150.00));
+insert into landlord values(landlord_t('c23', 'Michael Scott', '5678923456', 'michael@email.com', DATE '2016-02-14', DATE '2014-06-20', 3000.00));
 insert into landlord values(landlord_t('c24', 'Lucas White', '1234509876', 'lucas@email.com', DATE '2022-03-15', DATE '2018-03-15', 4500.00));
 insert into landlord values(landlord_t('c25', 'Amelia Clark', '2345610987', 'amelia@email.com', DATE '2021-09-05', DATE '2016-09-05', 2400.00));
+
 --------------------------------------------------------------------------------------
 
-insert into tenant values(tenant_t('c13', 'Lucas White', '1234509876', 'lucas@email.com', DATE '2022-03-15', NULL, 2200.00));
-insert into tenant values(tenant_t('c14', 'Amelia Clark', '2345610987', 'amelia@email.com', DATE '2021-09-05', NULL, 3100.00));
-insert into tenant values(tenant_t('c15', 'Benjamin Harris', '3456789012', 'benjamin@email.com', DATE '2020-01-10', NULL, 4100.00));
-insert into tenant values(tenant_t('c19', 'Emma Lewis', '4567890123', 'emma@email.com', DATE '2019-04-20', NULL, 1500.00));
-insert into tenant values(tenant_t('c26', 'Oliver Brown', '5678901234', 'oliver@email.com', DATE '2023-08-15', NULL, 2800.00));
-insert into tenant values(tenant_t('c27', 'Mia Johnson', '6789012345', 'mia@email.com', DATE '2022-12-01', NULL, 3200.00));
+insert into tenant values(tenant_t('c30', 'Lucas White', '1234509876', 'lucas@email.com', DATE '2022-03-15', NULL, 2200.00));
+insert into tenant values(tenant_t('c31', 'Amelia Clark', '2345610987', 'amelia@email.com', DATE '2021-09-05', NULL, 3100.00));
+insert into tenant values(tenant_t('c32', 'Benjamin Harris', '3456789012', 'benjamin@email.com', DATE '2020-01-10', NULL, 4100.00));
+insert into tenant values(tenant_t('c33', 'Emma Lewis', '4567890123', 'emma@email.com', DATE '2019-04-20', NULL, 1500.00));
+insert into tenant values(tenant_t('c34', 'Oliver Brown', '5678901234', 'oliver@email.com', DATE '2023-08-15', NULL, 2800.00));
+insert into tenant values(tenant_t('c35', 'Mia Johnson', '6789012345', 'mia@email.com', DATE '2022-12-01', NULL, 3200.00));
 --------------------------------------------------------------------------------------
 
 
