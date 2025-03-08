@@ -57,12 +57,12 @@ GROUP BY ac.aoid.aid, ac.aoid.aname;
 --13. Find the agent’s name and the property he/she can browse who’s agent ID is ‘a02’;
 select a.aname, a.browseProperty() from agent a where a.aid = 'a02';
 
---14. Find property that Lucas White would prefer base on the price landlord offer on the property.
-select t.propertyPreferred() from tenant t where t.cname = 'Lucas White';
+--14. Find property that James Sullivan would prefer base on the price landlord offer on the property.
+select t.cid, t.propertyPreferred() from tenant t where t.cname = 'James Sullivan';
 
 
---15. Find property that Lucas White would prefer base on the price landlord offer on the property.
-select b.propertyPreferred() from buyer b WHERE b.cname = 'Sophia Martin';
+--15. Find property that Sophia Martin would prefer base on the price buyer offer on the property.
+select b.cid, b.propertyPreferred() from buyer b where b.cname = 'Sophia Martin';
 
 
 
