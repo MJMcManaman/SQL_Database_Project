@@ -171,7 +171,7 @@ CREATE OR REPLACE TYPE BODY customer_t AS
       SELECT ac.poid.pid, ac.poid.propertyType
       FROM agentContract ac
       WHERE ac.poid.propertyDetail.listedPrice < ac.scoid.buyerid.pricePreferred * 1.2
-      AND ac.coid.cid = SELF.cid;--may become an issueac.coid never properly defined
+      AND ac.coid.cid = SELF.cid;
     RETURN c;
   END propertyPreferred;
 END;
