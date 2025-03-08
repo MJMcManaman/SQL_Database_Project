@@ -348,21 +348,21 @@ insert into buyer values(buyer_t('c11', 'Diana White', '4567890123', 'diana@emai
 insert into buyer values(buyer_t('c12', 'Lucas White', '1234509876', 'lucas@email.com', DATE '2022-03-15', NULL, 700000.00));
 insert into buyer values(buyer_t('c13', 'Amelia Clark', '2345610987', 'amelia@email.com', DATE '2021-09-05', NULL, 225000.00));
 insert into buyer values(buyer_t('c14', 'Sophia Martin', '9012345678', 'sophia@email.com', DATE '2015-06-18', NULL, 500000.00));
-insert into buyer values(buyer_t('c15', 'James Anderson', '0123456789', 'james@email.com', DATE '2014-11-30', NULL, 600000.00));
+insert into buyer values(buyer_t('c15', 'James Anderson', '0123456789', 'anderson@email.com', DATE '2014-11-30', NULL, 600000.00));
 
 --------------------------------------------------------------------------------------
 
-insert into landlord values(landlord_t('c20', 'Sophia Martin', '9012345678', 'sophia@email.com', DATE '2015-06-18', DATE '2005-01-22', 2400.00));
+insert into landlord values(landlord_t('c20', 'Olivia Bennett', '9012345678', 'bennett@email.com', DATE '2015-06-18', DATE '2005-01-22', 2400.00));
 insert into landlord values(landlord_t('c21', 'James Bond', '0123456789', 'james@email.com', DATE '2014-11-30', DATE '2010-10-28', 3500.00));
 insert into landlord values(landlord_t('c22', 'Emily Davis', '3456723456', 'emily@email.com', DATE '2013-05-25', DATE '2002-11-02', 2150.00));
 insert into landlord values(landlord_t('c23', 'Michael Scott', '5678923456', 'michael@email.com', DATE '2016-02-14', DATE '2014-06-20', 3000.00));
-insert into landlord values(landlord_t('c24', 'Lucas White', '1234509876', 'lucas@email.com', DATE '2022-03-15', DATE '2018-03-15', 4500.00));
-insert into landlord values(landlord_t('c25', 'Amelia Clark', '2345610987', 'amelia@email.com', DATE '2021-09-05', DATE '2016-09-05', 2400.00));
+insert into landlord values(landlord_t('c24', 'Mason Brooks', '1234509883', 'brooks@email.com', DATE '2022-03-15', DATE '2018-03-15', 4500.00));
+insert into landlord values(landlord_t('c25', 'Ava Mitchell', '2345610987', 'mitchell@email.com', DATE '2021-09-05', DATE '2016-09-05', 2450.00));
 
 --------------------------------------------------------------------------------------
 
-insert into tenant values(tenant_t('c30', 'Lucas White', '1234509876', 'lucas@email.com', DATE '2022-03-15', NULL, 2200.00));
-insert into tenant values(tenant_t('c31', 'Amelia Clark', '2345610987', 'amelia@email.com', DATE '2021-09-05', NULL, 3100.00));
+insert into tenant values(tenant_t('c30', 'James Sullivan', '1234509888', 'sullvian@email.com', DATE '2022-03-15', NULL, 2200.00));
+insert into tenant values(tenant_t('c31', 'Mia Peterson', '2345610987', 'peterson@email.com', DATE '2021-09-05', NULL, 3100.00));
 insert into tenant values(tenant_t('c32', 'Benjamin Harris', '3456789012', 'benjamin@email.com', DATE '2020-01-10', NULL, 4100.00));
 insert into tenant values(tenant_t('c33', 'Emma Lewis', '4567890123', 'emma@email.com', DATE '2019-04-20', NULL, 1500.00));
 insert into tenant values(tenant_t('c34', 'Oliver Brown', '5678901234', 'oliver@email.com', DATE '2023-08-15', NULL, 2800.00));
