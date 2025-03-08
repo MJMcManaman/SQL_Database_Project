@@ -175,7 +175,7 @@ CREATE OR REPLACE TYPE BODY customer_t AS
 END;
 /
 
--- MEMBER FUNCTION propertyPreferred RETURN SYS_REFCURSOR IS c SYS_REFCURSOR;
+MEMBER FUNCTION propertyPreferred RETURN SYS_REFCURSOR IS c SYS_REFCURSOR;
   BEGIN
     OPEN c FOR
       SELECT ac.poid.pid, ac.poid.propertyType
