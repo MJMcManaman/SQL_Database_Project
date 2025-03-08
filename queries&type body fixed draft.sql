@@ -35,18 +35,17 @@ CREATE OR REPLACE TYPE BODY buyer_t AS
   END propertyPreferred;
 END;
 /
---modify for query2 & propertyPreferred
---testing propetyPreferred
 
+-- query #2 modified:
 SELECT b.propertyPreferred() AS preferred_properties
 FROM buyer b
 WHERE b.cname = 'Lucas White';
-
+-- successed
 POID POID.PROPERTYTY DEREF(AC.SCOID).SELLERID.PRICEPREFERRED
 ---- --------------- ---------------------------------------
 p05  detached                                         250000
 
-
+-- function for subtype tenant
 create or replace type body tenant_t as
   OVERRIDING MEMBER FUNCTION propertyPreferred RETURN SYS_REFCURSOR IS c SYS_REFCURSOR;
   BEGIN
@@ -59,12 +58,14 @@ create or replace type body tenant_t as
   END propertyPreferred;
 END;
 /
--- testing tenant type body:
+-- query for testing tenant type body:
 SELECT t.cid, t.cname, t.propertyPreferred() AS preferred_properties
 FROM tenant t WHERE t.cname = 'Oliver Brown';
 
+
 --above working b4 query14.  not enough value for tenant&rentContract?
 
+-- function for property
 CREATE OR REPLACE TYPE BODY property_t AS
   MEMBER FUNCTION age RETURN INT IS
   BEGIN
@@ -77,6 +78,7 @@ CREATE OR REPLACE TYPE BODY property_t AS
   END propertySize;
 END;
 /
+  
 --recreate property type body b4 query4
 
 CREATE OR REPLACE TYPE BODY agentContract_t AS
