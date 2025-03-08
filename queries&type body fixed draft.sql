@@ -66,7 +66,7 @@ FROM tenant t WHERE t.cname = 'Oliver Brown';
 
 
 --above working b4 query14.  not enough value for tenant&rentContract?
-Joanne commment :
+--Joanne commment :
 --Tested the above query to confirm the updated type body works properly. 
 --No rows are returned when executing another query that matches Oliver Brown's pricePreferred, meaning no properties fall within the range
 -- and pricePreferred values are too low 
