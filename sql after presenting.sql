@@ -370,8 +370,8 @@ insert into tenant values(tenant_t('c35', 'Mia Johnson', '6789012345', 'mia@emai
 --------------------------------------------------------------------------------------
 
 
-insert into rentContract values(rentContract_t('rc01', (SELECT REF(l) FROM landlord l WHERE l.cid = 'c20'), (SELECT REF(t) FROM tenant t WHERE t.cid = 'c30'), 3000, DATE '2022-03-15', 12));
-insert into rentContract values(rentContract_t('rc02', (SELECT REF(l) FROM landlord l WHERE l.cid = 'c21'), (SELECT REF(t) FROM tenant t WHERE t.cid = 'c31'), 1985, DATE '2021-09-05', 6));
+insert into rentContract values(rentContract_t('rc01', (SELECT REF(l) FROM landlord l WHERE l.cid = 'c21'), (SELECT REF(t) FROM tenant t WHERE t.cid = 'c31'), 3000, DATE '2022-03-15', 12));
+insert into rentContract values(rentContract_t('rc02', (SELECT REF(l) FROM landlord l WHERE l.cid = 'c20'), (SELECT REF(t) FROM tenant t WHERE t.cid = 'c30'), 1985, DATE '2021-09-05', 6));
 insert into rentContract values(rentContract_t('rc03', (SELECT REF(l) FROM landlord l WHERE l.cid = 'c25'), (SELECT REF(t) FROM tenant t WHERE t.cid = 'c35'), 850, DATE '2020-01-10', 24));
 insert into rentContract values(rentContract_t('rc04', (SELECT REF(l) FROM landlord l WHERE l.cid = 'c22'), (SELECT REF(t) FROM tenant t WHERE t.cid = 'c32'), 3000, DATE '2022-03-15', 12));
 insert into rentContract values(rentContract_t('rc05', (SELECT REF(l) FROM landlord l WHERE l.cid = 'c23'), (SELECT REF(t) FROM tenant t WHERE t.cid = 'c33'), 3000, DATE '2022-03-15', 12));
