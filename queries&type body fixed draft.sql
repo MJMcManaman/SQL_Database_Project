@@ -150,5 +150,71 @@ END;
 SELECT a.aid, a.aname, a.browseProperty() AS properties_browsed
 FROM agent a WHERE a.aid = 'a03';
 
+--tried incorrect approach about propertyPreferred
+CREATE OR REPLACE TYPE BODY customer_t AS 
+  MEMBER FUNCTION timeSpentLooking RETURN INT IS 
+  BEGIN 
+    RETURN TRUNC(SYSDATE) - dateStarted;
+  END timeSpentLooking;
+    
+  MEMBER FUNCTION timeOwned RETURN INT IS
+  BEGIN
+    RETURN TRUNC(SYSDATE) - dateOwned;
+  END timeOwned;
 
+  MEMBER FUNCTION propertyPreferred RETURN SYS_REFCURSOR IS c SYS_REFCURSOR;
+  BEGIN
+    OPEN c FOR
+      SELECT p.pid, p.propertyType
+      FROM property p, agentContract ac
+      WHERE p.pid = DEREF(ac.poid).pid
+      AND DEREF(ac.poid).propertyDetail.listedPrice < self.pricePreferred * 1.2
+      AND DEREF(ac.coid).cid = SELF.cid;
+    RETURN c;
+  END propertyPreferred;
+END;
+/
+
+-- MEMBER FUNCTION propertyPreferred RETURN SYS_REFCURSOR IS c SYS_REFCURSOR;
+  BEGIN
+    OPEN c FOR
+      SELECT ac.poid.pid, ac.poid.propertyType
+      FROM agentContract ac
+      WHERE ac.poid.propertyDetail.listedPrice * 0.005 < self.pricePreferred * 1.2
+      AND ac.rcoid.cid = SELF.cid;    
+    RETURN c;
+  END propertyPreferred;
+END;
+/
+
+CREATE OR REPLACE TYPE BODY buyer_t AS
+  OVERRIDING MEMBER FUNCTION propertyPreferred RETURN SYS_REFCURSOR IS c SYS_REFCURSOR;
+  BEGIN
+    OPEN c FOR
+      SELECT ac.poid.pid, ac.poid.propertyType, DEREF(ac.scoid).sellerid.pricePreferred
+      FROM agentContract ac
+      WHERE deref(ac.scoid).sellerid.pricePreferred < deref(ac.scoid).buyerid.pricePreferred * 1.2
+      AND DEREF(ac.scoid).buyerid.cid = SELF.cid;
+    RETURN c;
+  END propertyPreferred;
+END;
+/
+
+CREATE OR REPLACE TYPE BODY tenant_t AS
+  OVERRIDING MEMBER FUNCTION propertyPreferred RETURN SYS_REFCURSOR IS c SYS_REFCURSOR;
+  BEGIN
+    OPEN c FOR
+      SELECT ac.poid.pid, ac.poid.propertyType, deref(ac.rcoid).landlord.pricePreferred
+      FROM agentContract ac
+      WHERE deref(ac.rcoid).landlord.pricePreferred < deref(ac.rcoid).tenantid.pricePreferred * 1.2
+      AND deref(ac.rcoid).tenantid.cid = SELF.cid;
+    RETURN c;
+  END propertyPreferred;
+END;
+/
+
+--testing buyer's propertyPreferred:
+SELECT c.propertyPreferred() AS preferred_properties
+FROM buyer c
+WHERE c.cname = 'Sophia Martin';
 
