@@ -47,18 +47,17 @@ p05  detached                                         250000
 
 -- function for subtype tenant
 CREATE OR REPLACE TYPE BODY tenant_t AS
-  2    OVERRIDING MEMBER FUNCTION propertyPreferred RETURN SYS_REFCURSOR IS c SYS_REFCURSOR;
-  3    BEGIN
-  4      OPEN c FOR
-      SELECT DEREF(ac.poid).pid, DEREF(ac.poid).propertyType
-  6        FROM agentContract ac
-  7        WHERE ac.poid.propertyDetail.listedPrice < DEREF(ac.rcoid).tenantid.pricePreferred * 1.2
-  8        AND DEREF(ac.rcoid).tenantid.cid = SELF.cid;
-  9        
- 10      RETURN c;
- 11    END propertyPreferred;
- 12  END;
- 13  /
+  OVERRIDING MEMBER FUNCTION propertyPreferred RETURN SYS_REFCURSOR IS c SYS_REFCURSOR;
+  BEGIN
+    OPEN c FOR
+    SELECT DEREF(ac.poid).pid, DEREF(ac.poid).propertyType
+    FROM agentContract ac
+    WHERE ac.poid.propertyDetail.listedPrice < DEREF(ac.rcoid).tenantid.pricePreferred * 1.2
+    AND DEREF(ac.rcoid).tenantid.cid = SELF.cid;    
+  RETURN c;
+  END propertyPreferred;
+END;
+/
 
 -- query for testing tenant type body:
 SELECT t.cid, t.cname, t.propertyPreferred() AS preferred_properties
