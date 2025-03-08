@@ -153,7 +153,7 @@ ORDER MEMBER FUNCTION sort (r region_t) RETURN INTEGER IS
 END;
 /
 
--- function for customer
+-- fixed function for customer
 CREATE OR REPLACE TYPE BODY customer_t AS 
   MEMBER FUNCTION timeSpentLooking RETURN INT IS 
   BEGIN 
@@ -168,42 +168,29 @@ CREATE OR REPLACE TYPE BODY customer_t AS
   MEMBER FUNCTION propertyPreferred RETURN SYS_REFCURSOR IS c SYS_REFCURSOR;
   BEGIN
     OPEN c FOR
-      SELECT p.pid, p.propertyType
-      FROM property p
-      JOIN agentContract ac ON DEREF(ac.poid).pid = p.pid
-      JOIN saleContract sc ON sc.scid = DEREF(ac.scoid).scid
-      WHERE p.propertyDetail.listedPrice < self.pricePreferred * 1.2;
+      SELECT ac.poid.pid, ac.poid.propertyType
+      FROM agentContract ac
+      WHERE ac.poid.propertyDetail.listedPrice < ac.scoid.buyerid.pricePreferred * 1.2
+      AND ac.coid.cid = SELF.cid;--may become an issueac.coid never properly defined
     RETURN c;
   END propertyPreferred;
 END;
 /
-
---fixing!!! need to be tested
-      SELECT ac.poid.pid, ac.poid.propertyType
-      FROM agentContract ac
-      WHERE ac.poid.propertyDetail.listedPrice < ac.scoid.buyerid.pricePreferred * 1.2
-      AND ac.cid=SELF.cid;
-
--- function for buyer
+  
+-- fixed function for buyer
+-- returns the seller's information that matches the buyer's pricePreference 
+-- (what we have before is matching the sellers information who already signed a contract with the buyers, thus useless)
 CREATE OR REPLACE TYPE BODY buyer_t AS
   OVERRIDING MEMBER FUNCTION propertyPreferred RETURN SYS_REFCURSOR IS c SYS_REFCURSOR;
   BEGIN
     OPEN c FOR
-      SELECT p.pid, p.propertyType, s.pricePreferred AS sellerOffer
-      FROM property p
-      JOIN agentContract ac ON DEREF(ac.poid).pid = p.pid
-      JOIN saleContract sc ON sc.scid = DEREF(ac.scoid).scid
-      JOIN seller s ON s.cid = DEREF(sc.sellerid).cid
-      WHERE  s.pricePreferred < self.pricePreferred * 1.2;
+      SELECT DEREF(sc.sellerid).pricePreferred AS sellerOffer, DEREF(sc.sellerid).phoneNum AS sellerPhoneNum
+      FROM saleContract sc
+      WHERE DEREF(sc.sellerid).pricePreferred < self.pricePreferred * 1.2;
     RETURN c;
   END propertyPreferred;
 END;
 /
---fixing!!! need to be tested
-      SELECT ac.poid.pid, ac.poid.propertyType, ac.sc.sellerid.pricePreferred
-      FROM agentContract ac
-      WHERE ac.poid.propertyDetail.listedPrice < ac.scoid.buyerid.pricePreferred * 1.2
-      AND ac.scoid.buyerid.cid=SELF.cid;  ;
 
 -- function for seller
 CREATE OR REPLACE TYPE BODY seller_t AS 
@@ -219,22 +206,13 @@ CREATE OR REPLACE TYPE BODY tenant_t AS
   OVERRIDING MEMBER FUNCTION propertyPreferred RETURN SYS_REFCURSOR IS c SYS_REFCURSOR;
   BEGIN
     OPEN c FOR
-      SELECT p.pid, p.propertyType, p.address, ld.pricePreferred AS landlordOffer
-      FROM property p
-      JOIN agentContract ac ON DEREF(ac.poid).pid = p.pid
-      JOIN rentContract rc ON rc.rcid = DEREF(ac.rcoid).rcid
-      JOIN landlord ld ON ld.cid = DEREF(rc.landlordid).cid
-      WHERE ld.pricePreferred < self.pricePreferred * 1.25;
+      SELECT DEREF(rc.landlordid).pricePreferred AS landlordOffer, DEREF(rc.landlordid).phoneNum AS landlordPhoneNum
+      FROM rentContract rc
+      WHERE DEREF(rc.landlordid).pricePreferred < self.pricePreferred * 1.2;
     RETURN c;
   END propertyPreferred;
 END;
 /
-
---fixing!!! need to be tested
-      SELECT ac.poid.pid, ac.poid.propertyType
-      FROM agentContract ac
-      WHERE ac.poid.propertyDetail.listedPrice < ac.rcoid.tenantid.pricePreferred * 1.2 
-      AND ac.rcoid.tenantid.cid=SELF.cid;  
 
 -- function for landlord
 CREATE OR REPLACE TYPE BODY landlord_t AS 
@@ -245,7 +223,7 @@ CREATE OR REPLACE TYPE BODY landlord_t AS
 END;
 /
 
--- function for agent
+-- fixed function for agent
 CREATE OR REPLACE TYPE BODY agent_t AS
   MAP MEMBER FUNCTION yearOfExperience RETURN INT IS
   BEGIN
@@ -256,21 +234,15 @@ CREATE OR REPLACE TYPE BODY agent_t AS
     c SYS_REFCURSOR;
   BEGIN
     OPEN c FOR
-      SELECT p.pid, p.propertyType, p.builtYear, p.address
-      FROM property p
-      JOIN agentContract ac ON DEREF(ac.poid).pid = p.pid
-      WHERE DEREF(ac.aoid).aid = SELF.aid;
+      SELECT ac.poid.pid, ac.poid.propertyType, ac.poid.builtYear, ac.poid.address
+      FROM agentContract ac
+      WHERE ac.aoid.aid = SELF.aid;
     RETURN c;
   END browseProperty;
 END;
 /
 
---fixing!!! need to be tested
- SELECT ac.poid.pid, ac.poid.propertyType, ac.poid.builtYear, ac.poid.address
-      FROM agentContract ac
-      WHERE ac.aoid.aid = SELF.aid;
-
--- function for agentContract
+-- fixed function for agentContract
 CREATE OR REPLACE TYPE BODY agentContract_t AS
   MEMBER FUNCTION commission RETURN NUMBER IS
     sc saleContract_t;
@@ -281,7 +253,7 @@ CREATE OR REPLACE TYPE BODY agentContract_t AS
 END;
 /
 
--- function for listing
+-- function for listing (no need fixing)
 CREATE OR REPLACE TYPE BODY listing_t AS
   MEMBER FUNCTION daysListed RETURN INT IS
   BEGIN
@@ -290,7 +262,7 @@ CREATE OR REPLACE TYPE BODY listing_t AS
 END;
 /
 
--- function for property
+-- function for property (no need fixing)
 CREATE OR REPLACE TYPE BODY property_t AS
   MEMBER FUNCTION age RETURN INT IS
   BEGIN
