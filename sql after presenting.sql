@@ -370,21 +370,20 @@ insert into tenant values(tenant_t('c35', 'Mia Johnson', '6789012345', 'mia@emai
 --------------------------------------------------------------------------------------
 
 
-insert into rentContract values(rentContract_t('rc01', (SELECT REF(l) FROM landlord l WHERE l.cid = 'c10'), (SELECT REF(t) FROM tenant t WHERE t.cid = 'c14'), 3000, DATE '2022-03-15', 12));
-insert into rentContract values(rentContract_t('rc02', (SELECT REF(l) FROM landlord l WHERE l.cid = 'c09'), (SELECT REF(t) FROM tenant t WHERE t.cid = 'c13'), 1985, DATE '2021-09-05', 6));
-insert into rentContract values(rentContract_t('rc03', (SELECT REF(l) FROM landlord l WHERE l.cid = 'c25'), (SELECT REF(t) FROM tenant t WHERE t.cid = 'c15'), 850, DATE '2020-01-10', 24));
-insert into rentContract values(rentContract_t('rc04', (SELECT REF(l) FROM landlord l WHERE l.cid = 'c10'), (SELECT REF(t) FROM tenant t WHERE t.cid = 'c26'), 3000, DATE '2022-03-15', 12));
-insert into rentContract values(rentContract_t('rc05', (SELECT REF(l) FROM landlord l WHERE l.cid = 'c10'), (SELECT REF(t) FROM tenant t WHERE t.cid = 'c27'), 3000, DATE '2022-03-15', 12));
-
+insert into rentContract values(rentContract_t('rc01', (SELECT REF(l) FROM landlord l WHERE l.cid = 'c20'), (SELECT REF(t) FROM tenant t WHERE t.cid = 'c30'), 3000, DATE '2022-03-15', 12));
+insert into rentContract values(rentContract_t('rc02', (SELECT REF(l) FROM landlord l WHERE l.cid = 'c21'), (SELECT REF(t) FROM tenant t WHERE t.cid = 'c31'), 1985, DATE '2021-09-05', 6));
+insert into rentContract values(rentContract_t('rc03', (SELECT REF(l) FROM landlord l WHERE l.cid = 'c25'), (SELECT REF(t) FROM tenant t WHERE t.cid = 'c35'), 850, DATE '2020-01-10', 24));
+insert into rentContract values(rentContract_t('rc04', (SELECT REF(l) FROM landlord l WHERE l.cid = 'c22'), (SELECT REF(t) FROM tenant t WHERE t.cid = 'c32'), 3000, DATE '2022-03-15', 12));
+insert into rentContract values(rentContract_t('rc05', (SELECT REF(l) FROM landlord l WHERE l.cid = 'c23'), (SELECT REF(t) FROM tenant t WHERE t.cid = 'c33'), 3000, DATE '2022-03-15', 12));
 
 --------------------------------------------------------------------------------------
 
-insert into saleContract values(saleContract_t('sc01', (SELECT REF(s) FROM seller s WHERE s.cid = 'c01'), (SELECT REF(b) FROM buyer b WHERE b.cid = 'c05'), 850000, DATE '2024-10-10'));
-insert into saleContract values(saleContract_t('sc02', (SELECT REF(s) FROM seller s WHERE s.cid = 'c02'), (SELECT REF(b) FROM buyer b WHERE b.cid = 'c06'), 450000, DATE '2025-01-05'));
-insert into saleContract values(saleContract_t('sc03', (SELECT REF(s) FROM seller s WHERE s.cid = 'c03'), (SELECT REF(b) FROM buyer b WHERE b.cid = 'c07'), 300000, DATE '2024-11-19'));
-insert into saleContract values(saleContract_t('sc04', (SELECT REF(s) FROM seller s WHERE s.cid = 'c04'), (SELECT REF(b) FROM buyer b WHERE b.cid = 'c08'), 600000, DATE '2024-12-15'));
-insert into saleContract values(saleContract_t('sc05', (SELECT REF(s) FROM seller s WHERE s.cid = 'c05'), (SELECT REF(b) FROM buyer b WHERE b.cid = 'c22'), 750000, DATE '2025-02-20'));
-insert into saleContract values(saleContract_t('sc06', (SELECT REF(s) FROM seller s WHERE s.cid = 'c06'), (SELECT REF(b) FROM buyer b WHERE b.cid = 'c23'), 500000, DATE '2025-03-10'));
+insert into saleContract values(saleContract_t('sc01', (SELECT REF(s) FROM seller s WHERE s.cid = 'c01'), (SELECT REF(b) FROM buyer b WHERE b.cid = 'c10'), 850000, DATE '2024-10-10'));
+insert into saleContract values(saleContract_t('sc02', (SELECT REF(s) FROM seller s WHERE s.cid = 'c02'), (SELECT REF(b) FROM buyer b WHERE b.cid = 'c11'), 450000, DATE '2025-01-05'));
+insert into saleContract values(saleContract_t('sc03', (SELECT REF(s) FROM seller s WHERE s.cid = 'c03'), (SELECT REF(b) FROM buyer b WHERE b.cid = 'c12'), 300000, DATE '2024-11-19'));
+insert into saleContract values(saleContract_t('sc04', (SELECT REF(s) FROM seller s WHERE s.cid = 'c04'), (SELECT REF(b) FROM buyer b WHERE b.cid = 'c13'), 600000, DATE '2024-12-15'));
+insert into saleContract values(saleContract_t('sc05', (SELECT REF(s) FROM seller s WHERE s.cid = 'c05'), (SELECT REF(b) FROM buyer b WHERE b.cid = 'c14'), 750000, DATE '2025-02-20'));
+insert into saleContract values(saleContract_t('sc06', (SELECT REF(s) FROM seller s WHERE s.cid = 'c06'), (SELECT REF(b) FROM buyer b WHERE b.cid = 'c15'), 500000, DATE '2025-03-10'));
 
 --------------------------------------------------------------------------------------
 
