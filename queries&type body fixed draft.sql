@@ -150,7 +150,8 @@ END;
 SELECT a.aid, a.aname, a.browseProperty() AS properties_browsed
 FROM agent a WHERE a.aid = 'a03';
 
---tried incorrect approach about propertyPreferred
+
+--tried incorrect approach about propertyPreferred used to be hint
 CREATE OR REPLACE TYPE BODY customer_t AS 
   MEMBER FUNCTION timeSpentLooking RETURN INT IS 
   BEGIN 
