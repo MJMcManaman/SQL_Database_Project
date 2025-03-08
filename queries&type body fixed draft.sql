@@ -1,3 +1,4 @@
+-- function for supertype customer
 CREATE OR REPLACE TYPE BODY customer_t AS 
   MEMBER FUNCTION timeSpentLooking RETURN INT IS 
   BEGIN 
@@ -21,6 +22,7 @@ CREATE OR REPLACE TYPE BODY customer_t AS
 END;
 /
 
+-- function for subtype buyer
 CREATE OR REPLACE TYPE BODY buyer_t AS
   OVERRIDING MEMBER FUNCTION propertyPreferred RETURN SYS_REFCURSOR IS c SYS_REFCURSOR;
   BEGIN
