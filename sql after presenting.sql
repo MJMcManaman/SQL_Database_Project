@@ -170,8 +170,7 @@ CREATE OR REPLACE TYPE BODY customer_t AS
     OPEN c FOR
       SELECT ac.poid.pid, ac.poid.propertyType
       FROM agentContract ac
-      WHERE ac.poid.propertyDetail.listedPrice < ac.scoid.buyerid.pricePreferred * 1.2
-      AND ac.coid.cid = SELF.cid;
+      WHERE ac.poid.propertyDetail.listedPrice < self.pricePreferred * 1.2;
     RETURN c;
   END propertyPreferred;
 END;
