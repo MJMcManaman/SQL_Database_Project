@@ -18,7 +18,7 @@ SELECT XMLELEMENT("Landlord",
             XMLELEMENT("Properties",
               XMLAGG(
                 XMLELEMENT("Property",
-                  XMLFOREST(p.pid AS "ropertyID",
+                  XMLFOREST(p.pid AS "propertyID",
                             p.propertyType AS "propertyType",
                             p.address AS "address")))))) as doc
   FROM landlord l, property p WHERE l.timeOwned() > 10 GROUP BY l.cname;
