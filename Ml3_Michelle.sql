@@ -81,8 +81,20 @@ SELECT XMLROOT(
                         FROM TABLE(b.propertyPreferred())))), version '1.0') as doc
   FROM buyer b WHERE b.cname = 'Sophia Martin';
 
-
-
+-- 7. List property and its details handled by agent Frank Miller and his years of
+-- experiences, and display the property's region.
+SELECT XMLROOT(XMLELEMENT("Property", 
+  XMLELEMENT("VancouverProperties",
+    XMLAGG(XMLELEMENT("propertyDetails",
+      XMLATTRIBUTES(p.pid AS "propertyID"),
+        XMLFOREST(p.propertyType AS "propertyType",
+            p.propertyDetail.listedPrice AS "listedPrice",
+            p.builtYear)
+        XMLAGG(XMLELEMENT("agent",
+          XMLATTRIBUTES(a.aid AS "agentID"),
+            XMLFOREST(a.yearOfExperience() AS "yearsOfExperiences",)))), version '1.0') as doc
+  FROM property p, agent a, agentContrac ac WHERE a.aname = 'Frank Miller'
+  AND a.aid = ac.aoid.aid AND ac.poid.pid = p.pid;
 
 
 
