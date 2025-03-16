@@ -55,6 +55,36 @@ SELECT XMLROOT(XMLELEMENT("Contracts",
   AND rc.signedTime >= ADD_MONTHS(SYSDATE, -37)
   AND ac.poid.pid = p.pid AND ac.rcoid.rcid = rc.rcid;
 
+-- 5. list all the properties that are signed this year with the details of the 
+-- property (property's type, address, the recommended price, open house's date,
+-- for that property, and the number of days it has been on the market).
+SELECT XMLROOT(XMLELEMENT("Listings",
+  XMLAGG(XMLELEMENT("property",
+    XMLATTRIBUTES(p.pid AS "propertyID"),
+      XMLFOREST(p.propertyType AS "type",
+                p.address AS "address",
+                p.propertyDetail.listedPrice AS "listedPrice",
+                p.propertyDetail.openHouse AS "openHouse",
+                p.propertyDetail.daysListed() AS "daysOnMarket")))), version '1.0') as doc
+  FROM property p WHERE EXTRACT(YEAR FROM p.propertyDetail.listingStartDate) = 2025;
+
+-- 6. list all properties that matches Sophia Martin's price's preference.
+SELECT XMLROOT(
+  XMLELEMENT("Buyer",
+    XMLFOREST(b.cid AS "buyerID",
+              b.cname AS "buyerName",
+                XMLELEMENT("PreferredProperties",
+                  (SELECT XMLAGG(
+                    XMLELEMENT("Property",
+                      XMLFOREST(p.pid AS "propertyID",
+                                p.propertyType AS "propertyType")))
+                        FROM TABLE(b.propertyPreferred())))), version '1.0') as doc
+  FROM buyer b WHERE b.cname = 'Sophia Martin';
+
+
+
+
+
 
 
 
