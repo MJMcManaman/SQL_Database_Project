@@ -1,6 +1,7 @@
 SET long 32000
 SET pagesize 60
 
+--------------------------------------------------------------------------------------------------------------
 -- 1. List all properties in the "Vancouver" region , including their property type, 
 -- listed price, and the number of days they have been listed.
 SELECT XMLROOT(XMLELEMENT("Property", 
@@ -96,7 +97,9 @@ SELECT XMLROOT(XMLELEMENT("Property",
   FROM property p, agent a, agentContrac ac WHERE a.aname = 'Frank Miller'
   AND a.aid = ac.aoid.aid AND ac.poid.pid = p.pid;
 
-
-
+--------------------------------------------------------------------------------------------------------------
+OracleXML getXML -user "grp2/here4grp2" \ 
+-conn "jdbc:oracle:thin:@sit.itec.yorku.ca:1521/studb10g" \
+"SELECT p.pid, p.propertyType, p.propertySize() FROM property p "
 
 
