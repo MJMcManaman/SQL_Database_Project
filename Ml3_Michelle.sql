@@ -72,11 +72,18 @@ SELECT XMLROOT(XMLELEMENT("Listings",
                 p.propertyDetail.daysListed() AS "daysOnMarket")))), version '1.0') as doc
   FROM property p WHERE EXTRACT(YEAR FROM p.propertyDetail.listingStartDate) = 2025;
 
--- 6. list all buyers' pricePreferences
+-- 6. list all buyers' pricePreferences and properties that matches's their price range.
 SELECT XMLROOT(XMLELEMENT("Buyer",
   XMLATTRIBUTES(b.cid AS "buyerID"),
     XMLFOREST(b.cname AS "buyerName",
-              b.pricePreferred AS "perferredPrice")), version '1.0') as doc
+              b.pricePreferred AS "perferredPrice"),
+      XMLELEMENT("Properties",
+        (SELECT XMLELEMENT("Property",
+          XMLATTRIBUTES(p.pid AS "propertyID"),
+            XMLFOREST(p.address AS "propertyAddres",
+                      p.propertyType AS "propertyType",
+                      p.age() AS "propertyAge"))
+        FROM property p WHERE p.propertyDetail.listedPrice < b.pricePreferred))), version '1.0') as doc
   FROM buyer b;
 
 -- 7. List property and its details handled by agent Frank Miller and his years of
