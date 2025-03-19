@@ -26,6 +26,7 @@ SELECT XMLELEMENT("Landlords",
   AND ac.rcoid.rcid = rc.rcid AND rc.landlordid.cid = l.cid
   AND ac.poid.pid = p.pid;
 
+-- GROUP BY request
 -- 3. list all details of the sale contracts signed this year (2025), including
 -- seller & buyer's name, sale price, and the property's address.
 SELECT XMLROOT(XMLELEMENT("Contracts_2025", 
