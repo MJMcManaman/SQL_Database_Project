@@ -15,16 +15,18 @@ SELECT XMLROOT(XMLELEMENT("Property",
 
 -- 2. List all landlords who have owned their properties for more than 10 years, 
 -- including their contact information and the properties they own.
-SELECT XMLELEMENT("Landlords",
+SELECT XMLELEMENT("Properties",
+  XMLAGG(XMLELEMENT("landlord_properties",
+  XMLATTRIBUTES(l.cid AS "landlordID"),
   XMLFOREST(l.cname AS "landlordName",
             l.phoneNum AS "phoneNumber",
             p.pid AS "propertyID",
             p.propertyType AS "Type",
-            p.address AS "Address")) as doc
+            p.address AS "Address")))) as doc
   FROM landlord l, property p, agentContract ac, rentContract rc
   WHERE l.timeOwned() > 10
   AND ac.rcoid.rcid = rc.rcid AND rc.landlordid.cid = l.cid
-  AND ac.poid.pid = p.pid;
+  AND ac.poid.pid = p.pid GROUP BY l.cid;
 
 -- GROUP BY request
 -- 3. list all details of the sale contracts signed this year (2025), including
@@ -80,23 +82,57 @@ SELECT XMLROOT(
                     XMLELEMENT("Property",
                       XMLFOREST(p.pid AS "propertyID",
                                 p.propertyType AS "propertyType")))
-                        FROM TABLE(b.propertyPreferred())))), version '1.0') as doc
+                        FROM TABLE(b.propertyPreferred()))))), version '1.0') as doc
   FROM buyer b WHERE b.cname = 'Sophia Martin';
 
+SELECT XMLROOT(
+  XMLELEMENT("Buyer",
+    XMLFOREST(b.cid AS "buyerID",
+              b.cname AS "buyerName",
+      XMLELEMENT())))
+
 -- 7. List property and its details handled by agent Frank Miller and his years of
--- experiences, and display the property's region.
-SELECT XMLROOT(XMLELEMENT("Property", 
-  XMLELEMENT("VancouverProperties",
-    XMLAGG(XMLELEMENT("propertyDetails",
-      XMLATTRIBUTES(p.pid AS "propertyID"),
-        XMLFOREST(p.propertyType AS "propertyType",
-            p.propertyDetail.listedPrice AS "listedPrice",
-            p.builtYear)
-        XMLAGG(XMLELEMENT("agent",
-          XMLATTRIBUTES(a.aid AS "agentID"),
-            XMLFOREST(a.yearOfExperience() AS "yearsOfExperiences",)))), version '1.0') as doc
-  FROM property p, agent a, agentContrac ac WHERE a.aname = 'Frank Miller'
+-- experiences.
+SELECT XMLROOT(
+  XMLELEMENT("Property", 
+   XMLAGG(XMLELEMENT("propertyDetails",
+     XMLATTRIBUTES(p.pid AS "propertyID"),
+      XMLFOREST(p.propertyType AS "propertyType",
+           p.propertyDetail.listedPrice AS "listedPrice",
+           p.builtYear AS "builtYear",
+           p.age() AS "propertyAge")
+      XMLELEMENT("Agents",
+         (SELECT XMLAGG(
+          XMLELEMENT("agent",
+           XMLATTRIBUTES(a.aid AS "agentID"),
+             XMLFOREST(a.aname AS "agentName",
+                      a.yearOfExperience() AS "yearsOfExperiences")))
+      FROM agent a, agentContract ac WHERE a.aid = ac.aoid.aid
+      AND ac.poid.pid = p.pid AND a.aname = 'Frank Miller'))))), version '1.0') as doc
+  FROM property p WHERE a.aname = 'Frank Miller'
   AND a.aid = ac.aoid.aid AND ac.poid.pid = p.pid;
+
+SELECT XMLROOT(
+XMLELEMENT("Property",
+XMLAGG(
+XMLELEMENT("propertyDetails",
+XMLATTRIBUTES(p.pid AS "propertyID"),
+XMLFOREST(p.propertyType AS "propertyType",
+p.propertyDetail.listedPrice AS "listedPrice",
+p.builtYear AS "builtYear"),
+XMLELEMENT("Agents",
+(SELECT XMLAGG(
+XMLELEMENT("agent",
+XMLATTRIBUTES(a.aid AS "agentID"),
+XMLFOREST(a.yearOfExperience() AS "yearsOfExperience")))
+FROM agent a, agentContract ac
+WHERE a.aid = ac.aoid.aid
+AND ac.poid.pid = p.pid))))), VERSION '1.0') AS doc
+FROM property p
+WHERE EXISTS (SELECT * FROM agentContract ac, agent a WHERE ac.aoid.aid = a.aid 
+  AND ac.poid.pid = p.pid AND a.aname = 'Frank Miller');
+
+
 
 --------------------------------------------------------------------------------------------------------------
 OracleXML getXML -user "grp2/here4grp2" -conn "jdbc:oracle:thin:@sit.itec.yorku.ca:1521/studb10g" "SELECT a.aname AS agentName, a.yearOfExperience() AS experienceYears, p.pid AS propertyID, p.address AS propertyAddress FROM agent a, property p, agentContract ac WHERE a.aid = ac.aoid.aid AND ac.poid.pid = p.pid"
