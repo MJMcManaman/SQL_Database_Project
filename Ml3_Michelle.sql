@@ -99,8 +99,6 @@ SELECT XMLROOT(XMLELEMENT("Property",
   AND a.aid = ac.aoid.aid AND ac.poid.pid = p.pid;
 
 --------------------------------------------------------------------------------------------------------------
-OracleXML getXML -user "grp2/here4grp2" \ 
--conn "jdbc:oracle:thin:@sit.itec.yorku.ca:1521/studb10g" \
-"SELECT p.pid, p.propertyType, p.propertySize() FROM property p "
+OracleXML getXML -user "grp2/here4grp2" -conn "jdbc:oracle:thin:@sit.itec.yorku.ca:1521/studb10g" "SELECT a.aname AS agentName, a.yearOfExperience() AS experienceYears, p.pid AS propertyID, p.address AS propertyAddress FROM agent a, property p, agentContract ac WHERE a.aid = ac.aoid.aid AND ac.poid.pid = p.pid"
 
 
