@@ -72,24 +72,12 @@ SELECT XMLROOT(XMLELEMENT("Listings",
                 p.propertyDetail.daysListed() AS "daysOnMarket")))), version '1.0') as doc
   FROM property p WHERE EXTRACT(YEAR FROM p.propertyDetail.listingStartDate) = 2025;
 
--- 6. list all properties that matches Sophia Martin's price's preference.
-SELECT XMLROOT(
-  XMLELEMENT("Buyer",
-    XMLFOREST(b.cid AS "buyerID",
-              b.cname AS "buyerName",
-                XMLELEMENT("PreferredProperties",
-                  (SELECT XMLAGG(
-                    XMLELEMENT("Property",
-                      XMLFOREST(p.pid AS "propertyID",
-                                p.propertyType AS "propertyType")))
-                        FROM TABLE(b.propertyPreferred()))))), version '1.0') as doc
-  FROM buyer b WHERE b.cname = 'Sophia Martin';
-
-SELECT XMLROOT(
-  XMLELEMENT("Buyer",
-    XMLFOREST(b.cid AS "buyerID",
-              b.cname AS "buyerName",
-      XMLELEMENT())))
+-- 6. list all buyers' pricePreferences
+SELECT XMLROOT(XMLELEMENT("Buyer",
+  XMLATTRIBUTES(b.cid AS "buyerID"),
+    XMLFOREST(b.cname AS "buyerName",
+              b.pricePreferred AS "perferredPrice")), version '1.0') as doc
+  FROM buyer b;
 
 -- 7. List property and its details handled by agent Frank Miller and his years of
 -- experiences.
@@ -112,6 +100,7 @@ SELECT XMLROOT(
   FROM property p WHERE a.aname = 'Frank Miller'
   AND a.aid = ac.aoid.aid AND ac.poid.pid = p.pid;
 
+-- working one
 SELECT XMLROOT(
 XMLELEMENT("Property",
 XMLAGG(
