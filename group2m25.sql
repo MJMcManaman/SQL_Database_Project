@@ -1,4 +1,4 @@
-<!--changed the name of this file, both here and when creating this folder in oracle account-->
+-- changed the name of this file, both here and when creating this folder in oracle account
 declare
   ret boolean;
   begin
