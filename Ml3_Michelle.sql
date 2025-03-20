@@ -2,62 +2,67 @@ SET long 32000
 SET pagesize 60
 
 --------------------------------------------------------------------------------------------------------------
--- 1. List all properties in the "Vancouver" region , including their property type, 
+-- 1. List all properties in the "Vancouver" region (r02), including their property type, 
 -- listed price, and the number of days they have been listed.
-SELECT XMLROOT(XMLELEMENT("Property", 
-  XMLELEMENT("VancouverProperties",
+SELECT XMLROOT(XMLELEMENT("Vancouver_properties", 
     XMLAGG(XMLELEMENT("propertyDetails",
-      XMLATTRIBUTES(p.pid AS "propertyID"),
+      XMLATTRIBUTES(p.pid AS "PID"),
         XMLFOREST(p.propertyType AS "propertyType",
             p.propertyDetail.listedPrice AS "listedPrice",
-            p.propertyDetail.daysListed() AS "daysListed"))))), version '1.0') as doc
-  FROM property p, region r WHERE p.roid.rid = r.rid AND r.city = 'Vancouver';
+            p.propertyDetail.daysListed() AS "daysListed")))), version '1.0') as doc
+  FROM property p WHERE p.roid.rid = 'r02';
 
--- 2. List all landlords who have owned their properties for more than 10 years, 
--- including their contact information and the properties they own.
-SELECT XMLELEMENT("Properties",
-  XMLAGG(XMLELEMENT("landlord_properties",
-  XMLATTRIBUTES(l.cid AS "landlordID"),
-  XMLFOREST(l.cname AS "landlordName",
-            l.phoneNum AS "phoneNumber",
-            p.pid AS "propertyID",
-            p.propertyType AS "Type",
-            p.address AS "Address")))) as doc
-  FROM landlord l, property p, agentContract ac, rentContract rc
-  WHERE l.timeOwned() > 10
-  AND ac.rcoid.rcid = rc.rcid AND rc.landlordid.cid = l.cid
-  AND ac.poid.pid = p.pid GROUP BY l.cid;
 
--- GROUP BY request
+-- 2. List all landlords who has a rentContract with tenant Mia Peterson.
+SELECT XMLROOT(XMLELEMENT("landlords",
+  XMLAGG(XMLELEMENT("landlord_information",
+    XMLATTRIBUTES(rc.landlordid.cid AS "CID"),
+      XMLAGG(XMLELEMENT("info",
+        XMLFOREST(rc.landlordid.cname AS "landlordName",
+                rc.landlordid.phoneNum AS "phoneNumber",
+                rc.landlordid.pricePreferred AS "landlord_price")))))), version '1.0') as doc
+  FROM rentContract rc WHERE rc.tenantid.cname = 'Mia Peterson' GROUP BY rc.landlordid.cid;
+
 -- 3. list all details of the sale contracts signed this year (2025), including
 -- seller & buyer's name, sale price, and the property's address.
 SELECT XMLROOT(XMLELEMENT("Contracts_2025", 
   XMLELEMENT("saleContract",
     XMLAGG(XMLELEMENT("contractDetails", 
-      XMLATTRIBUTES(sc.scid AS "SCID"),
-        XMLFOREST(s.cname AS "sellerName",
-            b.cname AS "buyerName",
-            sc.salePrice AS "salePrice",
-            p.address AS "propertyAddress"))))), version '1.0') as doc
-  FROM saleContract sc, seller s, buyer b, property p, agentContract ac
-  WHERE sc.sellerid.cid = s.cid AND sc.buyerid.cid = b.cid 
-  AND EXTRACT(YEAR FROM sc.signedTime) = 2025
-  AND ac.poid.pid = p.pid AND ac.scoid.scid = sc.scid GROUP BY sc.scid;
+      XMLATTRIBUTES(ac.scoid.scid AS "SCID"),
+        XMLAGG(XMLELEMENT("info",
+        XMLFOREST(ac.scoid.sellerid.cname AS "sellerName",
+            ac.scoid.buyerid.cname AS "buyerName",
+            ac.scoid.salePrice AS "salePrice",
+            ac.poid.address AS "propertyAddress",
+            ac.scoid.signedTime AS "signedDate"))))))), version '1.0') as doc
+  FROM agentContract ac WHERE EXTRACT(YEAR FROM ac.scoid.signedTime) = 2025 GROUP BY ac.scoid.scid;
 
 -- 4. list all details of the rent contracts signed in the last 3 years, including
 -- landlord & tenant's name, rent price, and the property's address.
 SELECT XMLROOT(XMLELEMENT("Contracts", 
   XMLELEMENT("rentContract",
     XMLAGG(XMLELEMENT("contractDetails", 
-      XMLATTRIBUTES(rc.rcid AS "RCID"),
-        XMLFOREST(l.cname AS "landlordName",
-            t.cname AS "tenantName",
-            rc.rentPrice AS "rentPrice",
-            p.address AS "propertyAddress"))))), version '1.0') as doc
-  FROM rentContract rc, landlord l, tenant t, property p, agentContract ac
-  WHERE rc.landlordid.cid = l.cid AND rc.tenantid.cid = t.cid 
-  AND rc.signedTime >= ADD_MONTHS(SYSDATE, -37)
-  AND ac.poid.pid = p.pid AND ac.rcoid.rcid = rc.rcid;
+      XMLATTRIBUTES(ac.rcoid.rcid AS "RCID"),
+          XMLFOREST(ac.rcoid.landlordid.cname AS "landlordName",
+            ac.rcoid.tenantid.cname AS "tenantName",
+            ac.rcoid.rentPrice AS "rentPrice",
+            ac.poid.address AS "propertyAddress",
+            ac.rcoid.signedTime AS "signedDate"))))), version '1.0') as doc
+  FROM agentContract ac WHERE ac.rcoid.signedTime >= ADD_MONTHS(SYSDATE, -37) 
+  GROUP BY ac.rcoid.signedTime;
+
+
+--------------------------------------------------------------------------------------------------------------
+-- XSU
+OracleXML getXML -user "grp2/here4grp2" -conn "jdbc:oracle:thin:@sit.itec.yorku.ca:1521/studb10g" "SELECT a.aname AS agentName, a.yearOfExperience() AS experienceYears, p.pid AS propertyID, p.address AS propertyAddress FROM agent a, property p, agentContract ac WHERE a.aid = ac.aoid.aid AND ac.poid.pid = p.pid"
+
+
+
+
+
+-------------------------------------------------------------------------------------------------------------
+-- the rest of the requests are not used for now, just ideas.
+-- can be used later for xquery or if anyone can't think of a request.
 
 -- 5. list all the properties that are signed this year with the details of the 
 -- property (property's type, address, the recommended price, open house's date,
@@ -128,9 +133,5 @@ FROM property p
 WHERE EXISTS (SELECT * FROM agentContract ac, agent a WHERE ac.aoid.aid = a.aid 
   AND ac.poid.pid = p.pid AND a.aname = 'Frank Miller');
 
-
-
---------------------------------------------------------------------------------------------------------------
-OracleXML getXML -user "grp2/here4grp2" -conn "jdbc:oracle:thin:@sit.itec.yorku.ca:1521/studb10g" "SELECT a.aname AS agentName, a.yearOfExperience() AS experienceYears, p.pid AS propertyID, p.address AS propertyAddress FROM agent a, property p, agentContract ac WHERE a.aid = ac.aoid.aid AND ac.poid.pid = p.pid"
 
 
