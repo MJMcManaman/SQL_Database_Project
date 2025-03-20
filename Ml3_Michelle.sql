@@ -2,6 +2,7 @@ SET long 32000
 SET pagesize 60
 
 --------------------------------------------------------------------------------------------------------------
+-- requests (total number of 3 + extra one)
 -- 1. List all properties in the "Vancouver" region (r02), including their property type, 
 -- listed price, and the number of days they have been listed.
 SELECT XMLROOT(XMLELEMENT("Vancouver_properties", 
@@ -53,13 +54,55 @@ SELECT XMLROOT(XMLELEMENT("Contracts",
 
 
 --------------------------------------------------------------------------------------------------------------
--- XSU
+-- XSU (total number of 1)
 OracleXML getXML -user "grp2/here4grp2" -conn "jdbc:oracle:thin:@sit.itec.yorku.ca:1521/studb10g" "SELECT a.aname AS agentName, a.yearOfExperience() AS experienceYears, p.pid AS propertyID, p.address AS propertyAddress FROM agent a, property p, agentContract ac WHERE a.aid = ac.aoid.aid AND ac.poid.pid = p.pid"
 
+--------------------------------------------------------------------------------------------------------------
+-- Xquery (total number of 3)
+-- 1. List all seller's information where their preferred price is more than 400000.00
+-- use qualification conditions specified on elements
+xquery
+let $s := doc("/public/group2m25/seller.xml")
+for $c in $s/Sellers/Seller
+where $c/pricePreferred > " 400000.00"
+return $c
+/
+
+-- 2. List the buyer's ID, name and pricePreferred which their ID is c10.
+-- use qualification conditions specified on tag attributes
+xquery
+let $b := doc("/public/group2m25/buyer.xml")
+for $c in $s/Buyers/Buyer
+where $c/@buyerID > " c10"
+return element buyer {element buyerID {$c/buyer/@buyerID},
+    element buyerName {$c/buyerName/text()},
+    element pricePreferred {$c/pricePreferred/text()}}
+/
+
+-- 3. List the agent that currently has a contract with customers, return their IDs.
+-- formulated using more than one XML file from Oracle XML DB repository
+xquery
+let $a := doc("/public/group2m25/agent.xml")
+for $e in $a/Agents/Agent
+let $ac := doc("/public/group2m25/agentContract.xml")
+for $b in $ac/AgentContracts/AgentContract
+where $e/@agentID = $b/agentID
+return element agentID {element agentID {$e/@agentID},
+    element agency {$e/agency/text()},
+    element yearStarted {$a/yearStarted/text()}}
+/
+
+
+
+    
 
 
 
 
+
+
+
+    
 -------------------------------------------------------------------------------------------------------------
 -- the rest of the requests are not used for now, just ideas.
 -- can be used later for xquery or if anyone can't think of a request.
