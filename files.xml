@@ -1,0 +1,220 @@
+<!--change name of this file here when ready to be inserted into oracle-->
+<!--there are multiple files in this-->
+<!--I think this is how to write this? im not 100% sure-->
+
+Declare
+  ret boolean;
+    begin
+    ret := dbms_xdb.createresource('/public/folder_name/buyer.xml',
+  '<Buyers>
+    <Buyer buyerID="c10">
+      <buyerName>Charlie Brown</buyerName>
+      <phoneNum>3456789012</phoneNum>
+      <dateStarted>2019-05-30</dateStarted>
+      <pricePreferred>250000.00</pricePreferred>
+    </Buyer>
+    <Buyer buyerID="c11">
+      <buyerName>Diana White</buyerName>
+      <phoneNum>4567890123</phoneNum>
+      <dateStarted>2018-11-10</dateStarted>
+      <pricePreferred>340000.00</pricePreferred>
+    </Buyer>
+    <Buyer buyerID="c12">
+      <buyerName>Lucas White</buyerName>
+      <phoneNum>1234509876</phoneNum>
+      <dateStarted>2022-03-15</dateStarted>
+      <pricePreferred>700000.00</pricePreferred>
+    </Buyer>
+    <Buyer buyerID="c13">
+      <buyerName>Amelia Clark</buyerName>
+      <phoneNum>2345610987</phoneNum>
+      <dateStarted>2021-09-05</dateStarted>
+      <pricePreferred>225000.00v</pricePreferred>
+    </Buyer>
+    <Buyer buyerID="c14">
+      <buyerName>Sophia Martin</buyerName>
+      <phoneNum>9012345678</phoneNum>
+      <dateStarted>2015-06-18</dateStarted>
+      <pricePreferred>500000.00</pricePreferred>
+    </Buyer>
+    <Buyer buyerID="c15">
+      <buyerName>James Anderson</buyerName>
+      <phoneNum>0123456789</phoneNum>
+      <dateStarted>2014-11-30</dateStarted>
+      <pricePreferred>600000.00</pricePreferred>
+    </Buyer>
+  </Buyers>
+     ');
+  commit;
+end;
+/
+
+----------------------------------------------------------------------------------------------------------------------------
+Declare
+  ret boolean;
+    begin
+    ret := dbms_xdb.createresource('/public/folder_name/seller.xml',
+  '<Sellers>
+    <Seller sellerID="c01">
+      <sellerName>Alice Smith</sellerName>
+      <phoneNum>1234567890</phoneNum>
+      <dateOwned>2001-04-15</dateOwned>
+      <pricePreferred>300000.00</pricePreferred>
+    </Seller>
+    <Seller sellerID="c02">
+      <sellerName>Bob Johnson</sellerName>
+      <phoneNum>2345678901</phoneNum>
+      <dateOwned>2014-02-12</dateOwned>
+      <pricePreferred>400000.00</pricePreferred>
+    </Seller>
+    <Seller sellerID="c03">
+      <sellerName>John Doe</sellerName>
+      <phoneNum>3456789012</phoneNum>
+      <dateOwned>2018-07-19</dateOwned>
+      <pricePreferred>250000.00</pricePreferred>
+    </Seller>
+    <Seller sellerID="c04">
+      <sellerName>David Brown</sellerName>
+      <phoneNum>4567890123</phoneNum>
+      <dateOwned>2018-05-14</dateOwned>
+      <pricePreferred>1550000.00</pricePreferred>
+    </Seller>
+    <Seller sellerID="c05">
+      <sellerName>Karen Taylor</sellerName>
+      <phoneNum>5678901234</phoneNum>
+      <dateOwned>2016-09-23</dateOwned>
+      <pricePreferred>450000.00</pricePreferred>
+    </Seller>
+    <Seller sellerID="c06">
+      <sellerName>Paul Walker</sellerName>
+      <phoneNum>6789012345</phoneNum>
+      <dateOwned>2019-03-30</dateOwned>
+      <pricePreferred>900000.00</pricePreferred>
+    </Seller>
+  </Sellers>
+    ');
+  commit;
+end;
+/
+
+
+----------------------------------------------------------------------------------------------------------------------------
+Declare
+  ret boolean;
+    begin
+    ret := dbms_xdb.createresource('/public/folder_name/tenant.xml',
+  '<Tenants>
+    <Tenant tenantID="c30">
+      <tenantName>James Sullivan</tenantName>
+      <phoneNum>1234509888</phoneNum>
+      <dateStarted>2022-03-15</dateStarted>
+      <pricePreferred>2200.00</pricePreferred>
+    </Tenant>
+    <Tenant tenantID="c31">
+      <tenantName>Mia Peterson</tenantName>
+      <phoneNum>2345610987</phoneNum>
+      <dateStarted>2021-09-05</dateStarted>
+      <pricePreferred>3100.00</pricePreferred>
+    </Tenant>
+    <Tenant tenantID="c32">
+      <tenantName>Benjamin Harris</tenantName>
+      <phoneNum>3456789012</phoneNum>
+      <dateStarted>2020-01-10</dateStarted>
+      <pricePreferred>4100.00</pricePreferred>
+    </Tenant>
+    <Tenant tenantID="c33">
+      <tenantName>Emma Lewis</tenantName>
+      <phoneNum>4567890123</phoneNum>
+      <dateStarted>2019-04-20</dateStarted>
+      <pricePreferred>1500.00</pricePreferred>
+    </Tenant>
+    <Tenant tenantID="c34">
+      <tenantName>Mia Peterson</tenantName>
+      <phoneNum>1234509876</phoneNum>
+      <dateStarted>2022-03-15</dateStarted>
+      <pricePreferred>3100.00</pricePreferred>
+    </Tenant>
+    <Tenant tenantID="c35">
+      <tenantName>Mia Johnson</tenantName>
+      <phoneNum>6789012345</phoneNum>
+      <dateStarted>2022-12-01</dateStarted>
+      <pricePreferred>3200.00</pricePreferred>
+    </Tenant>
+  </Tenants>
+    ');
+  commit;
+end;
+/
+
+
+
+----------------------------------------------------------------------------------------------------------------------------
+Declare
+  ret boolean;
+    begin
+    ret := dbms_xdb.createresource('/public/folder_name/landlord.xml',
+  '<Landlords>
+    <Landlord landlordID="c20">
+      <landlordName>Olivia Bennett</landlordName>
+      <phoneNum>9012345678</phoneNum>
+      <dateOwned>2005-01-22</dateOwned>
+      <pricePreferred>2400.00</pricePreferred>
+    </Landlord>
+    <Landlord landlordID="c21">
+      <landlordName>James Bond</landlordName>
+      <phoneNum>0123456789</phoneNum>
+      <dateOwned>2010-10-28</dateOwned>
+      <pricePreferred>3500.00</pricePreferred>
+    </Landlord>
+    <Landlord landlordID="c22">
+      <landlordName>Emily Davis</landlordName>
+      <phoneNum>3456723456</phoneNum>
+      <dateOwned>2002-11-02</dateOwned>
+      <pricePreferred>2150.00</pricePreferred>
+    </Landlord>
+    <Landlord landlordID="c23">
+      <landlordName>Michael Scott</landlordName>
+      <phoneNum>5678923456</phoneNum>
+      <dateOwned>2014-06-20</dateOwned>
+      <pricePreferred>3000.00</pricePreferred>
+    </Landlord>
+    <Landlord landlordID="c24">
+      <landlordName>Mason Brooks</landlordName>
+      <phoneNum>1234509883</phoneNum>
+      <dateOwned>2018-03-15</dateOwned>
+      <pricePreferred>4500.00</pricePreferred>
+    </Landlord>
+    <Landlord landlordID="c25">
+      <landlordName>Ava Mitchell</landlordName>
+      <phoneNum>2345610987</phoneNum>
+      <dateOwned>2016-09-05</dateOwned>
+      <pricePreferred>2450.00</pricePreferred>
+    </Landlord>
+  </Landlords>
+    ');
+  commit;
+end;
+/
+
+
+----------------------------------------------------------------------------------------------------------------------------
+Declare
+  ret boolean;
+    begin
+    ret := dbms_xdb.createresource('/public/folder_name/file_name.xml',
+  '<root_element>
+    …
+   </root_element>
+    ');
+  commit;
+end;
+/
+
+
+
+
+
+
+
+
+
