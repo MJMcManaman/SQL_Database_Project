@@ -63,6 +63,7 @@ OracleXML getXML -user "grp2/here4grp2" -conn "jdbc:oracle:thin:@sit.itec.yorku.
 -------------------------------------------------------------------------------------------------------------
 -- the rest of the requests are not used for now, just ideas.
 -- can be used later for xquery or if anyone can't think of a request.
+-- these contain issues though, let me know if you wanna use these
 
 -- 5. list all the properties that are signed this year with the details of the 
 -- property (property's type, address, the recommended price, open house's date,
