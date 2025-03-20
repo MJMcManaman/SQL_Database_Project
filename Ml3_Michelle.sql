@@ -55,7 +55,7 @@ SELECT XMLROOT(XMLELEMENT("Contracts",
 
 --------------------------------------------------------------------------------------------------------------
 -- XSU (total number of 1)
-OracleXML getXML -user "grp2/here4grp2" -conn "jdbc:oracle:thin:@sit.itec.yorku.ca:1521/studb10g" "SELECT a.aname AS agentName, a.yearOfExperience() AS experienceYears, p.pid AS propertyID, p.address AS propertyAddress FROM agent a, property p, agentContract ac WHERE a.aid = ac.aoid.aid AND ac.poid.pid = p.pid"
+OracleXML getXML -user "grp2/here4grp2" -conn "jdbc:oracle:thin:@sit.itec.yorku.ca:1521/studb10g" "SELECT DISTINCT ac.aoid.aname AS agentName, ac.aoid.yearOfExperience() AS experienceYears, ac.poid.pid AS propertyID, ac.poid.address AS propertyAddress FROM agentContract ac"
 
 --------------------------------------------------------------------------------------------------------------
 -- Xquery (total number of 3)
