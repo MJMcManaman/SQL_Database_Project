@@ -1,4 +1,5 @@
 -- changed the name of this file, both here and when creating this folder in oracle account
+SET ECHO ON
 declare
   ret boolean;
   begin
