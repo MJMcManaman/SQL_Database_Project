@@ -10,7 +10,7 @@ SELECT XMLROOT(XMLELEMENT("Vancouver_properties",
         XMLFOREST(p.propertyType AS "propertyType",
             p.propertyDetail.listedPrice AS "listedPrice",
             p.propertyDetail.daysListed() AS "daysListed")))), version '1.0') as doc
-  FROM property p WHERE p.roid.rid = 'r02';
+  FROM property p WHERE p.roid.regionName = 'Vancouver';
 
 
 -- 2. List all landlords who has a rentContract with tenant Mia Peterson.
