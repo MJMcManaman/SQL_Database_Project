@@ -206,6 +206,83 @@ SET ECHO ON
 Declare
   ret boolean;
     begin
+    ret := dbms_xdb.createresource('/public/folder_name/agent.xml',
+  '<Agents>
+    <Agent agentID="a01">
+      <agentName>Brett Fox</agentName>
+      <agency>RealtyX</agency>
+      <yearStarted>2015</yearStarted>
+    </Agent>
+    <Agent agentID="a02">
+      <agentName>Frank Miller</agentName>
+      <agency>HomeFinder</agency>
+      <yearStarted>2010</yearStarted>
+    </Agent>
+    <Agent agentID="a03">
+      <agentName>Grace Hall</agentName>
+      <agency>SafeHomes</agency>
+      <yearStarted>2018</yearStarted>
+    </Agent>
+    <Agent agentID="a04">
+      <agentName>Harry King</agentName>
+      <agency>TopRealty</agency>
+      <yearStarted>2012</yearStarted>
+    </Agent>
+  </Agents>
+    ');
+  commit;
+end;
+/
+
+----------------------------------------------------------------------------------------------------------------------------
+SET ECHO ON
+Declare
+  ret boolean;
+    begin
+    ret := dbms_xdb.createresource('/public/folder_name/agentContract.xml',
+  '<AgentContracts>
+    <AgentContract contractID="ac01">
+      <agentID>a01</agentID>
+      <propertyID>p01</propertyID>
+      <contractType>rentContract</contractType>
+      <signatureTime>2025-02-24</signatureTime>
+    </AgentContract>
+    <AgentContract contractID="ac02">
+      <agentID>a02</agentID>
+      <propertyID>p02</propertyID>
+      <contractType>saleContract</contractType>
+      <signatureTime>2023-05-04</signatureTime>
+    </AgentContract>
+    <AgentContract contractID="ac03">
+      <agentID>a03</agentID>
+      <propertyID>p03</propertyID>
+      <contractType>rentContract</contractType>
+      <signatureTime>2025-02-20</signatureTime>
+    </AgentContract>
+    <AgentContract contractID="ac04">
+      <agentID>a03</agentID>
+      <propertyID>p06</propertyID>
+      <contractType>saleContract</contractType>
+      <signatureTime>2025-02-24</signatureTime>
+    </AgentContract>
+    <AgentContract contractID="ac05">
+      <agentID>a01</agentID>
+      <propertyID>p04</propertyID>
+      <contractType>rentContract</contractType>
+      <signatureTime>2025-02-24</signatureTime>
+    </AgentContract>
+  </AgentContracts>
+    ');
+  commit;
+end;
+/
+
+
+----------------------------------------------------------------------------------------------------------------------------
+SET ECHO ON
+Declare
+  ret boolean;
+    begin
     ret := dbms_xdb.createresource('/public/folder_name/file_name.xml',
   '<root_element>
     …
@@ -214,6 +291,22 @@ Declare
   commit;
 end;
 /
+
+
+----------------------------------------------------------------------------------------------------------------------------
+SET ECHO ON
+Declare
+  ret boolean;
+    begin
+    ret := dbms_xdb.createresource('/public/folder_name/file_name.xml',
+  '<root_element>
+    …
+   </root_element>
+    ');
+  commit;
+end;
+/
+
 
 
 
