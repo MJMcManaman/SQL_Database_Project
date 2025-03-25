@@ -74,9 +74,7 @@ xquery
 let $b := doc("/public/group2m25/buyer.xml")
 for $c in $b/Buyers/Buyer
 where $c/@buyerID = "c10"
-return element buyer {element buyerID {$c/@buyerID},
-    element buyerName {$c/buyerName/text()},
-    element pricePreferred {$c/pricePreferred/text()}}
+return $c/pricePreferred/text()
 /
 
 -- 3. List the agent that currently has a contract with customers, return their IDs.
