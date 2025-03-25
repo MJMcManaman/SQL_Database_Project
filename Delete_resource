@@ -1,0 +1,8 @@
+SET ECHO ON
+Declare
+  ret boolean;
+    begin
+    dbms_xdb.deleteresource('/public/folder_name/buyer.xml');
+    commit;
+end;
+/
