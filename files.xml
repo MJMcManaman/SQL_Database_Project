@@ -6,7 +6,7 @@ SET ECHO ON
 Declare
   ret boolean;
     begin
-    ret := dbms_xdb.createresource('/public/folder_name/buyer.xml',
+    ret := dbms_xdb.createresource('/public/group2m25/buyer.xml',
   '<Buyers>
     <Buyer buyerID="c10">
       <buyerName>Charlie Brown</buyerName>
@@ -55,7 +55,7 @@ SET ECHO ON
 Declare
   ret boolean;
     begin
-    ret := dbms_xdb.createresource('/public/folder_name/seller.xml',
+    ret := dbms_xdb.createresource('/public/group2m25/seller.xml',
   '<Sellers>
     <Seller sellerID="c01">
       <sellerName>Alice Smith</sellerName>
@@ -105,7 +105,7 @@ SET ECHO ON
 Declare
   ret boolean;
     begin
-    ret := dbms_xdb.createresource('/public/folder_name/tenant.xml',
+    ret := dbms_xdb.createresource('/public/group2m25/tenant.xml',
   '<Tenants>
     <Tenant tenantID="c30">
       <tenantName>James Sullivan</tenantName>
@@ -156,7 +156,7 @@ SET ECHO ON
 Declare
   ret boolean;
     begin
-    ret := dbms_xdb.createresource('/public/folder_name/landlord.xml',
+    ret := dbms_xdb.createresource('/public/group2m25/landlord.xml',
   '<Landlords>
     <Landlord landlordID="c20">
       <landlordName>Olivia Bennett</landlordName>
@@ -206,7 +206,7 @@ SET ECHO ON
 Declare
   ret boolean;
     begin
-    ret := dbms_xdb.createresource('/public/folder_name/agent.xml',
+    ret := dbms_xdb.createresource('/public/group2m25/agent.xml',
   '<Agents>
     <Agent agentID="a01">
       <agentName>Brett Fox</agentName>
@@ -239,7 +239,7 @@ SET ECHO ON
 Declare
   ret boolean;
     begin
-    ret := dbms_xdb.createresource('/public/folder_name/agentContract.xml',
+    ret := dbms_xdb.createresource('/public/group2m25/agentContract.xml',
   '<AgentContracts>
     <AgentContract contractID="ac01">
       <agentID>a01</agentID>
@@ -283,7 +283,7 @@ SET ECHO ON
 Declare
   ret boolean;
     begin
-    ret := dbms_xdb.createresource('/public/folder_name/file_name.xml',
+    ret := dbms_xdb.createresource('/public/group2m25/file_name.xml',
   '<root_element>
     …
    </root_element>
@@ -298,7 +298,7 @@ SET ECHO ON
 Declare
   ret boolean;
     begin
-    ret := dbms_xdb.createresource('/public/folder_name/file_name.xml',
+    ret := dbms_xdb.createresource('/public/group2m25/file_name.xml',
   '<root_element>
     …
    </root_element>
