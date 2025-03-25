@@ -64,7 +64,7 @@ OracleXML getXML -user "grp2/here4grp2" -conn "jdbc:oracle:thin:@sit.itec.yorku.
 xquery
 let $s := doc("/public/group2m25/seller.xml")
 for $c in $s/Sellers/Seller
-where $c/pricePreferred > " 400000.00"
+where $c/pricePreferred > "400000.00"
 return $c
 /
 
