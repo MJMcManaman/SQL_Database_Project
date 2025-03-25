@@ -68,13 +68,13 @@ where $c/pricePreferred > " 400000.00"
 return $c
 /
 
--- 2. List the buyer's ID, name and pricePreferred which their ID is c10.
+-- 2. List the preferred price of the buyer whose ID is c10.
 -- use qualification conditions specified on tag attributes
 xquery
 let $b := doc("/public/group2m25/buyer.xml")
-for $c in $s/Buyers/Buyer
-where $c/@buyerID > " c10"
-return element buyer {element buyerID {$c/buyer/@buyerID},
+for $c in $b/Buyers/Buyer
+where $c/@buyerID = "c10"
+return element buyer {element buyerID {$c/@buyerID},
     element buyerName {$c/buyerName/text()},
     element pricePreferred {$c/pricePreferred/text()}}
 /
@@ -82,13 +82,13 @@ return element buyer {element buyerID {$c/buyer/@buyerID},
 -- 3. List the agent that currently has a contract with customers, return their IDs.
 -- formulated using more than one XML file from Oracle XML DB repository
 xquery
-let $a := doc("/public/group2m25/agent.xml")
-for $e in $a/Agents/Agent
+let $a := doc('/public/group2m25/agent.xml')
+for $agent in $a/Agents/Agent
 let $ac := doc("/public/group2m25/agentContract.xml")
-for $b in $ac/AgentContracts/AgentContract
-where $e/@agentID = $b/agentID
-return element agentID {element agentID {$e/@agentID},
-    element agency {$e/agency/text()},
+for $agentContract in $ac/AgentContracts/AgentContract
+where $agent/@agentID = $agentContract/agentID
+return element agentID {element agentID {$agent/@agentID},
+    element agency {$agent/agency/text()},
     element yearStarted {$a/yearStarted/text()}}
 /
 
