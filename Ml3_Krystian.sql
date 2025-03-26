@@ -29,5 +29,17 @@ FROM listing l, region r
 WHERE l.roid.rid 
 ORDER BY listedPrice DESC;
 
+3. 
 
+SELECT XMLROOT(XMLELEMENT("Contracts", 
+         XMLELEMENT("Sale Contract", 
+         XMLAGG(XMLELEMENT("Contract Details",
+                  XMLATTRIBUTES(ac.scoid.scid AS "SCID"),
+         XMLFOREST(ac.scoid.buyerid.cname AS "Buyer Name", 
+         ac.scoid.sellerid.cname AS "Seller Name", 
+         ac.scoid.salePrice AS "Sale Price", 
+         ac.poid.address AS "Property Address",
+         ac.scoid.signedTime AS "Signed Date"))))), version '1.0')
+         AS document
+         FROM agentContract ac 
                            
