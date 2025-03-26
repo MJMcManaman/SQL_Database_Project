@@ -283,15 +283,410 @@ SET ECHO ON
 Declare
   ret boolean;
     begin
-    ret := dbms_xdb.createresource('/public/group2m25/file_name.xml',
-  '<root_element>
-    …
-   </root_element>
+    ret := dbms_xdb.createresource('/public/group2m25/region.xml',
+  '<Regions>
+     <Region rid="r02">
+       <regionName>West</regionName>
+       <province>British Columbia</province>
+       <city>Vancouver</city>
+     </Region>
+     <Region rid="r03">
+       <regionName>East</regionName>
+       <province>Quebec</province>
+       <city>Montreal</city>
+     </Region>
+     <Region rid="r04">
+       <regionName>Prairie</regionName>
+       <province>Alberta</province>
+       <city>Calgary</city>
+     </Region>
+     <Region rid="r05">
+       <regionName>Atlantic</regionName>
+       <province>Nova Scotia</province>
+       <city>Halifax</city>
+     </Region>
+   </Regions>
     ');
   commit;
 end;
 /
 
+
+----------------------------------------------------------------------------------------------------------------------------
+SET ECHO ON
+Declare
+  ret boolean;
+    begin
+    ret := dbms_xdb.createresource('/public/group2m25/property.xml',
+  '<Properties>
+    <Property pid="p01">
+      <regionID>r01</regionID>
+      <propertyType>detached</propertyType>
+      <builtYear>2010</builtYear>
+      <address>1 york lane</address>
+      <postalCode>M1K2G3</postalCode>
+      <propertyWidth>40.2</propertyWidth>
+      <propertyLength>104.1</propertyLength>
+      <listing>
+        <listingID>l01</listingID>
+        <listingStartDate>2024-10-10</listingStartDate>
+        <listedPrice>2695000.00</listedPrice>
+        <washroomNum>4</washroomNum>
+        <livingroomNum>2</livingroomNum>
+        <bedroomNum>7</bedroomNum>
+        <balcony>1</balcony>
+        <kitchenNum>2</kitchenNum>
+        <parkingSpace>1</parkingSpace>
+        <elevator>0</elevator>
+        <openHouse>2025-01-02</openHouse>
+      </listing>
+    </Property>
+    <Property pid="p02">
+      <regionID>r01</regionID>
+      <propertyType>semidetached</propertyType>
+      <builtYear>2005</builtYear>
+      <address>94 cook rd</address>
+      <postalCode>M2K3G4</postalCode>
+      <propertyWidth>24.5</propertyWidth>
+      <propertyLength>107.0</propertyLength>
+      <listing>
+        <listingID>l02</listingID>
+        <listingStartDate>2025-01-05</listingStartDate>
+        <listedPrice>1449000.00</listedPrice>
+        <washroomNum>1</washroomNum>
+        <livingroomNum>1</livingroomNum>
+        <bedroomNum>2</bedroomNum>
+        <balcony>1</balcony>
+        <kitchenNum>2</kitchenNum>
+        <parkingSpace>2</parkingSpace>
+        <elevator>0</elevator>
+        <openHouse>2025-02-01</openHouse>
+      </listing>
+    </Property>
+    <Property pid="p03">
+      <regionID>r04</regionID>
+      <propertyType>condo</propertyType>
+      <builtYear>2021</builtYear>
+      <address>47 university rd</address>
+      <postalCode>M3K4G5</postalCode>
+      <propertyWidth>27.2</propertyWidth>
+      <propertyLength>28.5</propertyLength>
+      <listing>
+        <listingID>l03</listingID>
+        <listingStartDate>2024-11-19</listingStartDate>
+        <listedPrice>1240000.00</listedPrice>
+        <washroomNum>3</washroomNum>
+        <livingroomNum>1</livingroomNum>
+        <bedroomNum>5</bedroomNum>
+        <balcony>3</balcony>
+        <kitchenNum>1</kitchenNum>
+        <parkingSpace>4</parkingSpace>
+        <elevator>0</elevator>
+        <openHouse>2025-02-21</openHouse>
+      </listing>
+    </Property>
+    <Property pid="p04">
+      <regionID>r03</regionID>
+      <propertyType>semidetached</propertyType>
+      <builtYear>1960</builtYear>
+      <address>57 alberta ave</address>
+      <postalCode>M4K5G6</postalCode>
+      <propertyWidth>17.4</propertyWidth>
+      <propertyLength>133.6</propertyLength>
+      <listing>
+        <listingID>l04</listingID>
+        <listingStartDate>2024-10-01</listingStartDate>
+        <listedPrice>798000.00</listedPrice>
+        <washroomNum>2</washroomNum>
+        <livingroomNum>3</livingroomNum>
+        <bedroomNum>3</bedroomNum>
+        <balcony>0</balcony>
+        <kitchenNum>1</kitchenNum>
+        <parkingSpace>2</parkingSpace>
+        <elevator>1</elevator>
+        <openHouse>2025-03-02</openHouse>
+      </listing>
+    </Property>
+    <Property pid="p05">
+      <regionID>r05</regionID>
+      <propertyType>detached</propertyType>
+      <builtYear>1978</builtYear>
+      <address>25 ascot ave</address>
+      <postalCode>M6K7G8</postalCode>
+      <propertyWidth>30.0</propertyWidth>
+      <propertyLength>107.0</propertyLength>
+      <listing>
+        <lid>l05</lid>
+        <listingStartDate>2024-10-05</listingStartDate>
+        <listedPrice>500000.00</listedPrice>
+        <washroomNum>4</washroomNum>
+        <livingroomNum>2</livingroomNum>
+        <bedroomNum>6</bedroomNum>
+        <balcony>4</balcony>
+        <kitchenNum>2</kitchenNum>
+        <parkingSpace>3</parkingSpace>
+        <elevator>0</elevator>
+        <openHouse>2025-02-12</openHouse>
+        <daysListed>160</daysListed>
+      </listing>
+  </Property>
+  <Property pid="p06">
+    <regionID>r02</regionID>
+    <propertyType>condo</propertyType>
+    <builtYear>2015</builtYear>
+    <address>12 pine st</address>
+    <postalCode>M7K8G9</postalCode>
+    <propertyWidth>20.0</propertyWidth>
+    <propertyLength>90.0</propertyLength>
+    <listing>
+      <lid>l06</lid>
+      <listingStartDate>2024-12-15</listingStartDate>
+      <listedPrice>950000.00</listedPrice>
+      <washroomNum>3</washroomNum>
+      <livingroomNum>1</livingroomNum>
+      <bedroomNum>4</bedroomNum>
+      <balcony>2</balcony>
+      <kitchenNum>1</kitchenNum>
+      <parkingSpace>1</parkingSpace>
+      <elevator>0</elevator>
+      <openHouse>2025-03-10</openHouse>
+      <daysListed>105</daysListed>
+    </listing>
+  </Property>
+  <Property pid="p07">
+    <regionID>r03</regionID>
+    <propertyType>detached</propertyType>
+    <builtYear>2000</builtYear>
+    <address>34 maple ave</address>
+    <postalCode>M8K9G0</postalCode>
+    <propertyWidth>50.0</propertyWidth>
+    <propertyLength>150.0</propertyLength>
+    <listing>
+      <listingID>l07</listingID>
+      <listingStartDate>2025-01-20</listingStartDate>
+      <listedPrice>1750000.00</listedPrice>
+      <washroomNum>5</washroomNum>
+      <livingroomNum>3</livingroomNum>
+      <bedroomNum>8</bedroomNum>
+      <balcony>3</balcony>
+      <kitchenNum>2</kitchenNum>
+      <parkingSpace>2</parkingSpace>
+      <elevator>1</elevator>
+      <openHouse>2025-04-15</openHouse>
+    </listing>
+  </Property>
+  <Property pid="p08">
+    <regionID>r04</regionID>
+    <propertyType>semidetached</propertyType>
+    <builtYear>1995</builtYear>
+    <address>56 oak st</address>
+    <postalCode>M9K0G1</postalCode>
+    <propertyWidth>25.0</propertyWidth>
+    <propertyLength>80.0</propertyLength>
+    <listing>
+      <listingID>l08</listingID>
+      <listingStartDate>2024-11-25</listingStartDate>
+      <listedPrice>1200000.00</listedPrice>
+      <washroomNum>2</washroomNum>
+      <livingroomNum>1</livingroomNum>
+      <bedroomNum>3</bedroomNum>
+      <balcony>1</balcony>
+      <kitchenNum>1</kitchenNum>
+      <parkingSpace>1</parkingSpace>
+      <elevator>0</elevator>
+      <openHouse>2025-02-20</openHouse>
+    </listing>
+  </Property>
+  <Property pid="p09">
+    <regionID>r05</regionID>
+    <propertyType>detached</propertyType>
+    <builtYear>1985</builtYear>
+    <address>78 birch rd</address>
+    <postalCode>M0K1G2</postalCode>
+    <propertyWidth>35.0</propertyWidth>
+    <propertyLength>110.0</propertyLength>
+    <listing>
+      <listingID>l09</listingID>
+      <listingStartDate>2024-12-05</listingStartDate>
+      <listedPrice>1350000.00</listedPrice>
+      <washroomNum>4</washroomNum>
+      <livingroomNum>2</livingroomNum>
+      <bedroomNum>6</bedroomNum>
+      <balcony>2</balcony>
+      <kitchenNum>2</kitchenNum>
+      <parkingSpace>2</parkingSpace>
+      <elevator>0</elevator>
+      <openHouse>2025-03-01</openHouse>
+    </listing>
+  </Property>
+  <Property pid="p10">
+    <regionID>r01</regionID>
+    <propertyType>condo</propertyType>
+    <builtYear>2018</builtYear>
+    <address>90 cedar ave</address>
+    <postalCode>M1K2G3</postalCode>
+    <propertyWidth>22.0</propertyWidth>
+    <propertyLength>95.0</propertyLength>
+    <listing>
+      <listingID>l10</listingID>
+      <listingStartDate>2025-01-10</listingStartDate>
+      <listedPrice>850000.00</listedPrice>
+      <washroomNum>3</washroomNum>
+      <livingroomNum>1</livingroomNum>
+      <bedroomNum>4</bedroomNum>
+      <balcony>1</balcony>
+      <kitchenNum>1</kitchenNum>
+      <parkingSpace>1</parkingSpace>
+      <elevator>0</elevator>
+      <openHouse>2025-04-05</openHouse>
+    </listing>
+  </Property>
+  <Property pid="p11">
+    <regionID>r02</regionID>
+    <propertyType>detached</propertyType>
+    <builtYear>2005</builtYear>
+    <address>23 elm st</address>
+    <postalCode>M2K3G4</postalCode>
+    <propertyWidth>45.0</propertyWidth>
+    <propertyLength>140.0</propertyLength>
+    <listing>
+      <listingID>l11</listingID>
+      <listingStartDate>2024-12-20</listingStartDate>
+      <listedPrice>1600000.00</listedPrice>
+      <washroomNum>5</washroomNum>
+      <livingroomNum>3</livingroomNum>
+      <bedroomNum>7</bedroomNum>
+      <balcony>3</balcony>
+      <kitchenNum>2</kitchenNum>
+      <parkingSpace>2</parkingSpace>
+      <elevator>1</elevator>
+      <openHouse>2025-03-15</openHouse>
+    </listing>
+  </Property>
+  <Property pid="p12">
+    <regionID>r03</regionID>
+    <propertyType>semidetached</propertyType>
+    <builtYear>1990</builtYear>
+    <address>67 spruce rd</address>
+    <postalCode>M3K4G5</postalCode>
+    <propertyWidth>28.0</propertyWidth>
+    <propertyLength>85.0</propertyLength>
+    <listing>
+      <listingID>l12</listingID>
+      <listingStartDate>2025-01-15</listingStartDate>
+      <listedPrice>1100000.00</listedPrice>
+      <washroomNum>2</washroomNum>
+      <livingroomNum>1</livingroomNum>
+      <bedroomNum>3</bedroomNum>
+      <balcony>1</balcony>
+      <kitchenNum>1</kitchenNum>
+      <parkingSpace>1</parkingSpace>
+      <elevator>0</elevator>
+      <openHouse>2025-04-10</openHouse>
+    </listing>
+  </Property>
+  </Properties>
+    ');
+  commit;
+end;
+/
+
+----------------------------------------------------------------------------------------------------------------------------
+SET ECHO ON
+Declare
+  ret boolean;
+    begin
+    ret := dbms_xdb.createresource('/public/group2m25/rentContract.xml',
+  '<RentContracts>
+    <RentContract rcid="rc01">
+      <landlordID>c21</landlordID>
+      <tenantID>c31</tenantID>
+      <rentPrice>3000.00</rentPrice>
+      <signedDate>2022-03-15</signedDate>
+      <rentLength>12</rentLength>
+    </RentContract>
+    <RentContract rcid="rc02">
+      <landlordID>c20</landlordID>
+      <tenantID>c30</tenantID>
+      <rentPrice>1985.00</rentPrice>
+      <signedDate>2021-09-05</signedDate>
+      <rentLength>6</rentLength>
+    </RentContract>
+    <RentContract rcid="rc03">
+      <landlordID>c25</landlordID>
+      <tenantID>c35</tenantID>
+      <rentPrice>850.00</rentPrice>
+      <signedDate>2020-01-10</signedDate>
+      <rentLength>24</rentLength>
+    </RentContract>
+    <RentContract rcid="rc04">
+      <landlordID>c22</landlordID>
+      <tenantID>c32</tenantID>
+      <rentPrice>3000.00</rentPrice>
+      <signedDate>2022-03-15</signedDate>
+      <rentLength>12</rentLength>
+    </RentContract>
+    <RentContract rcid="rc05">
+      <landlordID>c23</landlordID>
+      <tenantID>c33</tenantID>
+      <rentPrice>3000.00</rentPrice>
+      <signedDate>2022-03-15</signedDate>
+      <rentLength>12</rentLength>
+    </RentContract>
+  </RentContracts>
+    ');
+  commit;
+end;
+/
+
+----------------------------------------------------------------------------------------------------------------------------
+SET ECHO ON
+Declare
+  ret boolean;
+    begin
+    ret := dbms_xdb.createresource('/public/group2m25/saleContract.xml',
+  '<SaleContracts>
+    <SaleContract scid="sc01">
+      <sellerID>c01</sellerID>
+      <buyerID>c10</buyerID>
+      <salePrice>850000.00</salePrice>
+      <signedDate>2024-10-10</signedDate>
+    </SaleContract>
+    <SaleContract scid="sc02">
+      <sellerID>c02</sellerID>
+      <buyerID>c11</buyerID>
+      <salePrice>450000.00</salePrice>
+      <signedDate>2025-01-05</signedDate>
+    </SaleContract>
+    <SaleContract scid="sc03">
+      <sellerID>c03</sellerID>
+      <buyerID>c12</buyerID>
+      <salePrice>300000.00</salePrice>
+      <signedDate>2024-11-19</signedDate>
+    </SaleContract>
+    <SaleContract scid="sc04">
+      <sellerID>c04</sellerID>
+      <buyerID>c13</buyerID>
+      <salePrice>600000.00</salePrice>
+      <signedDate>2024-12-15</signedDate>
+    </SaleContract>
+    <SaleContract scid="sc05">
+      <sellerID>c05</sellerID>
+      <buyerID>c14</buyerID>
+      <salePrice>750000.00</salePrice>
+      <signedDate>2025-02-20</signedDate>
+    </SaleContract>
+    <SaleContract scid="sc06">
+      <sellerID>c06</sellerID>
+      <buyerID>c15</buyerID>
+      <salePrice>500000.00</salePrice>
+      <signedDate>2025-03-10</signedDate>
+    </SaleContract>
+  </SaleContracts>
+    ');
+  commit;
+end;
+/
 
 ----------------------------------------------------------------------------------------------------------------------------
 SET ECHO ON
