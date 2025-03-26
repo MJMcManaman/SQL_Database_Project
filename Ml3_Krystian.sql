@@ -42,4 +42,19 @@ SELECT XMLROOT(XMLELEMENT("Contracts",
          ac.scoid.signedTime AS "Signed Date"))))), version '1.0')
          AS document
          FROM agentContract ac 
-                           
+
+4.
+SELECT XMLROOT(
+         XMLELEMENT("BuyerWithProperty", 
+           XMLAGG(
+             XMLELEMENT("Buyer", 
+               XMLFOREST(
+                 b.cname AS "Name",
+                 b.phoneNum AS "Phone")  
+             )
+           )
+         ), 
+         VERSION '1.0'
+       ) AS document
+FROM buyer b
+WHERE b.cid IS NOT NULL;
