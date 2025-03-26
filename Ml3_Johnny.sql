@@ -8,11 +8,8 @@ select xmlelement("Property_Sold_Price_in_Region",
 	xmlelement("Size",ac.poid.propertySize())
 )
 as document 
-from agentContract ac, property p, region r
-where ac.poid.roid.rid = r.rid 
-AND ac.scoid.salePrice IS NOT NULL
-AND r.city ='Halifax'
-GROUP BY ac.poid.pid, ac.scoid.salePrice, ac.poid.age(), ac.poid.propertySize();
+from agentContract ac
+where ac.poid.roid.city ='Halifax';
 
 -- xmlagg, group by
 -- 2. list number of properties sold by types
@@ -32,9 +29,9 @@ group by ac.poid.propertyType;
 -- 3. list all properties sold by agents
 -- including the agent's name, experience, and the properties they sold.
 select xmlelement("Properties_Sold_By_Agent",
-  xmlattributes(a.aid as "Agent_id"),
-  xmlelement("Agent_Name", a.aname),
-  xmlelement("Agent_Experience", a.yearOfExperience()),
+  xmlattributes(ac.aoid.aid as "Agent_id"),
+  xmlelement("Agent_Name", ac.aoid.aname),
+  xmlelement("Agent_Experience", ac.aoid.yearOfExperience()),
     xmlelement("Property",
       xmlattributes(ac.poid.pid as "Property_id"),
       xmlforest(ac.poid.propertyType as "Type",
@@ -43,11 +40,10 @@ select xmlelement("Properties_Sold_By_Agent",
     )
   )
 as document
-from agentContract ac, agent a
-where a.aid = ac.aoid.aid;
+from agentContract ac; 
 
 -- xmlroot
---4.list all tenant who didn't rent any property
+--4. list all tenant who didn't rent any property
 select xmlroot(
   xmlelement("Tenant_Without_Rent",
     xmlagg(
@@ -60,5 +56,49 @@ select xmlroot(
 ) as document
 from tenant t
 where t.cid not in (select rc.tenantid.cid from rentContract rc);
+
+-- XSU 
+--5. List all property listed for sale (which have a sale contract)
+OracleXML getXML -user "grp2/here4grp2" -conn "jdbc:oracle:thin:@sit.itec.yorku.ca:1521/studb10g" "select distinct ac.poid.pid as Property_ID, ac.poid.address as Property_Address, ac.poid.propertyType as Property_Type, ac.poid.propertySize() as Property_Size, ac.scoid.salePrice as Sale_Price from agentContract ac where ac.scoid is not null"
+
+-- Xquery 
+--6 List the number of rent contracts signed by under each agent
+-- using more than one XML file from Oracle XML DB repository
+xquery
+let $a := doc('/public/mj/agent.xml')
+for $agent in $a/Agents/Agent
+let $ac := doc("/public/mj/agentContract.xml")
+let $rentedContracts := $ac/AgentContracts/AgentContract[agentID = $agent/@agentID and contractType = 'rentContract']
+return <Agent>
+  {$agent/agentName}
+  <TotalRented>{count($rentedContracts)}</TotalRented>
+</Agent>
+/
+
+--7 List the agent singed contract in 2025
+--return values of XML elements without XML tags. 
+--qualification conditions specified on attribute and element
+xquery
+let $a := doc('/public/mj/agent.xml')
+for $agent in $a/Agents/Agent
+let $ac := doc("/public/mj/agentContract.xml")
+where $ac/AgentContracts/AgentContract/agentID = $agent/@agentID 
+and $ac/AgentContracts/AgentContract/signatureTime >= '2025-01-01'
+return $agent/agentName/text()
+/
+
+--8 find prperties that's larger than 1000 square feet
+--qualification conditions specified on element
+xquery
+let $p := doc('/public/mj/property.xml')
+for $property in $p/Properties/Property
+where $property/propertyWidth * $property/propertyLength > 1000
+return <Property>
+  <PropertyID>{$property/@pid}</PropertyID>
+  {$property/address}
+  {$property/listing/listedPrice}
+  <Size>{xs:integer($property/propertyWidth * $property/propertyLength)}</Size>
+</Property>
+/
 
 
