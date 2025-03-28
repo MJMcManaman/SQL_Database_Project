@@ -15,6 +15,42 @@ SELECT XMLROOT(
   GROUP BY r.regionName;
 
 
+
+SELECT XMLROOT(
+         XMLELEMENT("Properties",
+            XMLAGG(
+               XMLELEMENT("Region",
+                  XMLATTRIBUTES(r.regionName AS "Region"),
+                  XMLFOREST(
+                     COUNT(CASE WHEN p.propertyType = 'detached' THEN 1 END) AS "DetachedHomes",
+                     COUNT(CASE WHEN p.propertyType = 'semi-detached' THEN 1 END) AS "SemiDetachedHomes",
+                     COUNT(CASE WHEN p.propertyType = 'detatched' THEN 1 END) AS "DetatchedHomes"
+                  )
+               )
+            )
+         ), VERSION '1.0'
+       ) AS document
+  FROM property p, region r
+  WHERE p.roid.rid = r.rid
+  GROUP BY r.regionName;
+
+SELECT XMLROOT(
+         XMLELEMENT("Properties",
+            XMLAGG(
+               XMLELEMENT("Region",
+                  XMLATTRIBUTES(r.regionName AS "Region"),
+                  XMLELEMENT("DetachedHomes", COUNT(CASE WHEN p.propertyType = 'detached' THEN 1 END)),
+                  XMLELEMENT("SemiDetachedHomes", COUNT(CASE WHEN p.propertyType = 'semi-detached' THEN 1 END)),
+                  XMLELEMENT("DetatchedHomes", COUNT(CASE WHEN p.propertyType = 'detatched' THEN 1 END)) 
+               )
+            )
+         ), VERSION '1.0'
+       ) AS document
+  FROM property p, region r
+  WHERE p.roid.rid = r.rid
+  GROUP BY r.regionName;
+
+
 2. List the price of each listing from greatest to least
          
 SELECT XMLROOT(
