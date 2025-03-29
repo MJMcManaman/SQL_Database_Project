@@ -12,7 +12,6 @@ SELECT XMLROOT( XMLELEMENT("AgentsExpert",
                )))),
          VERSION '1.0') as doc
 FROM agent_t a WHERE (EXTRACT(YEAR FROM SYSDATE) - a.yearStarted) > 12;
-
 -- correction version:
 SELECT XMLROOT(
       XMLELEMENT("agentExpert",
@@ -43,7 +42,6 @@ SELECT XMLROOT( XMLELEMENT("BuyersPre",
 FROM customer_t b WHERE value(b) is of (only buyer_t)
 GROUP BY b.cid, b.cname, b.phoneNum, b.emailAddress；
 --error: ORA-04044: procedure, function, package, or type is not allowed here!
-
 -- correct verion:
 SELECT XMLROOT(
       XMLELEMENT("BuyersPre",
@@ -63,7 +61,6 @@ FROM saleContract sc
 WHERE sc.signedTime < DATE '2025-01-01'
 GROUP BY sc.buyerid.cid, sc.buyerid.cname, sc.buyerid.phoneNum, sc.buyerid.emailAddress;
 
-
 -- 3. list all properties that not handled by agents with their own details
 SELECT XMLROOT( XMLELEMENT("PropertiesUn",
     XMLAGG(
@@ -80,6 +77,20 @@ WHERE NOT EXISTS (
 )
 GROUP BY py.pid, py.propertyType, py.builtYear, py.address;
 --error: ORA-04044: procedure, function, package, or type is not allowed here!
+--potential modifying:
+SELECT XMLROOT( XMLELEMENT("PropertiesUn",
+    XMLAGG(
+        XMLELEMENT("Property",
+        XMLATTRIBUTES(py.pid as "PropertyID"),
+        XMLFOREST(py.propertyType as "type", py.builtYear as "establishedYear", py.address as "Address")
+            ))),
+        VERSION '1.0') as doc
+FROM property_t py
+WHERE NOT EXISTS (
+  SELECT 1
+  WHERE py.pid.poid = py.pid
+)
+GROUP BY py.pid, py.propertyType, py.builtYear, py.address;
 
   
 -- 1~ find the sellers who have house before year 2018 and their price of property
