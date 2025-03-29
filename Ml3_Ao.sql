@@ -146,6 +146,19 @@ return
     <EmailAddress>{$buyer/emailAddress/text()}</EmailAddress>
     <DateStarted>{$buyer/dateStarted/text()}</DateStarted>
     <PricePreferred>{$buyer/pricePreferred/text()}</PricePreferred>
+-- potential modifying:
+xquery
+let $buy := doc("/public/mj/buyer.xml")/Buyers/Buyer
+for $buyer in $buy
+where xs:date($buyer/dateStarted) > xs:date("2018-01-01")  
+return(
+  $buyer/@buyerID,
+  $buyer/buyerName/text(),
+  $buyer/phoneNum/text(),
+  $buyer/emailAddress/text(),
+  $buyer/dateStarted/text(),
+  $buyer/pricePreferred/text() )
+/
   </BuyerInfo>
 /
 --xs:translate data type to be required type under Schema
