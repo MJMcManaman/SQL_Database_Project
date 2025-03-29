@@ -11,6 +11,7 @@ OracleXML getXML -user "grp2/here4grp2" -conn "jdbc:oracle:thin:@sit.itec.yorku.
     s.cname as sellerName, s.phoneNum as sellerPhone, s.emailAddress as sellerEmail, s.timeOwned as owningDate
     sc.sellerid as sellerID, sc.scid as saleContractID, sc.salePrice as propertyPrice
 FROM saleContract_t sc, customer_t s WHERE sc.sellerid = s.cid AND value(s) is of (only seller_t) AND s.timeOwned < DATE '2018-01-01'"
+--values return objects' row, is of only condition to subtype
 
   
 -- 1` calculate the average price of the all rented properties
@@ -37,6 +38,7 @@ return
   )
   return $updatePrice/Property[@pid = "p07"]
 /
+--copy: dot edit original XML.  modify: update xml data to insert, delete.  replace value of node $targetNode with $newValue
 
 -- 3` find the buyer who enrolled in real estate system after year 2017 and their info detail
 xquery
@@ -53,4 +55,5 @@ return
     <PricePreferred>{$buyer/pricePreferred/text()}</PricePreferred>
   </BuyerInfo>
 /
+--xs:translate data type to be required type under Schema
 
