@@ -13,6 +13,16 @@ SELECT XMLROOT( XMLELEMENT("AgentsExpert",
          VERSION '1.0') as doc
 FROM agent_t a WHERE (EXTRACT(YEAR FROM SYSDATE) - a.yearStarted) > 12;
 
+-- correction version:
+Select xmlelement("agentExpert",
+    XMLAGG(xmlelement("agent",
+        xmlattributes(ac.aoid.aid as "aid"),
+        xmlforest(ac.aoid.aname as "AgentName", (EXTRACT(YEAR FROM SYSDATE) - ac.aoid.yearStarted) as "ExperienceYears"),
+            xmlelement("contracts",
+                xmlforest(ac.acid as "contractID"))))) as doc
+from agentContract ac where (EXTRACT(YEAR FROM SYSDATE) - ac.aoid.yearStarted) > 12
+group by ac.aoid.aname;
+
 -- 2. list all buyers' information who buy house before year 2025
 SELECT XMLROOT( XMLELEMENT("BuyersPre",
     XMLAGG( XMLELEMENT("Buyer",
