@@ -105,7 +105,7 @@ let $rentedPrices :=
   let $rc := $rentC[@rcid = $ac/rcoid/text()]
   where $ac/contractType = "rentContract"
   return $rc/rentPrice/text()
-return avg($rentedPrices)
+return format-number(avg($rentedPrices), "#.00")
 /
 
 -- 2` no one interests in the seventh property because of expensive, so its price is updated 
