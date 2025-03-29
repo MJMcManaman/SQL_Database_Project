@@ -1,4 +1,17 @@
 -- 1. list all angents who have more than 12 years of experience  and their contracts numbers
+SELECT XMLROOT( XMLELEMENT("AgentsExpert",
+    XMLAGG( XMLELEMENT("Agent",
+        XMLATTRIBUTES(a.aid as "AgentID"),
+        XMLFOREST(a.aname as "AgentName", (EXTRACT(YEAR FROM SYSDATE) - a.yearStarted) as "ExperienceYears"),
+        XMLELEMENT("Contracts",
+            (SELECT XMLAGG(
+                XMLELEMENT("Contract",
+                XMLATTRIBUTES(c.acid as "ContractID")))
+                FROM agentContract_t c
+                WHERE c.aoid = a.aid)
+               )))),
+         VERSION '1.0') as doc
+FROM agent_t a WHERE (EXTRACT(YEAR FROM SYSDATE) - a.yearStarted) > 12;
 
 -- 2. list all buyers' information who buy house before year 2025
 
