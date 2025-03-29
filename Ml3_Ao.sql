@@ -44,6 +44,26 @@ FROM customer_t b WHERE value(b) is of (only buyer_t)
 GROUP BY b.cid, b.cname, b.phoneNum, b.emailAddress；
 --error: ORA-04044: procedure, function, package, or type is not allowed here!
 
+-- correct verion:
+SELECT XMLROOT(
+      XMLELEMENT("BuyersPre",
+         XMLAGG(
+            XMLELEMENT("Buyer",
+               XMLATTRIBUTES(sc.buyerid.cid AS "BuyerID"),
+               XMLFOREST(sc.buyerid.cname AS "BuyerName",
+                         sc.buyerid.phoneNum AS "BuyerPhone", 
+                         sc.buyerid.emailAddress AS "BuyerEmail"),
+               XMLELEMENT("Purchases",
+                  XMLAGG(
+                     XMLELEMENT("Purchase",
+                        XMLATTRIBUTES(sc.scid AS "SaleContractID"),
+                        XMLFOREST(sc.salePrice AS "PurchasePrice", 
+                                  sc.signedTime AS "PurchaseDate"))))))), VERSION '1.0') AS doc
+FROM saleContract sc 
+WHERE sc.signedTime < DATE '2025-01-01'
+GROUP BY sc.buyerid.cid, sc.buyerid.cname, sc.buyerid.phoneNum, sc.buyerid.emailAddress;
+
+
 -- 3. list all properties that not handled by agents with their own details
 SELECT XMLROOT( XMLELEMENT("PropertiesUn",
     XMLAGG(
