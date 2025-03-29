@@ -146,6 +146,9 @@ return
     <EmailAddress>{$buyer/emailAddress/text()}</EmailAddress>
     <DateStarted>{$buyer/dateStarted/text()}</DateStarted>
     <PricePreferred>{$buyer/pricePreferred/text()}</PricePreferred>
+  </BuyerInfo>
+/
+--xs:translate data type to be required type under Schema
 -- potential modifying:
 xquery
 let $buy := doc("/public/mj/buyer.xml")/Buyers/Buyer
@@ -159,7 +162,5 @@ return(
   $buyer/dateStarted/text(),
   $buyer/pricePreferred/text() )
 /
-  </BuyerInfo>
-/
---xs:translate data type to be required type under Schema
+
 
