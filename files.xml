@@ -246,30 +246,35 @@ Declare
       <propertyID>p01</propertyID>
       <contractType>rentContract</contractType>
       <signatureTime>2025-02-24</signatureTime>
+      <rcoid>rc01</rcoid>
     </AgentContract>
     <AgentContract contractID="ac02">
       <agentID>a02</agentID>
       <propertyID>p02</propertyID>
       <contractType>saleContract</contractType>
       <signatureTime>2023-05-04</signatureTime>
+      <scoid>sc03</scoid>
     </AgentContract>
     <AgentContract contractID="ac03">
       <agentID>a03</agentID>
       <propertyID>p03</propertyID>
       <contractType>rentContract</contractType>
       <signatureTime>2025-02-20</signatureTime>
+      <rcoid>rc02</rcoid>
     </AgentContract>
     <AgentContract contractID="ac04">
       <agentID>a03</agentID>
       <propertyID>p06</propertyID>
       <contractType>saleContract</contractType>
       <signatureTime>2025-02-24</signatureTime>
+      <scoid>sc02</scoid>
     </AgentContract>
     <AgentContract contractID="ac05">
       <agentID>a01</agentID>
       <propertyID>p04</propertyID>
       <contractType>rentContract</contractType>
       <signatureTime>2025-02-24</signatureTime>
+      <rcoid>rc05</rcoid>
     </AgentContract>
   </AgentContracts>
     ');
