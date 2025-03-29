@@ -1,5 +1,4 @@
-1. List the number of detached, semi-detatched and detatched homes in each region.
-
+-- 1. List the number of detached, semi-detatched and detatched homes in each region.
 SELECT XMLROOT(
          XMLELEMENT("Properties_Sold_By_Types",
             XMLAGG(
@@ -15,9 +14,7 @@ FROM agentContract ac
 GROUP BY ac.poid.propertyType;
 
 
-2. List the number of detached, semi-detatched and detatched homes in each region.
-
-         
+-- 2. List the number of detached, semi-detatched and detatched homes in each region.      
 SELECT XMLROOT(
          XMLELEMENT("Properties",
             XMLAGG(
@@ -32,15 +29,32 @@ SELECT XMLROOT(
             )
          ), VERSION '1.0'
        ) AS document
-  FROM property p, region r
-  WHERE p.roid.rid = r.rid
-  GROUP BY r.regionName;
+FROM property p, region r
+WHERE p.roid.rid = r.rid
+GROUP BY r.regionName;
+
+-- fixed:
+-- problem: references was not introduced correctly.
+SELECT XMLROOT(
+         XMLELEMENT("Properties",
+            XMLAGG(
+               XMLELEMENT("Region",
+                  XMLATTRIBUTES(p.roid.regionName AS "Region"),
+                  XMLFOREST(
+                     COUNT(CASE WHEN p.propertyType = 'condo' THEN 1 END) AS "condo",
+                     COUNT(CASE WHEN p.propertyType = 'semidetached' THEN 1 END) AS "semidetached",
+                     COUNT(CASE WHEN p.propertyType = 'detatched' THEN 1 END) AS "detached"
+                  )
+               )
+            )
+         ), VERSION '1.0'
+       ) AS document
+  FROM property p
+  GROUP BY p.roid.regionName;
 
 
 
-
-2. List the price of each listing from greatest to least
-         
+-- 3. List the price of each listing from greatest to least     
 SELECT XMLROOT(
          XMLELEMENT("RegionPrice",
             XMLAGG(
@@ -53,9 +67,22 @@ FROM listing l, region r
 WHERE l.roid.rid 
 ORDER BY listedPrice DESC;
 
+-- fixed:
+-- problem: ORDER BY should be GROUP BY? I'm not sure about why though; DESC isn't allowed in XML queries; 
+-- references was not introduced correctly, usage of XMLAGG was incorrectly.
+SELECT XMLROOT(
+   XMLELEMENT("Properties",
+         XMLAGG(XMLELEMENT("RegionPrice",
+                  XMLAGG(XMLELEMENT("Region",
+                             XMLELEMENT("ID", p.propertyDetail.lid),
+                             XMLFOREST(p.roid.regionName AS "Region_type", p.propertyDetail.listedPrice AS "ListedPrice")))))),
+         VERSION '1.0'
+         ) AS document
+FROM property p
+GROUP BY p.propertyDetail.listedPrice;
 
 
-3. 
+-- 4. List all buyers that has bought a property.
 SELECT XMLROOT(
          XMLELEMENT("BuyerWithProperty", 
            XMLAGG(
@@ -70,11 +97,30 @@ SELECT XMLROOT(
        ) AS document
 FROM buyer b
 WHERE b.cid IS NOT NULL;
+-- fixed:
+-- small problem: because you are trying to list all the buyers that has a property,
+-- we should be referencing the buyer through the saleContract. Unless you wanted to list
+-- all sellers with a property, then we don't really need to go through saleContract.
+SELECT XMLROOT(
+         XMLELEMENT("BuyerWithProperty", 
+           XMLAGG(
+             XMLELEMENT("Buyer", 
+               XMLFOREST(
+                 sc.buyerid.cname AS "Name",
+                 sc.buyerid.phoneNum AS "Phone")  
+             )
+           )
+         ), 
+         VERSION '1.0'
+       ) AS document
+FROM saleContract sc
+WHERE sc.buyerid.cid IS NOT NULL;
 
+-----------------------------------------------------------------------------------------------------------------------------------------
+-- (since we only need 3 xml queries for question 2, for the rest, I didn't double check, you can still use these query ideas
+-- to create XSU SQL query for question 3 and Xqueries for question 5).
 
-
-
-4. 
+-- 5. 
 SELECT XMLELEMENT(
     "Property_Sold_Price_in_Region",
     XMLATTRIBUTES(ac.poid.pid AS "Property_id"),
