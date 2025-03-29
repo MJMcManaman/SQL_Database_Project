@@ -1,34 +1,38 @@
 -- xmlattributes
 -- 1. List all properties sold in the "Halifax" region, 
 -- including their property price, age and size. 
-select xmlelement("Property_Sold_Price_in_Region",
-	xmlattributes(ac.poid.pid as "Property_id"),
-	xmlelement("Price", ac.scoid.salePrice),
-	xmlelement("Age",ac.poid.age()),
-	xmlelement("Size",ac.poid.propertySize())
-)
-as document 
+select xmlroot( 
+  xmlelement("Property_Sold_Price_in_Region",
+    xmlattributes(ac.poid.pid as "Property_id"),
+    xmlelement("Price", ac.scoid.salePrice),
+    xmlelement("Age",ac.poid.age()),
+    xmlelement("Size",ac.poid.propertySize())
+  ), version '1.0'
+)as document 
 from agentContract ac
 where ac.poid.roid.city ='Halifax';
 
 -- xmlagg, group by
 -- 2. list number of properties sold by types
 -- show property type and sold number.
-select xmlelement("Properties_Sold_By_Types",
-  xmlagg(
-    xmlelement("Property_Type",
-      xmlattributes(ac.poid.propertyType as "Type"),
-      xmlforest(count(ac.poid.propertyType) as "Number_of_Properties")
-    )
-    )
-) as document
+select xmlroot(
+  xmlelement("Properties_Sold_By_Types",
+    xmlagg(
+      xmlelement("Property_Type",
+        xmlattributes(ac.poid.propertyType as "Type"),
+        xmlforest(count(ac.poid.propertyType) as "Number_of_Properties")
+      )
+      )
+  ), version '1.0'
+)as document
 from agentContract ac
 group by ac.poid.propertyType;
 
 -- xmlforest
 -- 3. list all properties sold by agents
 -- including the agent's name, experience, and the properties they sold.
-select xmlelement("Properties_Sold_By_Agent",
+select xmlroot(
+xmlelement("Properties_Sold_By_Agent",
   xmlattributes(ac.aoid.aid as "Agent_id"),
   xmlelement("Agent_Name", ac.aoid.aname),
   xmlelement("Agent_Experience", ac.aoid.yearOfExperience()),
@@ -38,8 +42,8 @@ select xmlelement("Properties_Sold_By_Agent",
                 ac.poid.address as "Address",
                 ac.scoid.salePrice as "Sale_Price")
     )
-  )
-as document
+  ), version '1.0'
+)as document
 from agentContract ac; 
 
 -- xmlroot
