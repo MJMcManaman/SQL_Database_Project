@@ -10,19 +10,18 @@ SELECT XMLROOT(XMLELEMENT("Vancouver_properties",
       XMLATTRIBUTES(p.pid AS "PID"),
         XMLFOREST(p.propertyType AS "propertyType",
             p.propertyDetail.listedPrice AS "listedPrice",
-            p.propertyDetail.daysListed() AS "daysListed")))), version '1.0') as doc
-  FROM property p WHERE p.roid.regionName = 'Vancouver';
+            p.propertyDetail.daysListed() AS "daysListed")) ORDER BY p.pid)), version '1.0') as doc
+  FROM property p WHERE p.roid.city = 'Vancouver' GROUP BY ;
 
 
 -- 2. List all landlords who has a rentContract with tenant Mia Peterson.
 SELECT XMLROOT(XMLELEMENT("landlords",
   XMLAGG(XMLELEMENT("landlord_information",
     XMLATTRIBUTES(rc.landlordid.cid AS "CID"),
-      XMLAGG(XMLELEMENT("info",
         XMLFOREST(rc.landlordid.cname AS "landlordName",
                 rc.landlordid.phoneNum AS "phoneNumber",
-                rc.landlordid.pricePreferred AS "landlord_price")))))), version '1.0') as doc
-  FROM rentContract rc WHERE rc.tenantid.cname = 'Mia Peterson' GROUP BY rc.landlordid.cid;
+                rc.landlordid.pricePreferred AS "landlord_price")) ORDER BY rc.landlordid.cid)), version '1.0') as doc
+  FROM rentContract rc WHERE rc.tenantid.cname = 'Mia Peterson';
 
 -- 3. list all details of the sale contracts signed this year (2025), including
 -- seller & buyer's name, sale price, and the property's address.
@@ -30,13 +29,12 @@ SELECT XMLROOT(XMLELEMENT("Contracts_2025",
   XMLELEMENT("saleContract",
     XMLAGG(XMLELEMENT("contractDetails", 
       XMLATTRIBUTES(ac.scoid.scid AS "SCID"),
-        XMLAGG(XMLELEMENT("info",
         XMLFOREST(ac.scoid.sellerid.cname AS "sellerName",
             ac.scoid.buyerid.cname AS "buyerName",
             ac.scoid.salePrice AS "salePrice",
             ac.poid.address AS "propertyAddress",
-            ac.scoid.signedTime AS "signedDate"))))))), version '1.0') as doc
-  FROM agentContract ac WHERE EXTRACT(YEAR FROM ac.scoid.signedTime) = 2025 GROUP BY ac.scoid.scid;
+            ac.scoid.signedTime AS "signedDate")) ORDER BY ac.scoid.scid))), version '1.0') as doc
+  FROM agentContract ac WHERE EXTRACT(YEAR FROM ac.scoid.signedTime) = 2025;
 
 -- 4. list all details of the rent contracts signed in the last 3 years, including
 -- landlord & tenant's name, rent price, and the property's address.
