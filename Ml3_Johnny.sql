@@ -46,6 +46,29 @@ xmlelement("Properties_Sold_By_Agent",
 )as document
 from agentContract ac; 
 
+-- problem: it's returning multiple xml declaration.
+-- modified version:
+SELECT XMLROOT(
+  XMLELEMENT("Properties_Sold_By_Agent",
+    XMLAGG(
+      XMLELEMENT("Agent",
+        XMLATTRIBUTES(ac.aoid.aid AS "Agent_id"),
+        XMLFOREST(ac.aoid.aname AS "Agent_Name",
+                  ac.aoid.yearOfExperience() AS "Agent_Experience"), 
+          XMLELEMENT("Property",
+            XMLATTRIBUTES(ac.poid.pid AS "Property_id"),
+            XMLFOREST(ac.poid.propertyType AS "Type",
+                      ac.poid.address AS "Address",
+                      ac.scoid.salePrice AS "Sale_Price")
+        )
+      )
+     order by ac.aoid.aid)
+  ), VERSION '1.0'
+) AS document
+FROM agentContract ac;
+
+
+
 -- xmlroot
 --4. list all tenant who didn't rent any property
 select xmlroot(
@@ -60,6 +83,22 @@ select xmlroot(
 ) as document
 from tenant t
 where t.cid not in (select rc.tenantid.cid from rentContract rc);
+
+-- problem: it's returning multiple xml declaration.
+-- modified version:
+select xmlroot(
+  xmlelement("Tenant_Without_Rent",
+    xmlagg(
+      xmlelement("Tenant",
+        xmlforest(t.cname as "Name",
+                  t.phoneNum as "Phone_Number")
+      )
+    order by t.cname)
+  ), version '1.0'
+) as document
+from tenant t
+where t.cid not in (select rc.tenantid.cid from rentContract rc);
+
 
 -- XSU 
 --5. List all property listed for sale (which have a sale contract)
