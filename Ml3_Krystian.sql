@@ -131,6 +131,13 @@ SELECT XMLELEMENT(
 FROM agentContract ac
 WHERE ac.poid.roid.city = 'Halifax';
 
+-- 5.
+XQUERY
+
+let $s := doc("/public/mj/seller.xml")
+         for seller in $
+
+
 
 3. 
 
