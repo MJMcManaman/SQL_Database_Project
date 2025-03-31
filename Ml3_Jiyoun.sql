@@ -1,4 +1,4 @@
-//1. 
+-- xmlagg, xmlattributes--  
 SELECT XMLELEMENT("Listed_Properties",
   2      XMLAGG(
   3          XMLELEMENT("Property",
@@ -20,7 +20,7 @@ l08 "><Type>semidetached</Type><Address>56 oak st</Address><Washrooms>2</Washroo
 rty Property_ID="p12 " Listing_ID="l12 "><Type>semidetached</Type><Address>67 spruce rd</Address><Wa
 shrooms>2</Washrooms></Property></Listed_Properties>
 
-//2.
+--xmlroot, xmlattribute, xmlforest, groupby-- 
 SQL> SELECT XMLROOT(
   2  XMLELEMENT("Regions",
   3  XMLAGG(
@@ -56,7 +56,8 @@ DOCUMENT
   </Region>
 </Regions>
 
-//3.
+--xmlroot,xmlattribute,xmlforest--
+--this needs to be updated --
 SELECT XMLROOT(
   2      XMLELEMENT("Top_Agent",
   3          XMLELEMENT("Agent",
@@ -85,7 +86,7 @@ DOCUMENT
   </Agent>
 </Top_Agent>
 
-//4. XSU
+--4 XSU--
   
 [jyshim@sit ~]$ OracleXML getXML \
 -user "grp2/here4grp2" \
@@ -112,7 +113,7 @@ DOCUMENT
 </BuyerAgentSummaryList>
 
   
-// 5. Xquery 
+--5 Xquery-- 
   
 SQL> xquery
   2  let $b := doc("/public/mj/buyer.xml")
@@ -128,7 +129,7 @@ Diana White
 Sophia Martin
 James Anderson
   
-//6.xquery
+--6 Xquery-- 
   
   2  let $b := doc("/public/mj/buyer.xml")
   3  let $sc := doc("/public/mj/saleContract.xml")
@@ -152,7 +153,7 @@ D><contractID scid="sc02"></contractID></BuyerSaleInfo>
 <BuyerSaleInfo><buyerName>Lucas White</buyerName><buyerID buyerID="c12"></buyerI
 D><contractID scid="sc03"></contractID></BuyerSaleInfo>
 
-//7.xquery
+--7 xquery--
   
   2  let $p := doc("/public/mj/property.xml")
   3  for $property in $p/Properties/Property
