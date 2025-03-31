@@ -1,16 +1,16 @@
 -- xmlagg, xmlattributes--  
 SELECT XMLELEMENT("Listed_Properties",
-  2      XMLAGG(
-  3          XMLELEMENT("Property",
-  4              XMLATTRIBUTES(p.pid AS "Property_ID", p.propertyDetail.lid AS "Listing_ID"),
-  5              XMLELEMENT("Type", p.propertyType),
-  6              XMLELEMENT("Address", p.address),
-  7              XMLELEMENT("Washrooms", p.propertyDetail.washroomNum)
-  8          )
+        XMLAGG(
+            XMLELEMENT("Property",
+                XMLATTRIBUTES(p.pid AS "Property_ID", p.propertyDetail.lid AS "Listing_ID"),
+                XMLELEMENT("Type", p.propertyType),
+                XMLELEMENT("Address", p.address),
+                XMLELEMENT("Washrooms", p.propertyDetail.washroomNum)
+            )
     )
- 10  ) AS document
- 11  FROM property p
- 12  WHERE p.propertyDetail.washroomNum = 2;
+   ) AS document
+   FROM property p
+   WHERE p.propertyDetail.washroomNum = 2;
 
 DOCUMENT
 ----------------------------------------------------------------------------------------------------
@@ -21,18 +21,28 @@ rty Property_ID="p12 " Listing_ID="l12 "><Type>semidetached</Type><Address>67 sp
 shrooms>2</Washrooms></Property></Listed_Properties>
 
 --xmlroot, xmlattribute, xmlforest, groupby-- 
-SQL> SELECT XMLROOT(
-  2  XMLELEMENT("Regions",
-  3  XMLAGG(
-  4  XMLELEMENT("Region",
-  5  XMLATTRIBUTES(r.regionName AS "Name"),
-  6  XMLFOREST(COUNT(p.pid) AS "Total_Listed_Properties",AVG(p.propertyDetail.listedPrice) AS "Average_Listed_Price")
-  7  ))),VERSION '1.0'
-  8  ) AS document
-  9  FROM property p, region r
- 10  WHERE p.roid.rid = r.rid 
- 11  AND p.propertyDetail.lid IS NOT NULL
- 12  GROUP BY r.regionName;
+SELECT XMLROOT(
+    XMLELEMENT("Regions",
+    XMLAGG(
+    XMLELEMENT("Region",
+    XMLATTRIBUTES(r.regionName AS "Name"),
+    XMLFOREST(COUNT(p.pid) AS "Total_Listed_Properties",AVG(p.propertyDetail.listedPrice) AS "Average_Listed_Price")
+    ))),VERSION '1.0'
+    ) AS document
+    FROM property p, region r
+   WHERE p.roid.rid = r.rid 
+   AND p.propertyDetail.lid IS NOT NULL
+   GROUP BY r.regionName;
+
+----modified: references corrected.
+SELECT XMLROOT(
+  XMLELEMENT("Regions",
+    XMLAGG(XMLELEMENT("Region",
+      XMLATTRIBUTES(p.roid.regionName AS "Name"),
+      XMLFOREST(COUNT(p.pid) AS "Total_Listed_Properties",
+                AVG(p.propertyDetail.listedPrice) AS "Average_Listed_Price")))),VERSION '1.0') AS document
+FROM property p WHERE p.roid.rid IS NOT NULL GROUP BY p.roid.regionName;
+
 
 DOCUMENT
 ----------------------------------------------------------------------------------------------------
@@ -59,21 +69,33 @@ DOCUMENT
 --xmlroot,xmlattribute,xmlforest--
 --this needs to be updated --
 SELECT XMLROOT(
-  2      XMLELEMENT("Top_Agent",
-  3          XMLELEMENT("Agent",
-  4              XMLATTRIBUTES(a.aid AS "Agent_ID", a.agency AS "Agency"),
-  5              XMLFOREST(
-  6                  a.aname AS "Name",
-  7                  a.yearOfExperience() AS "Experience",
-  8                  ac.commission() AS "Total_Commission"
-  9              )
- 10          )
- 11      ),
- 12      VERSION '1.0'
+        XMLELEMENT("Top_Agent",
+            XMLELEMENT("Agent",
+                XMLATTRIBUTES(a.aid AS "Agent_ID", a.agency AS "Agency"),
+                XMLFOREST(
+                    a.aname AS "Name",
+                    a.yearOfExperience() AS "Experience",
+                    ac.commission() AS "Total_Commission"
+                )
+           )
+       ),
+       VERSION '1.0'
 ) AS document
- 14  FROM agentContract ac, agent a
- 15  WHERE ac.aoid.aid = a.aid
- 16  AND ac.commission() = (SELECT MAX(ac2.commission()) FROM agentContract ac2);
+   FROM agentContract ac, agent a
+   WHERE ac.aoid.aid = a.aid
+   AND ac.commission() = (SELECT MAX(ac2.commission()) FROM agentContract ac2);
+
+------ update version:
+SELECT XMLROOT(
+        XMLELEMENT("Top_Agent",
+            XMLELEMENT("Agent",
+                XMLATTRIBUTES(ac.aoid.aid AS "Agent_ID", ac.aoid.agency AS "Agency"),
+                XMLFOREST(
+                    ac.aoid.aname AS "Name",
+                    ac.aoid.yearOfExperience() AS "Experience",
+                    ac.commission() AS "Total_Commission"))),VERSION '1.0') AS document
+FROM agentContract ac
+WHERE ac.commission() = (SELECT MAX(ac2.commission()) FROM agentContract ac2);
 
 DOCUMENT
 ----------------------------------------------------------------------------------------------------
@@ -94,6 +116,15 @@ DOCUMENT
 -rowTag BuyerAgentSummary \
 -rowsetTag BuyerAgentSummaryList \
 "SELECT b.cid AS buyer_id, b.cname AS buyer_name, b.timeSpentLooking() AS time_spent, a.aid AS agent_id, a.aname AS agent_name FROM saleContract sc, buyer b, agentContract ac, agent a WHERE sc.buyerid.cid = b.cid AND ac.scoid.scid = sc.scid AND ac.aoid.aid = a.aid"
+
+-----modified: I don't think we need -rowTag and -rowsetTag, professor used these for inserting XML data into XSU, I don't think
+  -- that what the professor wants. So deleted those and returned the same result you desired.
+OracleXML getXML -user "grp2/here4grp2" 
+-conn "jdbc:oracle:thin:@sit.itec.yorku.ca:1521/studb10g" 
+"SELECT ac.scoid.buyerid.cid AS buyer_id, ac.scoid.buyerid.cname AS buyer_name, 
+ac.scoid.buyerid.timeSpentLooking() AS time_spent, ac.aoid.aid AS agent_id, ac.aoid.aname AS agent_name 
+FROM agentContract ac WHERE ac.scoid IS NOT NULL"
+  
 <?xml version = '1.0'?>
 <BuyerAgentSummaryList>
    <BuyerAgentSummary num="1">
@@ -115,12 +146,12 @@ DOCUMENT
   
 --5 Xquery-- 
   
-SQL> xquery
-  2  let $b := doc("/public/mj/buyer.xml")
-  3  for $buyer in $b/Buyers/Buyer
-  4  where $buyer/dateStarted < "2020-01-01"
-  5  return $buyer/buyerName/text()
-  6  /
+xquery
+let $b := doc("/public/mj/buyer.xml")
+for $buyer in $b/Buyers/Buyer
+where $buyer/dateStarted < "2020-01-01"
+return $buyer/buyerName/text()
+/
 
 Result Sequence
 --------------------------------------------------------------------------------
@@ -130,20 +161,21 @@ Sophia Martin
 James Anderson
   
 --6 Xquery-- 
-  
-  2  let $b := doc("/public/mj/buyer.xml")
-  3  let $sc := doc("/public/mj/saleContract.xml")
-  4  for $buyer in $b/Buyers/Buyer, 
-  5      $salecontract in $sc/SaleContracts/SaleContract
-  6  where $buyer/@buyerID = $salecontract/buyerID/text()
-  7    and $salecontract/salePrice < 500000.00
-  8  return
-  9    <BuyerSaleInfo>
-    <buyerName>{$buyer/buyerName/text()}</buyerName>
- 11      <buyerID>{$buyer/@buyerID}</buyerID>
- 12      <contractID>{$salecontract/@scid}</contractID>
- 13    </BuyerSaleInfo>
- 14  /
+
+xquery
+let $b := doc("/public/mj/buyer.xml")
+let $sc := doc("/public/mj/saleContract.xml")
+for $buyer in $b/Buyers/Buyer, 
+    $salecontract in $sc/SaleContracts/SaleContract
+where $buyer/@buyerID = $salecontract/buyerID/text()
+and $salecontract/salePrice < 500000.00
+return
+  <BuyerSaleInfo>
+  <buyerName>{$buyer/buyerName/text()}</buyerName>
+  <buyerID>{$buyer/@buyerID}</buyerID>
+  <contractID>{$salecontract/@scid}</contractID>
+  </BuyerSaleInfo>
+/
 
 Result Sequence
 --------------------------------------------------------------------------------
@@ -154,12 +186,13 @@ D><contractID scid="sc02"></contractID></BuyerSaleInfo>
 D><contractID scid="sc03"></contractID></BuyerSaleInfo>
 
 --7 xquery--
-  
-  2  let $p := doc("/public/mj/property.xml")
-  3  for $property in $p/Properties/Property
-  4  where $property/propertyType = "semidetached"
-  5  return $property/address/text()
-  6  /
+
+xquery
+let $p := doc("/public/mj/property.xml")
+for $property in $p/Properties/Property
+where $property/propertyType = "semidetached"
+return $property/address/text()
+/
 
 Result Sequence
 --------------------------------------------------------------------------------
