@@ -6,3 +6,75 @@ Declare
     commit;
 end;
 /
+
+Declare
+  ret boolean;
+    begin
+    dbms_xdb.deleteresource('/public/folder_name/seller.xml');
+    commit;
+end;
+/
+
+Declare
+  ret boolean;
+    begin
+    dbms_xdb.deleteresource('/public/folder_name/landlord.xml');
+    commit;
+end;
+/
+
+Declare
+  ret boolean;
+    begin
+    dbms_xdb.deleteresource('/public/folder_name/tenant.xml');
+    commit;
+end;
+/
+
+Declare
+  ret boolean;
+    begin
+    dbms_xdb.deleteresource('/public/folder_name/agent.xml');
+    commit;
+end;
+/
+
+Declare
+  ret boolean;
+    begin
+    dbms_xdb.deleteresource('/public/folder_name/agentContract.xml');
+    commit;
+end;
+/
+
+Declare
+  ret boolean;
+    begin
+    dbms_xdb.deleteresource('/public/folder_name/region.xml');
+    commit;
+end;
+/
+
+Declare
+  ret boolean;
+    begin
+    dbms_xdb.deleteresource('/public/folder_name/property.xml');
+    commit;
+end;
+/
+
+Declare
+  ret boolean;
+    begin
+    dbms_xdb.deleteresource('/public/folder_name/rentContract.xml');
+    commit;
+end;
+/
+
+Declare
+  ret boolean;
+    begin
+    dbms_xdb.deleteresource('/public/folder_name/saleContract.xml');
+    commit;
+end;
+/
