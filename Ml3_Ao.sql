@@ -31,12 +31,12 @@ WHERE sc.signedTime < DATE '2025-01-01'
 GROUP BY sc.buyerid.cid, sc.buyerid.cname, sc.buyerid.phoneNum, sc.buyerid.emailAddress;
 
 -- 3. list all properties that not handled by agents with their own details
--- modified: missed a XMLAGG so that it's one document.
+-- modified: missed a XMLAGG so that it's one document, also added references to region, to fulfill requirement of more then one table.
 SELECT XMLROOT( XMLELEMENT("PropertiesUn",
     XMLAGG(
         XMLELEMENT("Property",
         XMLATTRIBUTES(py.pid as "PropertyID"),
-        XMLAGG(XMLFOREST(py.propertyType as "type", py.builtYear as "establishedYear", py.address as "Address")
+        XMLAGG(XMLFOREST(py.propertyType as "type", py.builtYear as "establishedYear", py.address as "Address", py.roid.city AS "City")
             )))),
         VERSION '1.0') as doc
 FROM property py
