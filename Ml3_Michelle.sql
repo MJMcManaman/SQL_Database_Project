@@ -11,44 +11,46 @@ SELECT XMLROOT(XMLELEMENT("Vancouver_properties",
         XMLFOREST(p.propertyType AS "propertyType",
             p.propertyDetail.listedPrice AS "listedPrice",
             p.propertyDetail.daysListed() AS "daysListed")) ORDER BY p.pid)), version '1.0') as doc
-  FROM property p WHERE p.roid.city = 'Vancouver' GROUP BY ;
+  FROM property p WHERE p.roid.city = 'Vancouver';
 
 
--- 2. List all landlords who has a rentContract with tenant Mia Peterson.
+-- 2. List all landlords who has a rentContract with agent Brett Fox.
 SELECT XMLROOT(XMLELEMENT("landlords",
   XMLAGG(XMLELEMENT("landlord_information",
-    XMLATTRIBUTES(rc.landlordid.cid AS "CID"),
-        XMLFOREST(rc.landlordid.cname AS "landlordName",
-                rc.landlordid.phoneNum AS "phoneNumber",
-                rc.landlordid.pricePreferred AS "landlord_price")) ORDER BY rc.landlordid.cid)), version '1.0') as doc
-  FROM rentContract rc WHERE rc.tenantid.cname = 'Mia Peterson';
+    XMLATTRIBUTES(ac.rcoid.landlordid.cid AS "CID"),
+        XMLFOREST(ac.rcoid.landlordid.cname AS "landlordName",
+                ac.rcoid.landlordid.phoneNum AS "phoneNumber",
+                ac.rcoid.landlordid.pricePreferred AS "landlord_price")) ORDER BY ac.rcoid.landlordid.cid)), version '1.0') as doc
+  FROM agentContract ac WHERE ac.aoid.aname = 'Brett Fox' GROUP BY ac.rcoid.landlordid.pricePreferred;
 
--- 3. list all details of the sale contracts signed this year (2025), including
--- seller & buyer's name, sale price, and the property's address.
+-- 3. list all details of the sale contracts signed and the commission price of for the agent, including
+-- seller & buyer's name, sale price, and the property's address, grouped by they final sale's price of the house.
 SELECT XMLROOT(XMLELEMENT("Contracts_2025", 
-  XMLELEMENT("saleContract",
+  XMLAGG(XMLELEMENT("saleContract",
     XMLAGG(XMLELEMENT("contractDetails", 
       XMLATTRIBUTES(ac.scoid.scid AS "SCID"),
         XMLFOREST(ac.scoid.sellerid.cname AS "sellerName",
             ac.scoid.buyerid.cname AS "buyerName",
             ac.scoid.salePrice AS "salePrice",
+            (ac.commissionPercentage * ac.scoid.salePrice) AS "commission",
             ac.poid.address AS "propertyAddress",
-            ac.scoid.signedTime AS "signedDate")) ORDER BY ac.scoid.scid))), version '1.0') as doc
+            ac.scoid.signedTime AS "signedDate")) ORDER BY ac.scoid.scid)))), version '1.0') as doc
+FROM agentContract ac WHERE ac.scoid IS NOT NULL GROUP BY ac.scoid.salePrice;
+
   FROM agentContract ac WHERE EXTRACT(YEAR FROM ac.scoid.signedTime) = 2025;
 
 -- 4. list all details of the rent contracts signed in the last 3 years, including
 -- landlord & tenant's name, rent price, and the property's address.
 SELECT XMLROOT(XMLELEMENT("Contracts", 
-  XMLELEMENT("rentContract",
+  XMLAGG(XMLELEMENT("rentContract",
     XMLAGG(XMLELEMENT("contractDetails", 
       XMLATTRIBUTES(ac.rcoid.rcid AS "RCID"),
           XMLFOREST(ac.rcoid.landlordid.cname AS "landlordName",
             ac.rcoid.tenantid.cname AS "tenantName",
             ac.rcoid.rentPrice AS "rentPrice",
             ac.poid.address AS "propertyAddress",
-            ac.rcoid.signedTime AS "signedDate"))))), version '1.0') as doc
-  FROM agentContract ac WHERE ac.rcoid.signedTime >= ADD_MONTHS(SYSDATE, -37) 
-  GROUP BY ac.rcoid.signedTime;
+            ac.rcoid.signedTime AS "signedDate")))))), version '1.0') as doc
+  FROM agentContract ac WHERE ac.rcoid.signedTime >= ADD_MONTHS(SYSDATE, -37) GROUP BY ac.rcoid.tenantid.cname;
 
 
 --------------------------------------------------------------------------------------------------------------
