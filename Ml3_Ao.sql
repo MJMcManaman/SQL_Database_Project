@@ -30,7 +30,7 @@ FROM saleContract sc
 WHERE sc.signedTime < DATE '2025-01-01'
 GROUP BY sc.buyerid.cid, sc.buyerid.cname, sc.buyerid.phoneNum, sc.buyerid.emailAddress;
 
--- 3. list all properties that not handled by agents with their own details
+-- 3. list all properties' details that has a region associated with possible agent.
 -- modified: missed a XMLAGG so that it's one document, also added references to region, to fulfill requirement of more then one table.
 SELECT XMLROOT( XMLELEMENT("PropertiesUn",
     XMLAGG(
@@ -39,7 +39,7 @@ SELECT XMLROOT( XMLELEMENT("PropertiesUn",
         XMLAGG(XMLFOREST(py.propertyType as "type", py.builtYear as "establishedYear", py.address as "Address", py.roid.city AS "City")
             )))),
         VERSION '1.0') as doc
-FROM property py
+FROM property py WHERE py.roid IS NOT NULL
 GROUP BY py.pid, py.propertyType, py.builtYear, py.address;
 
 -- 4.XSU: find the sellers who have house before year 2018 and their price of property
