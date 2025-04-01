@@ -88,7 +88,7 @@ ac.scoid.signedTime as Signed_Date from agentContract ac"
 
 -- 6.
 xquery
-         let $p := doc("/public/mj/property.xml")
+         let $p := doc("/public/group2m25/property.xml")
          for $property in $p/Properties/Property
          where $property/address/text()
          return $property/address/text()
@@ -97,21 +97,21 @@ xquery
 
 --7. 
 xquery
-         let $t := doc("/public/mj/tenant.xml")
-         let $rc := doc("/public/mj/rentContract.xml")
+         let $t := doc("/public/group2m25/tenant.xml")
+         let $rc := doc("/public/group2m25/rentContract.xml")
          for $tenant in $t/Tenants/Tenant, 
          $rentContract in $rc/RentContracts/RentContract
          where $tenant/@tenantID = $rentContract/tenantID/text()
          return 
          <TenantRentInfo>
          <tenantName>{$tenant/tenantName/text()}</tenantName>
-         <tenantID>{$rentContract/@rcid}</contractID>
+         <contractID>{$rentContract/@rcid}</contractID>
          </TenantRentInfo>
          /
 
 --8.
 xquery
-         let $b := doc("/public/mj/buyer.xml")
+         let $b := doc("/public/group2m25/buyer.xml")
          for $c in $b/Buyers/Buyer
          where $c/pricePreferred > "200000"
          return $c
