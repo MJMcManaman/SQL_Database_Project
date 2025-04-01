@@ -1,14 +1,11 @@
 -- xmlagg, xmlattributes--  
-SELECT XMLELEMENT("Listed_Properties",
+SELECT XMLROOT(XMLELEMENT("Listed_Properties",
         XMLAGG(
             XMLELEMENT("Property",
                 XMLATTRIBUTES(p.pid AS "Property_ID", p.propertyDetail.lid AS "Listing_ID"),
                 XMLELEMENT("Type", p.propertyType),
                 XMLELEMENT("Address", p.address),
-                XMLELEMENT("Washrooms", p.propertyDetail.washroomNum)
-            )
-    )
-   ) AS document
+                XMLELEMENT("Washrooms", p.propertyDetail.washroomNum)))), VERSION '1.0') AS document
    FROM property p
    WHERE p.propertyDetail.washroomNum = 2;
 
