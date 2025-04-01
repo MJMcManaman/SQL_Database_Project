@@ -116,8 +116,11 @@ DOCUMENT
 
 -----modified: I don't think we need -rowTag and -rowsetTag, professor used these for inserting XML data into XSU, I don't think
   -- that what the professor wants. So deleted those and returned the same result you desired.
-OracleXML getXML -user "grp2/here4grp2" 
--conn "jdbc:oracle:thin:@sit.itec.yorku.ca:1521/studb10g" 
+
+OracleXML getXML -user "grp2/here4grp2" \
+-conn "jdbc:oracle:thin:@sit.itec.yorku.ca:1521/studb10g" \
+-rowTag BuyerAgentSummary \
+-rowsetTag BuyerAgentSummaryList \
 "SELECT ac.scoid.buyerid.cid AS buyer_id, ac.scoid.buyerid.cname AS buyer_name, 
 ac.scoid.buyerid.timeSpentLooking() AS time_spent, ac.aoid.aid AS agent_id, ac.aoid.aname AS agent_name 
 FROM agentContract ac WHERE ac.scoid IS NOT NULL"
