@@ -37,7 +37,7 @@ SELECT XMLROOT(
                   XMLFOREST(
                      COUNT(CASE WHEN p.propertyType = 'condo' THEN 1 END) AS "condo",
                      COUNT(CASE WHEN p.propertyType = 'semidetached' THEN 1 END) AS "semidetached",
-                     COUNT(CASE WHEN p.propertyType = 'detatched' THEN 1 END) AS "detached"
+                     COUNT(CASE WHEN p.propertyType = 'detached' THEN 1 END) AS "detached"
                   )
                )
             )
@@ -55,7 +55,7 @@ SELECT XMLROOT(XMLELEMENT("Properties",
    XMLFOREST(
      COUNT(CASE WHEN p.propertyType = 'condo' THEN 1 END) AS "condo",
      COUNT(CASE WHEN p.propertyType = 'semidetached' THEN 1 END) AS "semidetached",
-     COUNT(CASE WHEN p.propertyType = 'detatched' THEN 1 END) AS "detached")))), VERSION '1.0'
+     COUNT(CASE WHEN p.propertyType = 'detached' THEN 1 END) AS "detached")))), VERSION '1.0'
 ) AS document
 FROM property p GROUP BY p.roid.regionName;
 
