@@ -79,11 +79,12 @@ WHERE sc.buyerid.cid IS NOT NULL;
 OracleXML getXML \
 -user "grp2/here4grp2" \
 -conn "jdbc:oracle:thin:@sit.itec.yorku.ca:1521/studb10g" \
--rowTag \
--rowserTag \
-"select distinct ac.scoid.scid as SCID,ac.scoid.buyerid.cname as Buyer_Name, 
-ac.scoid.salePrice as Sale_Price, ac.poid.address as property_address, 
-ac.scoid.signedTime as Signed_Date from agentContract ac"
+-rowTag SaleContractInfo \
+-rowsetTag AllSaleContract \
+"select distinct ac.scoid.scid as SCID, ac.scoid.buyerid.cname as Buyer_Name, 
+ ac.scoid.salePrice as Sale_Price, ac.poid.address as property_address, 
+ ac.scoid.signedTime as Signed_Date from agentContract ac where ac.scoid is not null"
+
 
 
 -- 6.
