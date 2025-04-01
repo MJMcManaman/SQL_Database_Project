@@ -37,8 +37,6 @@ SELECT XMLROOT(XMLELEMENT("Contracts_2025",
             ac.scoid.signedTime AS "signedDate")))))), version '1.0') as doc
 FROM agentContract ac WHERE ac.scoid IS NOT NULL GROUP BY ac.scoid.salePrice;
 
-  FROM agentContract ac WHERE EXTRACT(YEAR FROM ac.scoid.signedTime) = 2025;
-
 -- 4. list all details of the rent contracts signed in the last 3 years, including
 -- landlord & tenant's name, rent price, and the property's address.
 SELECT XMLROOT(XMLELEMENT("Contracts", 
