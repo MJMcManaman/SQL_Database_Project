@@ -115,9 +115,9 @@ ac.scoid.salePrice as Sale_Price from agentContract ac where ac.scoid is not nul
 --6 List the number of rent contracts signed by under each agent
 -- using more than one XML file from Oracle XML DB repository
 xquery
-let $a := doc('/public/mj/agent.xml')
+let $a := doc('/public/group2m25/agent.xml')
 for $agent in $a/Agents/Agent
-let $ac := doc("/public/mj/agentContract.xml")
+let $ac := doc("/public/group2m25/agentContract.xml")
 let $rentedContracts := $ac/AgentContracts/AgentContract[agentID = $agent/@agentID and contractType = 'rentContract']
 return <Agent>
   {$agent/agentName}
@@ -129,9 +129,9 @@ return <Agent>
 --return values of XML elements without XML tags. 
 --qualification conditions specified on attribute and element
 xquery
-let $a := doc('/public/mj/agent.xml')
+let $a := doc('/public/group2m25/agent.xml')
 for $agent in $a/Agents/Agent
-let $ac := doc("/public/mj/agentContract.xml")
+let $ac := doc("/public/group2m25/agentContract.xml")
 where $ac/AgentContracts/AgentContract/agentID = $agent/@agentID 
 and $ac/AgentContracts/AgentContract/signatureTime >= '2025-01-01'
 return $agent/agentName/text()
@@ -140,7 +140,7 @@ return $agent/agentName/text()
 --8 find prperties that's larger than 1000 square feet
 --qualification conditions specified on element
 xquery
-let $p := doc('/public/mj/property.xml')
+let $p := doc('/public/group2m25/property.xml')
 for $property in $p/Properties/Property
 where $property/propertyWidth * $property/propertyLength > 1000
 return <Property>
