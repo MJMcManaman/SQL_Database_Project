@@ -13,7 +13,7 @@ SELECT XMLROOT(XMLELEMENT("Vancouver_properties",
             p.propertyDetail.daysListed() AS "daysListed")) ORDER BY p.pid)), version '1.0') as doc
   FROM property p WHERE p.roid.city = 'Vancouver';
 
-
+-- did not use this one:
 -- 2. List all landlords who has a rentContract with agent Brett Fox.
 SELECT XMLROOT(XMLELEMENT("landlords",
   XMLAGG(XMLELEMENT("landlord_information",
