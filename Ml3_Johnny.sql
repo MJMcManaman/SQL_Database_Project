@@ -102,7 +102,14 @@ where t.cid not in (select rc.tenantid.cid from rentContract rc);
 
 -- XSU 
 --5. List all property listed for sale (which have a sale contract)
-OracleXML getXML -user "grp2/here4grp2" -conn "jdbc:oracle:thin:@sit.itec.yorku.ca:1521/studb10g" "select distinct ac.poid.pid as Property_ID, ac.poid.address as Property_Address, ac.poid.propertyType as Property_Type, ac.poid.propertySize() as Property_Size, ac.scoid.salePrice as Sale_Price from agentContract ac where ac.scoid is not null"
+OracleXML getXML \
+-user "grp2/here4grp2" \
+-conn "jdbc:oracle:thin:@sit.itec.yorku.ca:1521/studb10g" \
+-rowTag "Properties" \
+-rowsetTag "PropertiesForSale" \
+"select distinct ac.poid.pid as Property_ID, ac.poid.address as Property_Address, 
+ac.poid.propertyType as Property_Type, ac.poid.propertySize() as Property_Size, 
+ac.scoid.salePrice as Sale_Price from agentContract ac where ac.scoid is not null"
 
 -- Xquery 
 --6 List the number of rent contracts signed by under each agent
