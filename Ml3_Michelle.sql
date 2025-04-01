@@ -53,7 +53,12 @@ SELECT XMLROOT(XMLELEMENT("Contracts",
 
 --------------------------------------------------------------------------------------------------------------
 -- XSU (total number of 1)
-OracleXML getXML -user "grp2/here4grp2" -conn "jdbc:oracle:thin:@sit.itec.yorku.ca:1521/studb10g" "SELECT DISTINCT ac.aoid.aname AS agentName, ac.aoid.yearOfExperience() AS experienceYears, ac.poid.pid AS propertyID, ac.poid.address AS propertyAddress FROM agentContract ac"
+OracleXML getXML \
+-user "grp2/here4grp2" \
+-conn "jdbc:oracle:thin:@sit.itec.yorku.ca:1521/studb10g" \
+-rowTag InformationDetail \
+-rowsetTag PropertyAgentList \
+"SELECT DISTINCT ac.aoid.aname AS agentName, ac.aoid.yearOfExperience() AS experienceYears, ac.poid.pid AS propertyID, ac.poid.address AS propertyAddress FROM agentContract ac"
 
 --------------------------------------------------------------------------------------------------------------
 -- Xquery (total number of 3)
