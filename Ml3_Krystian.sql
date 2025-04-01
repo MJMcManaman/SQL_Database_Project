@@ -1,4 +1,5 @@
 -- 1. List the number of detached, semi-detatched and detatched homes in each region.
+-- this is Johnny's query I believe?????
 SELECT XMLROOT(
          XMLELEMENT("Properties_Sold_By_Types",
             XMLAGG(
@@ -12,6 +13,19 @@ SELECT XMLROOT(
        ) AS doc
 FROM agentContract ac
 GROUP BY ac.poid.propertyType;
+
+-- modify so we don't get marks deducted:
+-- List all property's details, mostly concerned about the number of rooms and parking space.
+SELECT XMLROOT(XMLELEMENT("Properties_Sold",
+ XMLAGG(XMLELEMENT("Properties",
+   XMLATTRIBUTES(ac.poid.pid AS "PID"),
+     XMLFOREST(ac.poid.propertyType AS "Property_Type",
+         ac.poid.propertyDetail.livingroomNum AS "Number_of_LivingRoom",
+         ac.poid.propertyDetail.washroomNum AS "Number_of_WashRoom",
+         ac.poid.propertyDetail.bedroomNum AS "Number_of_BedRoom",
+         ac.poid.propertyDetail.elevator AS "Number_of_Elevator")))),
+VERSION '1.0') AS doc
+FROM agentContract ac WHERE ac.scoid IS NOT NULL;
 
 
 -- 2. List the number of detached, semi-detatched and detatched homes in each region.      
@@ -35,22 +49,15 @@ GROUP BY r.regionName;
 
 -- fixed:
 -- problem: references was not introduced correctly.
-SELECT XMLROOT(
-         XMLELEMENT("Properties",
-            XMLAGG(
-               XMLELEMENT("Region",
-                  XMLATTRIBUTES(p.roid.regionName AS "Region"),
-                  XMLFOREST(
-                     COUNT(CASE WHEN p.propertyType = 'condo' THEN 1 END) AS "condo",
-                     COUNT(CASE WHEN p.propertyType = 'semidetached' THEN 1 END) AS "semidetached",
-                     COUNT(CASE WHEN p.propertyType = 'detatched' THEN 1 END) AS "detached"
-                  )
-               )
-            )
-         ), VERSION '1.0'
-       ) AS document
-  FROM property p
-  GROUP BY p.roid.regionName;
+SELECT XMLROOT(XMLELEMENT("Properties",
+ XMLAGG(XMLELEMENT("Region",
+   XMLATTRIBUTES(p.roid.regionName AS "Region"),
+   XMLFOREST(
+     COUNT(CASE WHEN p.propertyType = 'condo' THEN 1 END) AS "condo",
+     COUNT(CASE WHEN p.propertyType = 'semidetached' THEN 1 END) AS "semidetached",
+     COUNT(CASE WHEN p.propertyType = 'detatched' THEN 1 END) AS "detached")))), VERSION '1.0'
+) AS document
+FROM property p GROUP BY p.roid.regionName;
 
 
 
@@ -70,16 +77,14 @@ ORDER BY listedPrice DESC;
 -- fixed:
 -- problem: ORDER BY should be GROUP BY? I'm not sure about why though; DESC isn't allowed in XML queries; 
 -- references was not introduced correctly, usage of XMLAGG was incorrectly.
-SELECT XMLROOT(
-   XMLELEMENT("Properties",
-         XMLAGG(XMLELEMENT("RegionPrice",
-                  XMLAGG(XMLELEMENT("Region",
-                             XMLELEMENT("ID", p.propertyDetail.lid),
-                             XMLFOREST(p.roid.regionName AS "Region_type", p.propertyDetail.listedPrice AS "ListedPrice")))))),
-         VERSION '1.0'
-         ) AS document
-FROM property p
-GROUP BY p.propertyDetail.listedPrice;
+SELECT XMLROOT(XMLELEMENT("Properties",
+  XMLAGG(XMLELEMENT("RegionPrice",
+    XMLAGG(XMLELEMENT("Region",
+    XMLELEMENT("ID", p.propertyDetail.lid),
+    XMLFOREST(p.roid.regionName AS "Region_type", 
+              p.propertyDetail.listedPrice AS "ListedPrice")))))),
+         VERSION '1.0') AS document
+FROM property p GROUP BY p.propertyDetail.listedPrice;
 
 
 -- 4. List all buyers that has bought a property.
