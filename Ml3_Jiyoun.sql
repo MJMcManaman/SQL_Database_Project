@@ -177,7 +177,7 @@ FROM agentContract ac WHERE ac.scoid IS NOT NULL"
 --5 Xquery-- 
   
 xquery
-let $b := doc("/public/mj/buyer.xml")
+let $b := doc("/public/group2m25/buyer.xml")
 for $buyer in $b/Buyers/Buyer
 where $buyer/dateStarted < "2020-01-01"
 return $buyer/buyerName/text()
@@ -193,8 +193,8 @@ James Anderson
 --6 Xquery-- 
 
 xquery
-let $b := doc("/public/mj/buyer.xml")
-let $sc := doc("/public/mj/saleContract.xml")
+let $b := doc("/public/group2m25/buyer.xml")
+let $sc := doc("/public/group2m25/saleContract.xml")
 for $buyer in $b/Buyers/Buyer, 
     $salecontract in $sc/SaleContracts/SaleContract
 where $buyer/@buyerID = $salecontract/buyerID/text()
@@ -218,7 +218,7 @@ D><contractID scid="sc03"></contractID></BuyerSaleInfo>
 --7 xquery--
 
 xquery
-let $p := doc("/public/mj/property.xml")
+let $p := doc("/public/group2m25/property.xml")
 for $property in $p/Properties/Property
 where $property/propertyType = "semidetached"
 return $property/address/text()
