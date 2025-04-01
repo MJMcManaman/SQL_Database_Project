@@ -47,8 +47,8 @@ GROUP BY py.pid, py.propertyType, py.builtYear, py.address;
 OracleXML getXML \
 -user "grp2/here4grp2" \
 -conn "jdbc:oracle:thin:@sit.itec.yorku.ca:1521/studb10g" \
--rowtag "SaleContract" \
--rowsettag "SaleContracts" \
+-rowTag "SaleContract" \
+-rowsetTag "SaleContracts" \
 "SELECT DISTINCT sc.sellerid.cname as sellerName, 
 sc.sellerid.phoneNum as sellerPhone, sc.sellerid.emailAddress as sellerEmail, sc.sellerid.dateOwned as owningDate, 
 sc.sellerid.cid as sellerID, sc.scid as saleContractID, sc.salePrice as propertyPrice
