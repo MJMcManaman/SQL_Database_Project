@@ -76,9 +76,14 @@ WHERE sc.buyerid.cid IS NOT NULL;
 -- to create XSU SQL query for question 3 and Xqueries for question 5).
 -----------------------------------
 --5. XSU
-$ OracleXML getXML -user "grp2/here4grp2" -conn "jdbc:oracle:thin:@sit.itec.yorku.ca:1521/studb10g" "select distinct ac.scoid.scid as SCID,
-         ac.scoid.buyerid.canme as Buyer_Name, ac.scoid.salePrice as Sale_Price, ac.poid.address as property_address, ac.scoid.signedTime
-         as Signed_Date from agentContract ac"
+OracleXML getXML \
+-user "grp2/here4grp2" \
+-conn "jdbc:oracle:thin:@sit.itec.yorku.ca:1521/studb10g" \
+-rowTag \
+-rowserTag \
+"select distinct ac.scoid.scid as SCID,ac.scoid.buyerid.cname as Buyer_Name, 
+ac.scoid.salePrice as Sale_Price, ac.poid.address as property_address, 
+ac.scoid.signedTime as Signed_Date from agentContract ac"
 
 
 -- 6.
