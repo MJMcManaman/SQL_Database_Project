@@ -140,6 +140,36 @@ FROM agentContract ac WHERE ac.scoid IS NOT NULL"
    </BuyerAgentSummary>
 </BuyerAgentSummaryList>
 
+-- WE ARE REQUIRED TO SET USER-DEFINED TAG NAMES FOR XSU PARAMETERS --
+-- FINAL VERSION OF THE XSU REQUEST --
+
+OracleXML getXML \
+-user "grp2/here4grp2" \
+-conn "jdbc:oracle:thin:@sit.itec.yorku.ca:1521/studb10g" \
+-rowTag BuyerAgentSummary \
+-rowsetTag BuyerAgentSummaryList \
+"SELECT ac.scoid.buyerid.cid AS buyer_id, ac.scoid.buyerid.cname AS buyer_name, 
+ac.scoid.buyerid.timeSpentLooking() AS time_spent, ac.aoid.aid AS agent_id, ac.aoid.aname AS agent_name 
+FROM agentContract ac WHERE ac.scoid IS NOT NULL"
+  
+<?xml version = '1.0'?>
+<BuyerAgentSummaryList>
+   <BuyerAgentSummary num="1">
+      <BUYER_ID>c12 </BUYER_ID>
+      <BUYER_NAME>Lucas White</BUYER_NAME>
+      <TIME_SPENT>1113</TIME_SPENT>
+      <AGENT_ID>a02 </AGENT_ID>
+      <AGENT_NAME>Frank Miller</AGENT_NAME>
+   </BuyerAgentSummary>
+   <BuyerAgentSummary num="2">
+      <BUYER_ID>c11 </BUYER_ID>
+      <BUYER_NAME>Diana White</BUYER_NAME>
+      <TIME_SPENT>2334</TIME_SPENT>
+      <AGENT_ID>a03 </AGENT_ID>
+      <AGENT_NAME>Grace Hall</AGENT_NAME>
+   </BuyerAgentSummary>
+</BuyerAgentSummaryList>
+
   
 --5 Xquery-- 
   
