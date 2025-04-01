@@ -58,8 +58,8 @@ FROM saleContract sc WHERE sc.sellerid.dateOwned < DATE '2018-01-01'"
 -- XQuery:
 -- 5. calculate the average price of the all rented properties
 xquery
-let $agentC := doc("/public/mj/agentContract.xml")/AgentContracts/AgentContract
-let $rentC := doc("/public/mj/rentContract.xml")/RentContracts/RentContract
+let $agentC := doc("/public/group2m25/agentContract.xml")/AgentContracts/AgentContract
+let $rentC := doc("/public/group2m25/rentContract.xml")/RentContracts/RentContract
 let $rentedPrices := 
   for $ac in $agentC
   let $rc := $rentC[@rcid = $ac/rcoid/text()]
@@ -70,7 +70,7 @@ return format-number(avg($rentedPrices), "#.00")
 
 -- 6. no one interests in the seventh property because of expensive, so its price is updated and return with property's information.
 xquery
-let $propery := doc("/public/mj/property.xml")/Properties
+let $propery := doc("/public/group2m25/property.xml")/Properties
 return
   copy $updatePrice := $propery  
   modify (  
@@ -86,7 +86,7 @@ return
 -- 7. find the buyer's ID who enrolled in real estate system after year 2017 and their info detail
 -- modified: it's better to only display one element's value.
 xquery
-let $buy := doc("/public/mj/buyer.xml")/Buyers/Buyer
+let $buy := doc("/public/group2m25/buyer.xml")/Buyers/Buyer
 for $buyer in $buy
 where xs:date($buyer/dateStarted) > xs:date("2018-01-01")  
 return $buyer/@buyerID
