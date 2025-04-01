@@ -132,11 +132,27 @@ FROM agentContract ac
 WHERE ac.poid.roid.city = 'Halifax';
 
 -- 5.
-XQUERY
+ xquery
+  let $p := doc("/public/mj/property.xml")
+  for $property in $p/Properties/Property
+  where $property/address/text()
+  return $property/address/text()
+  /
 
-let $s := doc("/public/mj/seller.xml")
-         for seller in $
+--6. 
+xquery
+          let $p := doc('/public/mj/property.xml')
+          for $property in $p/Properties/Property
+          where $property/salePrice
+          return salePrice
+          /
 
+          xquery
+let $b := doc("/public/mj/buyer.xml")/Buyers/Buyer
+for $buyer in $buy
+where xs:date($buyer/dateStarted) > xs:date("2018-01-01")  
+return $buyer/@buyerID
+/
 
 
 3. 
