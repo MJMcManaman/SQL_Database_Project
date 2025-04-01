@@ -1,4 +1,4 @@
--- 1. list all angents who have more than 12 years of experience  and their contracts numbers
+-- 1. list all angents who have more than 12 years of experience and their contracts numbers
 SELECT XMLROOT(
       XMLELEMENT("agentExpert",
          XMLAGG(XMLELEMENT("agent",
@@ -44,10 +44,12 @@ GROUP BY py.pid, py.propertyType, py.builtYear, py.address;
 
 -- 4.XSU: find the sellers who have house before year 2018 and their price of property
 OracleXML getXML -user "grp2/here4grp2" -conn 
-"jdbc:oracle:thin:@sit.itec.yorku.ca:1521/studb10g" "SELECT DISTINCT sc.sellerid.cname as sellerName, 
+"jdbc:oracle:thin:@sit.itec.yorku.ca:1521/studb10g" -rowtag "SaleContract" -rowsettag "SaleContracts"
+"SELECT DISTINCT sc.sellerid.cname as sellerName, 
 sc.sellerid.phoneNum as sellerPhone, sc.sellerid.emailAddress as sellerEmail, sc.sellerid.dateOwned as owningDate, 
 sc.sellerid.cid as sellerID, sc.scid as saleContractID, sc.salePrice as propertyPrice
 FROM saleContract sc WHERE sc.sellerid.dateOwned < DATE '2018-01-01'"
+--Ao: add rowtag and rowsettag following Joanne's advise.
 
 -- XQuery:
 -- 5. calculate the average price of the all rented properties
