@@ -2,7 +2,7 @@ SET ECHO ON
 Declare
   ret boolean;
     begin
-    dbms_xdb.deleteresource('/public/folder_name/buyer.xml');
+    dbms_xdb.deleteresource('/public/group2m25/buyer.xml');
     commit;
 end;
 /
@@ -10,7 +10,7 @@ end;
 Declare
   ret boolean;
     begin
-    dbms_xdb.deleteresource('/public/folder_name/seller.xml');
+    dbms_xdb.deleteresource('/public/group2m25/seller.xml');
     commit;
 end;
 /
@@ -18,7 +18,7 @@ end;
 Declare
   ret boolean;
     begin
-    dbms_xdb.deleteresource('/public/folder_name/landlord.xml');
+    dbms_xdb.deleteresource('/public/group2m25/landlord.xml');
     commit;
 end;
 /
@@ -26,7 +26,7 @@ end;
 Declare
   ret boolean;
     begin
-    dbms_xdb.deleteresource('/public/folder_name/tenant.xml');
+    dbms_xdb.deleteresource('/public/group2m25/tenant.xml');
     commit;
 end;
 /
@@ -34,7 +34,7 @@ end;
 Declare
   ret boolean;
     begin
-    dbms_xdb.deleteresource('/public/folder_name/agent.xml');
+    dbms_xdb.deleteresource('/public/group2m25/agent.xml');
     commit;
 end;
 /
@@ -42,7 +42,7 @@ end;
 Declare
   ret boolean;
     begin
-    dbms_xdb.deleteresource('/public/folder_name/agentContract.xml');
+    dbms_xdb.deleteresource('/public/group2m25/agentContract.xml');
     commit;
 end;
 /
@@ -50,7 +50,7 @@ end;
 Declare
   ret boolean;
     begin
-    dbms_xdb.deleteresource('/public/folder_name/region.xml');
+    dbms_xdb.deleteresource('/public/group2m25/region.xml');
     commit;
 end;
 /
@@ -58,7 +58,7 @@ end;
 Declare
   ret boolean;
     begin
-    dbms_xdb.deleteresource('/public/folder_name/property.xml');
+    dbms_xdb.deleteresource('/public/group2m25/property.xml');
     commit;
 end;
 /
@@ -66,7 +66,7 @@ end;
 Declare
   ret boolean;
     begin
-    dbms_xdb.deleteresource('/public/folder_name/rentContract.xml');
+    dbms_xdb.deleteresource('/public/group2m25/rentContract.xml');
     commit;
 end;
 /
@@ -74,7 +74,7 @@ end;
 Declare
   ret boolean;
     begin
-    dbms_xdb.deleteresource('/public/folder_name/saleContract.xml');
+    dbms_xdb.deleteresource('/public/group2m25/saleContract.xml');
     commit;
 end;
 /
