@@ -28,7 +28,7 @@ SELECT XMLROOT(
                                   sc.signedTime AS "PurchaseDate"))))))), VERSION '1.0') AS doc
 FROM saleContract sc 
 WHERE sc.signedTime < DATE '2025-01-01'
-GROUP BY sc.buyerid.cid, sc.buyerid.cname, sc.buyerid.phoneNum, sc.buyerid.emailAddress;
+GROUP BY sc.buyerid;
 
 -- 3. list all properties' details that has a region associated with possible agent.
 -- modified: missed a XMLAGG so that it's one document, also added references to region, to fulfill requirement of more then one table.
@@ -40,7 +40,7 @@ SELECT XMLROOT( XMLELEMENT("PropertiesUn",
             )))),
         VERSION '1.0') as doc
 FROM property py WHERE py.roid IS NOT NULL
-GROUP BY py.pid, py.propertyType, py.builtYear, py.address;
+GROUP BY py.pid;
 
 -- 4.XSU: find the sellers who have house before year 2018 and their price of property
 --Ao: add rowtag and rowsettag following Joanne's advise.
