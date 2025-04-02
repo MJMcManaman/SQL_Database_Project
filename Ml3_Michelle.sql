@@ -8,10 +8,13 @@ SET pagesize 60
 SELECT XMLROOT(XMLELEMENT("Vancouver_properties", 
     XMLAGG(XMLELEMENT("propertyDetails",
       XMLATTRIBUTES(p.pid AS "PID"),
-        XMLFOREST(p.propertyType AS "propertyType",
-            p.propertyDetail.listedPrice AS "listedPrice",
-            p.propertyDetail.daysListed() AS "daysListed")) ORDER BY p.pid)), version '1.0') as doc
-  FROM property p WHERE p.roid.city = 'Vancouver';
+      XMLFOREST(p.propertyType AS "propertyType",
+                p.propertyDetail.daysListed() AS "daysListed"),
+      XMLELEMENT("propertyPrice", 
+      XMLELEMENT("listedPrice", p.propertyDetail.listedPrice))))), 
+    VERSION '1.0') AS doc
+FROM property p
+WHERE p.roid.city = 'Vancouver';
 
 -- did not use this one:
 -- 2. List all landlords who has a rentContract with agent Brett Fox.
