@@ -9,7 +9,7 @@ SELECT XMLROOT(
                      XMLFOREST(ac.acid AS "contractID")))))), VERSION '1.0') AS doc
 FROM agentContract ac
 WHERE (EXTRACT(YEAR FROM SYSDATE) - ac.aoid.yearStarted) > 12
-GROUP BY ac.aoid.aid, ac.aoid.aname, ac.aoid.yearStarted;
+GROUP BY ac.aoid;
 
 -- 2. list all buyers' information who buy house before year 2025
 SELECT XMLROOT(
