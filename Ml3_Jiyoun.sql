@@ -1,4 +1,7 @@
+
+-- XMLQuery 1 --
 -- xmlagg, xmlattributes--  
+-- List properties with 2 washrooms that are currently listed. --
 SELECT XMLROOT(XMLELEMENT("Listed_Properties",
         XMLAGG(
             XMLELEMENT("Property",
@@ -18,6 +21,7 @@ rty Property_ID="p12 " Listing_ID="l12 "><Type>semidetached</Type><Address>67 sp
 shrooms>2</Washrooms></Property></Listed_Properties>
 
 --xmlroot, xmlattribute, xmlforest, groupby-- 
+
 SELECT XMLROOT(
     XMLELEMENT("Regions",
     XMLAGG(
@@ -32,6 +36,9 @@ SELECT XMLROOT(
    GROUP BY r.regionName;
 
 ----modified: references corrected.
+-- XMLQuery 2 --
+-- xmlroot, xmlattribute, xmlforest, groupby -- 
+-- Return a summmary of listed properties per region, displaying total number of listed properties, average listed price. --
 SELECT XMLROOT(
   XMLELEMENT("Regions",
     XMLAGG(XMLELEMENT("Region",
@@ -82,7 +89,12 @@ SELECT XMLROOT(
    WHERE ac.aoid.aid = a.aid
    AND ac.commission() = (SELECT MAX(ac2.commission()) FROM agentContract ac2);
 
+
 ------ update version:
+-- XMLQuery 3 --
+-- xmlroot,xmlattribute,xmlforest --
+-- Identify the agent with the highest total commission, alongn with agentID, agentName, and years of experience. --
+
 SELECT XMLROOT(
         XMLELEMENT("Top_Agent",
             XMLELEMENT("Agent",
