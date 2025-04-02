@@ -32,19 +32,13 @@ GROUP BY sc.buyerid;
 
 -- 3. list all properties' details that has a region associated with possible agent.
 -- modified: missed a XMLAGG so that it's one document, also added references to region, to fulfill requirement of more then one table.
-SELECT XMLROOT( 
-    XMLELEMENT("PropertiesUn",
-        XMLAGG(
-            XMLELEMENT("PropertyTYPE",
-               XMLATTRIBUTES(py.propertyType AS "Type"),
-                XMLAGG(
-                    XMLELEMENT("Property",    
-                     XMLFOREST(py.builtYear AS "EstablishedYear", py.address AS "Address", py.roid.city AS "City")
-                    )
-                )
-            )
-        )
-    ), VERSION '1.0') AS doc
+SELECT XMLROOT(XMLELEMENT("PropertiesUn",
+  XMLAGG(XMLELEMENT("PropertyTYPE",
+   XMLATTRIBUTES(py.propertyType AS "Type"),
+   XMLAGG(XMLELEMENT("Property",    
+   XMLFOREST(py.builtYear AS "EstablishedYear", 
+            py.address AS "Address", py.roid.city AS "City")))))), 
+      VERSION '1.0') AS doc
 FROM property py
 WHERE py.roid IS NOT NULL
 GROUP BY py.propertyType;
