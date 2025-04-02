@@ -39,7 +39,7 @@ SELECT XMLROOT(
                XMLATTRIBUTES(py.propertyType AS "Type"),
                 XMLAGG(
                     XMLELEMENT("Property",    
-                     XMLFOREST(py.propertyType AS "Type", py.builtYear AS "EstablishedYear", py.address AS "Address", py.roid.city AS "City")
+                     XMLFOREST(py.builtYear AS "EstablishedYear", py.address AS "Address", py.roid.city AS "City")
                     )
                 )
             )
