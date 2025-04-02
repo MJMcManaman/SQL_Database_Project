@@ -23,8 +23,8 @@ SELECT XMLROOT(XMLELEMENT("landlords",
     XMLATTRIBUTES(ac.rcoid.landlordid.cid AS "CID"),
         XMLFOREST(ac.rcoid.landlordid.cname AS "landlordName",
                 ac.rcoid.landlordid.phoneNum AS "phoneNumber",
-                ac.rcoid.landlordid.pricePreferred AS "landlord_price")) ORDER BY ac.rcoid.landlordid.cid)), version '1.0') as doc
-  FROM agentContract ac WHERE ac.aoid.aname = 'Brett Fox' GROUP BY ac.rcoid.landlordid.pricePreferred;
+                ac.rcoid.landlordid.pricePreferred AS "landlord_price")) ORDER BY ac.rcoid.landlordid.pricePreferred)), version '1.0') as doc
+  FROM agentContract ac WHERE ac.aoid.aname = 'Brett Fox';
 
 -- 3. list all details of the sale contracts signed and the commission price of for the agent, including
 -- seller & buyer's name, sale price, and the property's address, grouped by they final sale's price of the house.
