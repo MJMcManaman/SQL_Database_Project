@@ -91,7 +91,7 @@ OracleXML getXML \
 xquery
          let $p := doc("/public/group2m25/property.xml")
          for $property in $p/Properties/Property
-         where $property/address/text()
+         where $property/builtYear > 2000
          return $property/address/text()
          /
 
